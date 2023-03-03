@@ -1,0 +1,17 @@
+.auth-wrapper-ui{
+    animation: insertFromRight 0.2s ease-in-out;
+}
+.auth-wrapper-ui-agent{
+    animation: insertFromRight 0.1s ease-in-out;
+}
+
+@keyframes insertFromRight {
+    0% {
+        transform: translateX(2%);
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
