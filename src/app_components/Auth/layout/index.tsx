@@ -7,11 +7,8 @@ import { Link } from 'react-router-dom';
 import { PrimaryTitle } from '../../../app_atomic/Title';
 import { DangerPrimaryButton, ReturnButton } from '../../../app_atomic/Button';
 
-// import { AlertTriangle, ChevronLeft } from 'react-feather';
-
-// use now hero icons
-
-import { ChevronLeftIcon as ChevronLeft } from '@heroicons/react';
+import { AlertTriangle, ChevronLeft } from 'react-feather';
+import defaultIconSet from "../../../app_common/interfaces/DefaultIconsSet";
 
 import "./style.css";
 
@@ -40,11 +37,11 @@ const AuthWrapper = ({
                 <div className="auth-wrapper-ui">
 
                     <Link to={returnLink} className="absolute">
-                        <ReturnButton icon={<ChevronLeft
+                        <ReturnButton icon={<ChevronLeft { ...defaultIconSet } />} />
                     </Link>
 
                     <div className="flex flex-col items-center justify-center w-full mb-2">
-                        <img src={_logo_} alt="Seendy" className="h-9 max-w-max rounded" />
+                        <img src={_logo_} alt="Wispio" className="h-9 max-w-max rounded" />
                     </div>
 
                     <PrimaryTitle add="text-center text-black dark:text-white">

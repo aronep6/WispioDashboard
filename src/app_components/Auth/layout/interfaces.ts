@@ -6,5 +6,5 @@ export interface AuthLayoutProps {
     isLoading?: boolean;
     loadingMessage?: string;
     error?: any;
-    setError?: (error: any) => void;
+    setError: (error: any) => void;
 }
