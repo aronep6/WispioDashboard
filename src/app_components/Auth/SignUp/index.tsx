@@ -1,25 +1,31 @@
 import { useState } from "react";
 import _logo_ from '../../assets/blinks_logo_wide.webp';
-import { useService } from "../../hooks";
-import { InputAsSelector, Hint } from "../../atomic/Input";
+
+import useAuth from "../../../app_hooks/contexts_hooks/useAuth";
+
+import { InputBlock } from "../../../app_atomic/Input";
 import { Link, useNavigate } from "react-router-dom";
 
-import AuthWrapper from "./layout";
+import AuthWrapper from "../layout";
+
 // Form validation schema
-import { signUpValidationSchemaFirstStep, getErrors } from "./functions";
-import { useForm, Controller } from "react-hook-form";
+import { signUpValidationSchemaFirstStep, getErrors } from "../functions";
+import { useForm, Controller, FieldValues } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitPrimaryButton } from "../../atomic/Button";
+import { SubmitPrimaryButton } from "../../../app_atomic/Button";
+import { Hint } from "../../../app_atomic/Title";
+import { SignUpFormDataType } from "./interfaces";
+
 
 const inDev = !import.meta.env.PROD;
 
 const SignUp = () => {
     let navigate = useNavigate();
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [globalError, setGlobalError] = useState(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [globalError, setGlobalError] = useState<string | null>(null);
 
-    const service = useService();
+    const auth = useAuth();
 
     // Handle form submission dans datas
     const { control, handleSubmit, formState: { isSubmitting, errors, isValid } } = useForm({
@@ -27,20 +33,24 @@ const SignUp = () => {
         resolver: yupResolver(signUpValidationSchemaFirstStep)
     });
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: FieldValues) => {
         setIsLoading(true);
         try {
-            const { signup_form_displayname, signup_form_email, signup_form_password } = data;
+            const { 
+                signup_form_displayname, 
+                signup_form_email, 
+                signup_form_password
+            } = data as SignUpFormDataType;
 
-            const user = await service.signUpWithEmail(signup_form_displayname, signup_form_email, signup_form_password);
+            const user_credentials = await auth.signUpWithEmail(signup_form_displayname, signup_form_email, signup_form_password);
 
-            inDev && console.log("User created : ", user);
-            const { uid } = user;
+            inDev && console.log("User created : ", user_credentials);
+            const { user } = user_credentials;
 
             // Redirect to the registration page
-            navigate(`/auth/checkup?id=${uid}&isImperative=true&fallback=default`);
+            navigate(`/auth/checkup?id=${ user.uid }&isImperative=true&fallback=default`);
 
-        } catch (error) {
+        } catch (error: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de l'inscription : ", error);
             
             const _err = getErrors(error);
@@ -54,8 +64,8 @@ const SignUp = () => {
     };
 
     return <AuthWrapper
-        title="Bienvenue sur Seendy"
-        description="Inscrivez-vous et profitez de nos fonctionnalités gratuitement"
+        title="Bienvenue sur Wispio"
+        description="Inscrivez-vous et profitez de fonctionnalités exclusives."
         isLoading={isLoading}
         loadingMessage="Création de votre compte..."
         returnLink="/auth/signin"
@@ -73,7 +83,7 @@ const SignUp = () => {
                         field: { onChange, value },
                         fieldState: { error },
                     }) => (
-                        <InputAsSelector
+                        <InputBlock
                             name="signup_form_displayname"
                             label="Nom et prénom"
                             placeholder="John Doe"
@@ -93,7 +103,7 @@ const SignUp = () => {
                         field: { onChange, value },
                         fieldState: { error },
                     }) => (
-                        <InputAsSelector
+                        <InputBlock
                             name="signup_form_email"
                             label="Adresse email"
                             placeholder="Votre adresse email personnelle ✉️"
@@ -113,7 +123,7 @@ const SignUp = () => {
                         field: { onChange, value },
                         fieldState: { error },
                     }) => (
-                        <InputAsSelector
+                        <InputBlock
                             name="signup_form_password"
                             label="Mot de passe"
                             type="password"
@@ -131,7 +141,7 @@ const SignUp = () => {
                 <Hint>
                     En vous inscrivant, vous acceptez les
                     <Link to="/legal/terms" className="text-indigo-600 font-bold"> Conditions Générales d'Utilisation </Link> ainsi que la
-                    <Link to="/legal/privacy" className="text-indigo-600 font-bold"> Politique de Confidentialité </Link> des services de l'application Seendy.
+                    <Link to="/legal/privacy" className="text-indigo-600 font-bold"> Politique de Confidentialité </Link> de Wispio.
                 </Hint>
 
                 <div className="w-full pt-8 flex flex-row items-center justify-end">

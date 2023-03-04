@@ -38,7 +38,7 @@ const BigTitle = ({ children, add = "" }: { children: React.ReactNode, add: stri
     </h1>
 };
 
-const Hint = ({ children, add = "" }: { children: React.ReactNode, add: string }) => {
+const Hint = ({ children, add = "" }: { children: React.ReactNode, add?: string }) => {
     return <span className={`text-xs text-gray-600 dark:text-gray-400 leading-snug mx-0.5 ${ add }`}>{ children }</span>;
 };
 

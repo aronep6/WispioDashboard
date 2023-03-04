@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-const getErrors = (_err) => {
+const getErrors = (_err: Error | unknown) => {
         const e = `${_err}`;
         if (e.includes('auth/popup-closed-by-user')) return 'Vous avez fermé la fenêtre de connexion, veuillez réessayer.';
         if (e.includes('auth/internal-error')) return 'Une erreur interne est survenue, veuillez réessayer';
