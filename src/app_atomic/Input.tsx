@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { FieldError } from "react-hook-form/dist/types";
 
 interface InputProps {
@@ -14,7 +15,7 @@ interface InputProps {
     errorMessage?: string;
 }
 
-const InputBlock = ({
+const InputBlock = forwardRef(({
     name,
     label,
     value,
@@ -26,12 +27,15 @@ const InputBlock = ({
     placeholder = "Entrez une valeur",
     error = false,
     errorMessage = "Une erreur est survenue",
-}: InputProps) => {
+}: InputProps, 
+ref: React.Ref<HTMLInputElement> | undefined
+) => {
     return <section className="flex flex-col py-1 my-0.5 w-full">
 
         { label && <label className="text-slate-700 mb-1.5 ml-0.5 text-sm font-medium tracking-tight">{ label }</label> }
 
         <input
+            ref={ref}
             className={`
                 h-12 relative
                 bg-white shadow-sm
@@ -59,6 +63,6 @@ const InputBlock = ({
             error && <span className="text-red-500 text-xs font-medium mt-0.5">{ errorMessage }</span>
         }
     </section>
-};
+});
 
 export { InputBlock };

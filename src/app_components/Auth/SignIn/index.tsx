@@ -1,5 +1,5 @@
 import { SecondaryButton, SubmitPrimaryButton } from "../../../app_atomic/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import AuthWrapper from "../layout";
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 const inDev = !import.meta.env.PROD;
 
-const Login = () => {
+const SignIn = () => {
     let navigate = useNavigate();
 
     const auth = useAuth();
@@ -24,6 +24,8 @@ const Login = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [globalError, setGlobalError] = useState<string | null>(null);
+
+    const signin_form_email_ref = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         // Checking URL params
@@ -68,14 +70,14 @@ const Login = () => {
     }, [user]);
 
     // Handle form submission dans datas
-    const { control, handleSubmit, setFocus, formState: { isSubmitting, errors, isValid } } = useForm({
+    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
         resolver: yupResolver(signInValidationSchema)
     });
 
     const handleFormLogin = async (data: any) => {
         try {
             setIsLoading(true);
-            const _user_ = await auth.loginWithEmail(data.signin_form_email, data.signin_form_password);
+            const _user_ = await auth.loginWithEmail(data.signin_form_email, data.signin_form_password);            
             setGlobalError(null);
             console.log("Need to check for registration redirection (Aborted) : Not implemented yet :( ")
             // checkForRegistrationRedirection(_user_.user.uid);
@@ -89,9 +91,16 @@ const Login = () => {
         }
     };
 
+    useEffect(() => {
+        if (signin_form_email_ref.current) {
+            signin_form_email_ref.current.focus();
+        }
+    }, []);
+
     return <AuthWrapper 
         title="Se connecter à Wispio"
-        description="Connectez-vous à votre compte pour accéder à vos services"
+        titleDescription="Connectez-vous à votre compte pour commencer à utiliser les outils Wispio."
+        description="L'authentification est nécessaire pour accéder à votre compte Wispio."
         isLoading={ isLoading }
         returnLink="/"
         error={ globalError }
@@ -107,6 +116,7 @@ const Login = () => {
                     fieldState: { error },
                 }) => (
                     <InputBlock
+                        ref={signin_form_email_ref}
                         name="signin_form_email"
                         label="Adresse e-mail"
                         placeholder="Adresse e-mail"
@@ -188,7 +198,7 @@ const Login = () => {
     </AuthWrapper>
 };
 
-export default Login;
+export default SignIn;
 
 /*
 

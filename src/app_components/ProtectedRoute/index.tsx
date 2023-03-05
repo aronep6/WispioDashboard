@@ -25,7 +25,7 @@ const ProtectedRoute = ({
         <Loading /> : 
             user !== null ? 
                 <Suspense fallback={
-                    <Loading message={loadMessage}/>
+                    <Loading message={loadMessage} />
                 }>
                     { children }
                 </Suspense>

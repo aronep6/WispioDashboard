@@ -1,13 +1,20 @@
 export enum AppRoutes {
-    // Home route
-    Home = '/',
-
-    // Authentification routes
     AuthSignIn = '/auth/signin',
     AuthSignUp = '/auth/signup',
-    AuthSignOut = '/auth/signout',
 
-    // Other routes
+    Dashboard = '/dashboard',
+
     NotFound = '*',
     Loading = '/loading',
 };
+
+export enum BrowserAppRoutes {
+    Auth = '/auth',
+    SignIn = 'signin',
+    SignUp = 'signup',
+
+    Dashboard = '/',
+
+    NotFound = '*',
+    Loading = '/loading',
+}

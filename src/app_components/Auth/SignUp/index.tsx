@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import _logo_ from '../../assets/blinks_logo_wide.webp';
 
 import useAuth from "../../../app_hooks/contexts_hooks/useAuth";
@@ -25,10 +25,12 @@ const SignUp = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [globalError, setGlobalError] = useState<string | null>(null);
 
+    const signup_form_displayname_ref = useRef<HTMLInputElement>(null);
+
     const auth = useAuth();
 
     // Handle form submission dans datas
-    const { control, handleSubmit, formState: { isSubmitting, errors, isValid } } = useForm({
+    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
         mode: "onChange",
         resolver: yupResolver(signUpValidationSchemaFirstStep)
     });
@@ -36,9 +38,9 @@ const SignUp = () => {
     const onSubmit = async (data: FieldValues) => {
         setIsLoading(true);
         try {
-            const { 
-                signup_form_displayname, 
-                signup_form_email, 
+            const {
+                signup_form_displayname,
+                signup_form_email,
                 signup_form_password
             } = data as SignUpFormDataType;
 
@@ -48,11 +50,11 @@ const SignUp = () => {
             const { user } = user_credentials;
 
             // Redirect to the registration page
-            navigate(`/auth/checkup?id=${ user.uid }&isImperative=true&fallback=default`);
+            navigate(`/auth/checkup?id=${user.uid}&isImperative=true&fallback=default`);
 
         } catch (error: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de l'inscription : ", error);
-            
+
             const _err = getErrors(error);
 
             inDev && console.log(_err);
@@ -63,8 +65,15 @@ const SignUp = () => {
         }
     };
 
+    useEffect(() => {
+        if (signup_form_displayname_ref.current) {
+            signup_form_displayname_ref.current.focus();
+        }
+    }, []);
+
     return <AuthWrapper
-        title="Bienvenue sur Wispio"
+        title="Bienvenue sur Wispio 😊"
+        titleDescription="Découvrez la transcription automatique de vos audios, grâce à l'intelligence artificielle."
         description="Inscrivez-vous et profitez de fonctionnalités exclusives."
         isLoading={isLoading}
         loadingMessage="Création de votre compte..."
@@ -73,7 +82,7 @@ const SignUp = () => {
         setError={setGlobalError}
     >
         <div className="flex-col items-center justify-center w-full">
-            <form onSubmit={ handleSubmit(onSubmit) }
+            <form onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col items-center justify-center my-2 w-full inter">
 
                 <Controller
@@ -84,6 +93,7 @@ const SignUp = () => {
                         fieldState: { error },
                     }) => (
                         <InputBlock
+                            ref={signup_form_displayname_ref}
                             name="signup_form_displayname"
                             label="Nom et prénom"
                             placeholder="John Doe"
@@ -136,6 +146,26 @@ const SignUp = () => {
                     )}
                 ></Controller>
 
+                <Controller
+                    control={control}
+                    name="signup_form_password_confirmation"
+                    render={({
+                        field: { onChange, value },
+                        fieldState: { error },
+                    }) => (
+                        <InputBlock
+                            name="signup_form_password_confirmation"
+                            label="Confirmation du mot de passe"
+                            type="password"
+                            placeholder="Juste pour être sûr 🔑"
+                            value={value}
+                            onChange={onChange}
+                            error={error}
+                            errorMessage={error?.message}
+                        />
+                    )}
+                ></Controller>
+
                 <div className="h-3 w-full block"></div>
 
                 <Hint>
@@ -146,10 +176,10 @@ const SignUp = () => {
 
                 <div className="w-full pt-8 flex flex-row items-center justify-end">
                     <SubmitPrimaryButton
-                        disabled={ isSubmitting || !isValid }
+                        disabled={isSubmitting || !isValid}
                         add="w-full"
                     >
-                        { isSubmitting ? "Un instant..." : "Créer mon compte" }
+                        {isSubmitting ? "Un instant..." : "Créer mon compte"}
                     </SubmitPrimaryButton>
 
                 </div>

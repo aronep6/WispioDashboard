@@ -35,6 +35,8 @@ const signUpValidationSchemaFirstStep = Yup.object({
                 .min(6, 'Votre mot de passe doit contenir au moins 6 caractères')
                 .max(50, 'Votre mot de passe doit contenir au plus 50 caractères')
                 .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/, 'Votre mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial'),
+        signup_form_password_confirmation: Yup.string().required('Veuillez confirmer votre mot de passe')
+                .oneOf([Yup.ref('signup_form_password'), "string"], 'Les mots de passe ne correspondent pas')
 });
 
 const checkUpValidationSchema = Yup.object({
