@@ -23,7 +23,9 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path={BrowserAppRoutes.NotFound} element={<div>Not Found</div>} />
-        <Route path={BrowserAppRoutes.Loading} element={<Loading message='This is a infinite loading ...' />} />
+        <Route path={BrowserAppRoutes.Loading} element={<ProtectedRoute isAvailableInProduction={false}>
+          <Loading message='This is a infinite loading ...' />
+        </ProtectedRoute>} />
         <Route path={BrowserAppRoutes.Dashboard} element={<ProtectedRoute>
           <TempDashboard />
         </ProtectedRoute>} />
