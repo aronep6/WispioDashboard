@@ -12,6 +12,7 @@ export enum BrowserAppRoutes {
     Auth = '/auth',
     SignIn = 'signin',
     SignUp = 'signup',
+    ForgotPassword = 'forgot-password',
 
     Dashboard = '/',
 

@@ -39,7 +39,8 @@ const AuthWrapper = ({
                 flex flex-col md:grid md:grid-cols-2 sm:rounded-xl gap-1
                 max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto
                 overflow-hidden
-                z-30 bg-white dark:bg-stone-900 duration-150 modal-animation sm:shadow md:shadow-xl shadow-slate-300/40"
+                duration-150
+                z-30 bg-white dark:bg-stone-900 modal-animation sm:shadow md:shadow-xl shadow-slate-500/40"
             >
                 {
                     isLoading && <div className="flex inset-0 rounded-lg absolute flex-col text-indigo-700 inter text-lg font-medium items-center justify-center w-full backdrop-blur-2xl duration-300">
@@ -85,6 +86,11 @@ const AuthWrapper = ({
                         <PrimaryTitle add="text-black text-center md:text-left dark:text-white">
                             {title}
                         </PrimaryTitle>
+
+                        { description && <p className="block md:hidden inter font-medium text-gray-600 dark:text-gray-400 text-center max-w-[18em] mb-1.5 text-sm mx-auto leading-tight">
+                            { description }
+                        </p> }
+
                     </div>
                     <div>
                         {children}

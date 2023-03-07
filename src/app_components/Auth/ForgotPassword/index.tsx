@@ -1,27 +1,27 @@
 import { useState } from "react";
 import _logo_ from '../../assets/blinks_logo_wide.webp';
-import { useService } from "../../hooks";
-import { InputAsSelector, Hint } from "../../atomic/Input";
+import { InputBlock } from "../../../app_atomic/Input";
+import { Hint } from "../../../app_atomic/Title";
 import { useNavigate } from "react-router-dom";
-
-import AuthWrapper from "./layout";
+import AuthWrapper from "../layout";
 // Form validation schema
-import { forgotPasswordValidationSchema, getErrors } from "./functions";
-import { useForm, Controller } from "react-hook-form";
+import { forgotPasswordValidationSchema, getErrors } from "../functions";
+import { useForm, Controller, FieldValues } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitPrimaryButton } from "../../atomic/Button";
+import { SubmitPrimaryButton } from "../../../app_atomic/Button";
 import { CheckCircle } from "react-feather";
+import { ForgotPasswordFormDataType } from "./interfaces";
+import useAuth from "../../../app_hooks/contexts_hooks/useAuth";
+
 
 const inDev = !import.meta.env.PROD;
 
 const ForgotPassword = () => {
-    let navigate = useNavigate();
-
     const [isLoading, setIsLoading] = useState(false);
-    const [globalError, setGlobalError] = useState(null);
+    const [globalError, setGlobalError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
 
-    const service = useService();
+    const auth = useAuth();
 
     // Handle form submission dans datas
     const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
@@ -29,18 +29,19 @@ const ForgotPassword = () => {
         resolver: yupResolver(forgotPasswordValidationSchema)
     });
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: FieldValues) => {
         setIsLoading(true);
         try {
-            const { forgot_password_form_email } = data;
+            const { forgot_password_form_email } = data as ForgotPasswordFormDataType;
 
-            const status = await service.resetPassword(forgot_password_form_email);
+            const status = await auth.resetPassword(forgot_password_form_email);
 
             inDev && console.log("Reset password status : ", status);
 
             setSuccess(true);
-        } catch (error) {
+        } catch (error: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de laa tentative de réinitialisation du mot de passe : ", error);
+
             const _err = getErrors(error);
             setGlobalError(_err);
         } finally {
@@ -50,6 +51,7 @@ const ForgotPassword = () => {
 
     return <AuthWrapper
         title="Mot de passe oublié"
+        titleDescription="Oui, on a déjà tous oublié au moins une fois son mot de passe"
         description="Entrez votre adresse email pour réinitialiser votre mot de passe"
         isLoading={isLoading}
         loadingMessage="Un instant ..."
@@ -68,7 +70,7 @@ const ForgotPassword = () => {
                         field: { onChange, value },
                         fieldState: { error },
                     }) => (
-                        <InputAsSelector
+                        <InputBlock
                             name="forgot_password_form_email"
                             label="Adresse email"
                             placeholder="Votre adresse email"

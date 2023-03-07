@@ -40,8 +40,8 @@ ref: React.Ref<HTMLInputElement> | undefined
                 h-12 relative
                 bg-white shadow-sm
                 ${add}
-                text-stone-900
-                border-stone-300 ${ error ? "border-red-500" : "border" }
+                text-slate-900
+                border-slate-300 ${ error ? "border-red-500" : "border" }
                 border border-solid box-border
                 focus:border-indigo-500 focus:shadow-outline-indigo
                 focus:ring focus:ring-indigo-400 duration-100

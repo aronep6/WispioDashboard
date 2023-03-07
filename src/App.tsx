@@ -6,6 +6,7 @@ import ProtectedRoute from './app_components/ProtectedRoute';
 import useUserSession from './app_hooks/contexts_hooks/useUserSession';
 
 const AuthOutletWrapper = lazy(() => import('./app_components/Auth/OutletWrapper'));
+const ForgotPassword = lazy(() => import('./app_components/Auth/ForgotPassword'));
 const SignIn = lazy(() => import('./app_components/Auth/SignIn'));
 const SignUp = lazy(() => import('./app_components/Auth/SignUp'));
 
@@ -33,6 +34,7 @@ export default function App() {
         <Route path={BrowserAppRoutes.Auth} element={<Suspense fallback={<Loading /> }><AuthOutletWrapper /></Suspense>}>
           <Route path={BrowserAppRoutes.SignIn} element={<SignIn />}/>
           <Route path={BrowserAppRoutes.SignUp} element={<SignUp />}/>
+          <Route path={BrowserAppRoutes.ForgotPassword} element={<ForgotPassword />}/>
         </Route>
 
       </Routes>
