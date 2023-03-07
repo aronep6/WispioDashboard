@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import _logo_ from '../../assets/blinks_logo_wide.webp';
 import { InputBlock } from "../../../app_atomic/Input";
 import { Hint } from "../../../app_atomic/Title";
-import { useNavigate } from "react-router-dom";
 import AuthWrapper from "../layout";
 // Form validation schema
 import { forgotPasswordValidationSchema, getErrors } from "../functions";
@@ -20,6 +19,8 @@ const ForgotPassword = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [globalError, setGlobalError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
+
+    const forgot_password_form_email_ref = useRef<HTMLInputElement>(null);
 
     const auth = useAuth();
 
@@ -49,9 +50,15 @@ const ForgotPassword = () => {
         }
     };
 
+    useEffect(() => {
+        if (forgot_password_form_email_ref.current) {
+            forgot_password_form_email_ref.current.focus();
+        }
+    }, []);
+
     return <AuthWrapper
         title="Mot de passe oublié"
-        titleDescription="Oui, on a déjà tous oublié au moins une fois son mot de passe"
+        titleDescription="Oui, on tous déjà au moins une fois oublié son mot de passe"
         description="Entrez votre adresse email pour réinitialiser votre mot de passe"
         isLoading={isLoading}
         loadingMessage="Un instant ..."
@@ -71,9 +78,10 @@ const ForgotPassword = () => {
                         fieldState: { error },
                     }) => (
                         <InputBlock
+                            ref={forgot_password_form_email_ref}
                             name="forgot_password_form_email"
                             label="Adresse email"
-                            placeholder="Votre adresse email"
+                            placeholder="Votre adresse email personnelle ✉️"
                             type="text"
                             value={value}
                             onChange={onChange}

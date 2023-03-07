@@ -31,10 +31,12 @@ class Authentication extends Core {
 
     // Sign up with the display name, email and password
     signUpWithEmail = async (
-        displayName: string,
+        firstName: string,
+        lastName: string,
         email: string,
         password: string
     ) => {
+        const displayName = `${firstName} ${lastName}`;
         try {
             const user = await this.CUWEAP(this.auth, `${email}`, `${password}`);
             if (this.auth.currentUser) {

@@ -48,7 +48,7 @@ ref: React.Ref<HTMLInputElement> | undefined
                 focus:outline-none
                 rounded-lg
                 font-medium placeholder:text-sm
-                placeholder-gray-500
+                placeholder-slate-400
                 ${disabled && "cursor-not-allowed"}
                 text-base px-3.5`}
             type={type}

@@ -25,7 +25,7 @@ const SignUp = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [globalError, setGlobalError] = useState<string | null>(null);
 
-    const signup_form_displayname_ref = useRef<HTMLInputElement>(null);
+    const signup_form_first_name_ref = useRef<HTMLInputElement>(null);
 
     const auth = useAuth();
 
@@ -39,12 +39,18 @@ const SignUp = () => {
         setIsLoading(true);
         try {
             const {
-                signup_form_displayname,
+                signup_form_first_name,
+                signup_form_last_name,
                 signup_form_email,
                 signup_form_password
             } = data as SignUpFormDataType;
 
-            const user_credentials = await auth.signUpWithEmail(signup_form_displayname, signup_form_email, signup_form_password);
+            const user_credentials = await auth.signUpWithEmail(
+                signup_form_first_name,
+                signup_form_last_name,
+                signup_form_email,
+                signup_form_password
+            );
 
             inDev && console.log("User created : ", user_credentials);
             const { user } = user_credentials;
@@ -66,8 +72,8 @@ const SignUp = () => {
     };
 
     useEffect(() => {
-        if (signup_form_displayname_ref.current) {
-            signup_form_displayname_ref.current.focus();
+        if (signup_form_first_name_ref.current) {
+            signup_form_first_name_ref.current.focus();
         }
     }, []);
 
@@ -85,26 +91,48 @@ const SignUp = () => {
             <form onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col items-center justify-center my-2 w-full inter">
 
-                <Controller
-                    control={control}
-                    name="signup_form_displayname"
-                    render={({
-                        field: { onChange, value },
-                        fieldState: { error },
-                    }) => (
-                        <InputBlock
-                            ref={signup_form_displayname_ref}
-                            name="signup_form_displayname"
-                            label="Nom et prénom"
-                            placeholder="John Doe"
-                            type="text"
-                            value={value}
-                            onChange={onChange}
-                            error={error}
-                            errorMessage={error?.message}
-                        />
-                    )}
-                ></Controller>
+                <div className="grid grid-cols-2 gap-3 w-full">
+                    <Controller
+                        control={control}
+                        name="signup_form_first_name"
+                        render={({
+                            field: { onChange, value },
+                            fieldState: { error },
+                        }) => (
+                            <InputBlock
+                                ref={signup_form_first_name_ref}
+                                name="signup_form_first_name"
+                                label="Prénom"
+                                placeholder="John"
+                                type="text"
+                                value={value}
+                                onChange={onChange}
+                                error={error}
+                                errorMessage={error?.message}
+                            />
+                        )}
+                    ></Controller>
+
+                    <Controller
+                        control={control}
+                        name="signup_form_last_name"
+                        render={({
+                            field: { onChange, value },
+                            fieldState: { error },
+                        }) => (
+                            <InputBlock
+                                name="signup_form_last_name"
+                                label="Nom"
+                                placeholder="Doe"
+                                type="text"
+                                value={value}
+                                onChange={onChange}
+                                error={error}
+                                errorMessage={error?.message}
+                            />
+                        )}
+                    ></Controller>
+                </div>
 
                 <Controller
                     control={control}

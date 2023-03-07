@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-const getErrors = (_err: Error | unknown) => {
+const getErrors = (_err: Error | unknown): string => {
         const e = `${_err}`;
         if (e.includes('auth/popup-closed-by-user')) return 'Vous avez fermé la fenêtre de connexion, veuillez réessayer.';
         if (e.includes('auth/internal-error')) return 'Une erreur interne est survenue, veuillez réessayer';
@@ -25,12 +25,16 @@ const getErrors = (_err: Error | unknown) => {
 };
 
 const signUpValidationSchemaFirstStep = Yup.object({
-        signup_form_displayname: Yup.string()
-                .required('Veuillez entrer votre nom et prénom')
-                .min(3, 'Votre nom et prénom doit contenir au moins 3 caractères')
-                .max(50, 'Votre nom et prénom doit contenir au plus 50 caractères'),
+        signup_form_first_name: Yup.string()
+                .required('Veuillez entrer votre prénom')
+                .min(3, 'Le champs doit contenir au moins 2 caractères')
+                .max(50, 'Le champs doit contenir au plus 50 caractères'),
+        signup_form_last_name: Yup.string()
+                .required('Veuillez entrer votre nom')
+                .min(3, 'Le champs doit contenir au moins 2 caractères')
+                .max(50, 'Le champs  doit contenir au plus 50 caractères'),
         signup_form_email: Yup.string().required("L'adresse email est requise pour pouvoir vous connecter")
-                .email("L'adresse email doit être au format valide"),
+                .email("Le format de l'adresse email est invalide"),
         signup_form_password: Yup.string().required('Veuillez entrer un mot de passe')
                 .min(6, 'Votre mot de passe doit contenir au moins 6 caractères')
                 .max(50, 'Votre mot de passe doit contenir au plus 50 caractères')

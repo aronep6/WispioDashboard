@@ -33,7 +33,7 @@ const AuthWrapper = ({
         <div className='
             bg-white dark:bg-stone-900 duration-150 inter
             sm:bg-gradient-to-br from-slate-200 to-slate-300
-            relative min-h-screen pt-4 sm:py-16'>
+            relative min-h-screen pt-4 sm:py-14'>
 
             <section className="w-full auth-wrapper-ui-agent relative
                 flex flex-col md:grid md:grid-cols-2 sm:rounded-xl gap-1

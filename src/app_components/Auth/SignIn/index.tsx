@@ -17,8 +17,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 const inDev = !import.meta.env.PROD;
 
 const SignIn = () => {
-    let navigate = useNavigate();
-
     const auth = useAuth();
     const user = useUserSession();
 
