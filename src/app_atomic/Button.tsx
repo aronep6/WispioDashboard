@@ -71,8 +71,8 @@ const DangerSecondaryButton = ({ children, add, action, disabled, useMargin = tr
 const ReturnButton = ({ icon }: { icon: React.ReactNode }) => {
     return <div 
         title="Retour"
-        className='flex group border hover:border-indigo-600 max-w-max flex-row items-center justify-center text-white hover:text-indigo-600
-        bg-indigo-500 hover:bg-indigo-200 p-2.5 rounded-full duration-150 cursor-pointer'>
+        className='flex group border hover:border-indigo-600 max-w-max flex-row items-center justify-center text-indigo-600 hover:text-indigo-800
+        bg-white hover:bg-indigo-200 p-2.5 rounded-full duration-150 cursor-pointer'>
         <div className="h-5 w-5 mr flex items-center"> { icon } </div>
     </div>
 };
