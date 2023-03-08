@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import useUserSession from "../../app_hooks/contexts_hooks/useUserSession";
-import Loading from "../Loading";
+import Loading from "../Loading/Loading";
 import { AppRoutes } from "../../app_common/interfaces/AppRoutes";
 
 const isProductionEnv: boolean = import.meta.env.PROD;

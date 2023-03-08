@@ -1,6 +1,6 @@
 import { Suspense, Fragment, lazy } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Loading from './app_components/Loading';
+import Loading from './app_components/Loading/Loading';
 import ProtectedRoute from './app_components/ProtectedRoute';
 
 // Auth components
@@ -12,6 +12,9 @@ const SignUp = lazy(() => import('./app_components/Auth/SignUp'));
 // Application components
 const ApplicationWrapper = lazy(() => import('./app_components/application/common/ApplicationWrapper'));
 const Dashboard = lazy(() => import('./app_components/application/Dashboard'));
+const Files = lazy(() => import('./app_components/application/Files'));
+const Tasks = lazy(() => import('./app_components/application/Tasks'));
+const Projects = lazy(() => import('./app_components/application/Projects'));
 
 
 export default function App() {
@@ -21,6 +24,9 @@ export default function App() {
         
         <Route path="/" element={<ProtectedRoute><ApplicationWrapper /></ProtectedRoute>}>
           <Route index element={<Dashboard />} />
+          <Route path='tasks' element={<Tasks />} />
+          <Route path='files' element={<Files />} />
+          <Route path='projects' element={<Projects />} />  
         </Route>
 
         <Route path="/auth" element={<Suspense fallback={<Loading /> }><AuthOutletWrapper /></Suspense>}>

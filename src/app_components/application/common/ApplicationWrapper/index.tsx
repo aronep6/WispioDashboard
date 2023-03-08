@@ -1,23 +1,28 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react'
 import classNames from '../functions/joinClassNames';
+import { NavLink, Outlet } from 'react-router-dom';
 
 import {
-    Grid,
-    Box,
-    List,
-    Folder,
-    X,
-    Menu,
+  Grid,
+  Box,
+  List,
+  Folder,
+  X,
+  Menu,
 } from 'react-feather';
-import { Outlet } from 'react-router-dom';
+
 import UserAccountSidebar from '../UserAccountSidebar';
 
+// import _logo_ from '../../../../assets/wispio_logo.webp';
+import _logo_ from '../../../../assets/wispio_logo_white_invisible_bkg.png';
+
+
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: Grid, current: true },
-  { name: 'Projects', href: '#', icon: Box, current: false },
-  { name: 'Tasks', href: '#', icon: List, current: false },
-  { name: 'Files', href: '#', icon: Folder, current: false },
+  { name: 'Dashboard', link: '/', icon: Grid, current: true },
+  { name: 'Projects', link: '/projects', icon: Box, current: false },
+  { name: 'Tasks', link: '/tasks', icon: List, current: false },
+  { name: 'Files', link: '/files', icon: Folder, current: false },
 ]
 
 const ApplicationWrapper = () => {
@@ -81,29 +86,28 @@ const ApplicationWrapper = () => {
                   <div className="flex-shrink-0 flex items-center px-4">
                     <img
                       className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-                      alt="Workflow"
+                      src={_logo_}
+                      alt="Wispio AI"
                     />
                   </div>
                   <nav className="mt-5 px-2 space-y-1">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                        )}
+                    {navigation.map((item, index) => (
+                      <NavLink
+                        to={item.link}
+                        key={index}
+                        className={
+                          ({ isActive }) => isActive ?
+                            "bg-gray-900 text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                            :
+                            "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                        }
                       >
                         <item.icon
-                          className={classNames(
-                            item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
-                            'mr-4 flex-shrink-0 h-6 w-6'
-                          )}
+                          className="mr-4 flex-shrink-0 h-6 w-6"
                           aria-hidden="true"
                         />
                         {item.name}
-                      </a>
+                      </NavLink>
                     ))}
                   </nav>
                 </div>
@@ -121,38 +125,38 @@ const ApplicationWrapper = () => {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex-1 flex flex-col min-h-0 bg-gray-800">
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-              <div className="flex items-center flex-shrink-0 px-4">
+              <div className="flex items-center flex-shrink-0 px-4 gap-4 text-white tracking-tighter font-bold">
                 <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-                  alt="Workflow"
+                  className="h-8 w-auto rounded"
+                  src={_logo_}
+                  alt="Wispio AI"
                 />
+                Wispio Dashboard
               </div>
               <nav className="mt-5 flex-1 px-2 space-y-1">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
-                    )}
+                {navigation.map((item, index) => (
+                  <NavLink
+                    to={item.link}
+                    key={index}
+                    className={
+                      ({ isActive }) => isActive ?
+                        "bg-gray-900 text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                        :
+                        "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                    }
                   >
                     <item.icon
-                      className={classNames(
-                        item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
-                        'mr-3 flex-shrink-0 h-6 w-6'
-                      )}
+                      className="mr-4 flex-shrink-0 h-6 w-6"
                       aria-hidden="true"
                     />
                     {item.name}
-                  </a>
+                  </NavLink>
                 ))}
               </nav>
             </div>
-            
+
             <UserAccountSidebar />
-            
+
           </div>
         </div>
         <div className="md:pl-64 flex flex-col flex-1">
@@ -167,10 +171,8 @@ const ApplicationWrapper = () => {
             </button>
           </div>
 
-          <main className="flex-1 bg-red-400">
-            <div className="py-6">
-                <Outlet />
-            </div>
+          <main className="flex-1">
+            <Outlet />
           </main>
 
         </div>
