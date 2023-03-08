@@ -1,41 +1,41 @@
 import { Suspense, Fragment, lazy } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { BrowserAppRoutes } from './app_common/interfaces/AppRoutes';
 import Loading from './app_components/Loading';
 import ProtectedRoute from './app_components/ProtectedRoute';
-import useUserSession from './app_hooks/contexts_hooks/useUserSession';
 
+// Auth components
 const AuthOutletWrapper = lazy(() => import('./app_components/Auth/OutletWrapper'));
 const ForgotPassword = lazy(() => import('./app_components/Auth/ForgotPassword'));
 const SignIn = lazy(() => import('./app_components/Auth/SignIn'));
 const SignUp = lazy(() => import('./app_components/Auth/SignUp'));
 
-const TempDashboard = () => {
-  const user = useUserSession();
+// Application components
+const ApplicationWrapper = lazy(() => import('./app_components/application/common/ApplicationWrapper'));
+const Dashboard = lazy(() => import('./app_components/application/Dashboard'));
 
-  return <div>
-    <h1>Dashboard</h1>
-    <p>Current user : {user?.email}</p>
-  </div>
-};
 
 export default function App() {
   return <Fragment>
     <BrowserRouter>
       <Routes>
-        <Route path={BrowserAppRoutes.NotFound} element={<div>Not Found</div>} />
-        <Route path={BrowserAppRoutes.Loading} element={<ProtectedRoute isAvailableInProduction={false}>
-          <Loading message='This is a infinite loading ...' />
-        </ProtectedRoute>} />
-        <Route path={BrowserAppRoutes.Dashboard} element={<ProtectedRoute>
-          <TempDashboard />
-        </ProtectedRoute>} />
-
-        <Route path={BrowserAppRoutes.Auth} element={<Suspense fallback={<Loading /> }><AuthOutletWrapper /></Suspense>}>
-          <Route path={BrowserAppRoutes.SignIn} element={<SignIn />}/>
-          <Route path={BrowserAppRoutes.SignUp} element={<SignUp />}/>
-          <Route path={BrowserAppRoutes.ForgotPassword} element={<ForgotPassword />}/>
+        
+        <Route path="/" element={<ProtectedRoute><ApplicationWrapper /></ProtectedRoute>}>
+          <Route index element={<Dashboard />} />
         </Route>
+
+        <Route path="/auth" element={<Suspense fallback={<Loading /> }><AuthOutletWrapper /></Suspense>}>
+          <Route path="signin" element={<SignIn />}/>
+          <Route path="signup" element={<SignUp />}/>
+          <Route path="forgot-password" element={<ForgotPassword />}/>
+        </Route>
+
+        <Route path="/loading" element={
+          <ProtectedRoute isAvailableInProduction={false}>
+            <Loading message='This is a infinite loading ...' />
+          </ProtectedRoute>}
+        />
+
+        <Route path="*" element={<div>Not Found</div>} />
 
       </Routes>
     </BrowserRouter>

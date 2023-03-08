@@ -6,16 +6,6 @@ export enum AppRoutes {
 
     NotFound = '*',
     Loading = '/loading',
+
+    AccountSettings = '/account/settings',
 };
-
-export enum BrowserAppRoutes {
-    Auth = '/auth',
-    SignIn = 'signin',
-    SignUp = 'signup',
-    ForgotPassword = 'forgot-password',
-
-    Dashboard = '/',
-
-    NotFound = '*',
-    Loading = '/loading',
-}
