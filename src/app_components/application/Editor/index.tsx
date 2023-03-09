@@ -1,10 +1,10 @@
 import PageWrapper from "../common/PageWrapper";
 
 const pageProps = {
-    pageTitle: "Projects Builder",
+    pageTitle: "Editor",
 };
 
-const ProjectsBuilder = () => {
+const Editor = () => {
     return <PageWrapper {...pageProps}>
         <div className="flex flex-col">
             This is the projects builder page content area (not the sidebar)
@@ -12,4 +12,4 @@ const ProjectsBuilder = () => {
     </PageWrapper>;
 }
 
-export default ProjectsBuilder;
+export default Editor;

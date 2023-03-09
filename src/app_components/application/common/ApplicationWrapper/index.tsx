@@ -18,7 +18,7 @@ import _logo_ from '../../../../assets/wispio_logo_white_invisible_bkg.png';
 
 const navigation = [
   { name: 'Dashboard', link: '/', icon: Grid, current: true },
-  { name: 'Projects Builder', link: '/projects-builder', icon: Box, current: false },
+  { name: 'Editor', link: '/editor', icon: Box, current: false },
   { name: 'Tasks', link: '/tasks', icon: List, current: false },
   { name: 'Files', link: '/files', icon: Folder, current: false },
 ]
