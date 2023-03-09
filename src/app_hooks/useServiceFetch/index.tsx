@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect, useCallback } from 'react';
 import type {
     IsLoadingType, 
     DataType,
@@ -18,10 +17,14 @@ function useServiceFetch<MethodResponseDTO>({
     const [data, setData] = useState<DataType | MethodResponseDTO>(undefined);
     const [error, setError] = useState<ErrorType>(null);
 
-    const fetch: () => Promise<void> = async () => {
+    const fetch: () => Promise<void> = useCallback(async () => {
         setIsLoading(true);
         try {
-            const { success, data, error } = await method(payload && payload);
+            const { 
+                success, 
+                data, 
+                error,
+            } = await method(payload && payload);
             
             if (!success || error) {
                 throw error;
@@ -29,11 +32,15 @@ function useServiceFetch<MethodResponseDTO>({
 
             setData(data);
         } catch (error: any) {
-            setError(error);
+            const _err = 
+                error?.message ?
+                    error.message :
+                    "Une erreur inconnue s'est produite, vérifiez votre connexion internet et réessayez.";
+            setError(_err);
         } finally {
             setIsLoading(false);
         }
-    }
+    }, [method, payload]);
 
     useEffect(() => {
         fetch();
