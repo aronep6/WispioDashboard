@@ -37,7 +37,9 @@ class EditorService extends Core {
     }
 
     subscribeToRealtimeTranscription = async (id: string) => {
-        await sleep(9000);
+        // throw new Error("subscribeToRealtimeTranscription is not implemented yet");
+
+        await sleep(100);
 
         return {
             success: true,

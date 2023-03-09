@@ -1,3 +1,5 @@
+import { Outlet } from "react-router-dom";
+import { EditorProvider } from "../../../app_contexts/Editor";
 import { EditorServiceProvider } from "../../../app_contexts/EditorService";
 import PageWrapper from "../common/PageWrapper";
 
@@ -8,13 +10,15 @@ const pageProps = {
 const Editor = () => {
     return <PageWrapper {...pageProps}>
         <div className="flex flex-col">
-            This is the projects builder page content area (not the sidebar)
+            <Outlet />
         </div>
     </PageWrapper>;
 };
 
 export default function index() {
     return <EditorServiceProvider>
-        <Editor />
+        <EditorProvider>
+            <Editor />
+        </EditorProvider>
     </EditorServiceProvider>
 };

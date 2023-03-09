@@ -1,5 +1,7 @@
 import { Suspense, Fragment, lazy } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NoProjectOpened from './app_components/application/Editor/components/NoProjectOpened';
+import ProjectEditor from './app_components/application/Editor/ProjectEditor';
 import Loading from './app_components/Loading/Loading';
 import ProtectedRoute from './app_components/ProtectedRoute';
 
@@ -26,7 +28,10 @@ export default function App() {
           <Route index element={<Dashboard />} />
           <Route path='tasks' element={<Tasks />} />
           <Route path='files' element={<Files />} />
-          <Route path='editor' element={<Editor />} />  
+          <Route path='editor' element={<Editor />}>
+            <Route index element={<NoProjectOpened />} />
+            <Route path=':projectId' element={<ProjectEditor />} />
+          </Route>
         </Route>
 
         <Route path="/auth" element={<Suspense fallback={<Loading /> }><AuthOutletWrapper /></Suspense>}>
