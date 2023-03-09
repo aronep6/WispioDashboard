@@ -1,3 +1,4 @@
+import { EditorServiceProvider } from "../../../app_contexts/EditorService";
 import PageWrapper from "../common/PageWrapper";
 
 const pageProps = {
@@ -10,6 +11,10 @@ const Editor = () => {
             This is the projects builder page content area (not the sidebar)
         </div>
     </PageWrapper>;
-}
+};
 
-export default Editor;
+export default function index() {
+    return <EditorServiceProvider>
+        <Editor />
+    </EditorServiceProvider>
+};
