@@ -10,9 +10,9 @@ import type {
 function useServiceFetch<MethodResponseDTO>({
     method,
     payload = undefined,
-    retryOnFailure = 0,
     defaultLoadingStatus = true,
-}: ServiceFetchProps<MethodResponseDTO>): CustomHookReturn<MethodResponseDTO> {
+    doCheckBeforeFetch = () => true,
+}: ServiceFetchProps<MethodResponseDTO>): CustomHookReturn<MethodResponseDTO> {    
     const [isLoading, setIsLoading] = useState<IsLoadingType>(defaultLoadingStatus);
     const [data, setData] = useState<DataType | MethodResponseDTO>(undefined);
     const [error, setError] = useState<ErrorType>(null);
@@ -20,6 +20,8 @@ function useServiceFetch<MethodResponseDTO>({
     const fetch: () => Promise<void> = useCallback(async () => {
         setIsLoading(true);
         try {
+            if (!doCheckBeforeFetch()) throw new Error("Check before fetch failed");
+
             const { 
                 success, 
                 data, 
@@ -40,7 +42,7 @@ function useServiceFetch<MethodResponseDTO>({
         } finally {
             setIsLoading(false);
         }
-    }, [method, payload]);
+    }, [method, payload, doCheckBeforeFetch]);
 
     useEffect(() => {
         fetch();
