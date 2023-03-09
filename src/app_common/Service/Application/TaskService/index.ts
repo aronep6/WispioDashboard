@@ -33,6 +33,22 @@ const user_tasks_response = [
             status: "completed",
         },
     },
+    {
+        id: "TK5VB3FUKJNZREI6F7ASK",
+        data: {
+            configuration: {
+                language: "English",
+                model: "medium",
+                source: "my_text.wav",
+                translation: {
+                    translate: false,
+                    translateToLanguage: null,
+                }
+            },
+            lastUpdate: "2023-02-17T01:13:02.000+01:00",
+            status: "completed",
+        },
+    },
 ];
 
 export interface Task {
@@ -62,7 +78,8 @@ class TaskService extends Core {
     };
 
     getTasks = async () => {
-        await sleep(3000);
+        await sleep(9000);
+        
         return {
             success: true,
             data: user_tasks_response as TasksList,

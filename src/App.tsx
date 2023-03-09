@@ -14,7 +14,7 @@ const ApplicationWrapper = lazy(() => import('./app_components/application/commo
 const Dashboard = lazy(() => import('./app_components/application/Dashboard'));
 const Files = lazy(() => import('./app_components/application/Files'));
 const Tasks = lazy(() => import('./app_components/application/Tasks'));
-const Projects = lazy(() => import('./app_components/application/Projects'));
+const ProjectsBuilder = lazy(() => import('./app_components/application/ProjectsBuilder'));
 
 
 export default function App() {
@@ -26,7 +26,7 @@ export default function App() {
           <Route index element={<Dashboard />} />
           <Route path='tasks' element={<Tasks />} />
           <Route path='files' element={<Files />} />
-          <Route path='projects' element={<Projects />} />  
+          <Route path='projects-builder' element={<ProjectsBuilder />} />  
         </Route>
 
         <Route path="/auth" element={<Suspense fallback={<Loading /> }><AuthOutletWrapper /></Suspense>}>
