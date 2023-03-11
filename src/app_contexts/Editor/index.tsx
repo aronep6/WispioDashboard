@@ -10,8 +10,13 @@ import type {
 } from "../../app_hooks/interfaces";
 
 const EditorContext = createContext({
+    // Editor core values
     realtimeOutputs: [] as RealtimeOutput[],
     updateRealtimeOutputs: (realtimeOutputs: RealtimeOutput[]) => { },
+    // Playback
+    setCurrentPlaybackTimestamp: (timestamp: number) => { },
+    playbackTimestamp: 0 as number,
+    // Page loader
     _page_isLoading: false as IsLoadingType,
     _page_error: null as ErrorType,
 });
@@ -20,6 +25,7 @@ const EditorProvider = ({ children }: { children: React.ReactNode }) => {
     // States
     const projectId: ProjectId = useParams<{ projectId: ProjectId }>().projectId;
     const [realtimeOutputs, setRealtimeOutputs] = useState<RealtimeOutput[]>([]);
+    const [playbackTimestamp, setPlaybackTimestamp] = useState<number>(0);
 
     // Hooks
     const editorService = useEditorService();
@@ -35,6 +41,10 @@ const EditorProvider = ({ children }: { children: React.ReactNode }) => {
         setRealtimeOutputs(realtimeOutputs);
     }, []);
 
+    const setCurrentPlaybackTimestamp = useCallback((timestamp: number) => {
+        console.log("useCallback setCurrentPlaybackTimestamp called with ts:", timestamp)
+    }, []);
+
     // Side effects
     useEffect(() => {
         if (data) {
@@ -47,6 +57,8 @@ const EditorProvider = ({ children }: { children: React.ReactNode }) => {
         realtimeOutputs,
 
         updateRealtimeOutputs,
+        setCurrentPlaybackTimestamp,
+        playbackTimestamp,
 
         _page_isLoading: isLoading,
         _page_error: error,
