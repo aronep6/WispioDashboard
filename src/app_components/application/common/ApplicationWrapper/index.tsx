@@ -1,6 +1,5 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react'
-import classNames from '../functions/joinClassNames';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import {
@@ -17,10 +16,9 @@ import UserAccountSidebar from '../UserAccountSidebar';
 // import _logo_ from '../../../../assets/wispio_logo.webp';
 import _logo_ from '../../../../assets/wispio_logo_white_invisible_bkg.png';
 
-
 const navigation = [
   { name: 'Dashboard', link: '/', icon: Grid, current: true },
-  { name: 'Projects', link: '/projects', icon: Box, current: false },
+  { name: 'Editor', link: '/editor', icon: Box, current: false },
   { name: 'Tasks', link: '/tasks', icon: List, current: false },
   { name: 'Files', link: '/files', icon: Folder, current: false },
 ]

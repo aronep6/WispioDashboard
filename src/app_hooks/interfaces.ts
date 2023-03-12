@@ -17,6 +17,6 @@ export interface CommonResponseDTO<T> {
 export interface ServiceFetchProps<T> {
     method: (payload?: any) => Promise<CommonResponseDTO<T>>,
     payload?: any | undefined,
-    retryOnFailure?: number
     defaultLoadingStatus?: boolean
+    doCheckBeforeFetch?: () => boolean
 }
