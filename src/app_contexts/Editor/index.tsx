@@ -1,9 +1,9 @@
-import { useParams } from "react-router-dom";
 import { createContext, useCallback, useEffect, useState } from "react";
 import type { ProjectId } from "../../app_components/application/common/interfaces/Editor";
 import type { RealtimeOutput } from "../../app_common/Service/Application/EditorService/interfaces";
 import useEditorService from "../../app_hooks/contexts_hooks/useEditorService";
 import useServiceFetch from "../../app_hooks/useServiceFetch";
+import { type MediaRemoteControl } from "vidstack";
 import type { 
     IsLoadingType,
     ErrorType
@@ -14,18 +14,21 @@ const EditorContext = createContext({
     realtimeOutputs: [] as RealtimeOutput[],
     updateRealtimeOutputs: (realtimeOutputs: RealtimeOutput[]) => { },
     // Playback
-    setCurrentPlaybackTimestamp: (timestamp: number) => { },
     playbackTimestamp: 0 as number,
+    setPlaybackTimestamp: (playbackTimestamp: number) => { },
+    // Playback remote
+    playbackRemote: {} as MediaRemoteControl,
+    setPlaybackRemote: (remote: MediaRemoteControl) => { },
     // Page loader
     _page_isLoading: false as IsLoadingType,
     _page_error: null as ErrorType,
 });
 
-const EditorProvider = ({ children }: { children: React.ReactNode }) => {
+const EditorProvider = ({ projectId, children }: { projectId: ProjectId, children: React.ReactNode }) => {    
     // States
-    const projectId: ProjectId = useParams<{ projectId: ProjectId }>().projectId;
     const [realtimeOutputs, setRealtimeOutputs] = useState<RealtimeOutput[]>([]);
     const [playbackTimestamp, setPlaybackTimestamp] = useState<number>(0);
+    const [playbackRemote, setPlaybackRemote] = useState<MediaRemoteControl>({} as MediaRemoteControl);
 
     // Hooks
     const editorService = useEditorService();
@@ -41,10 +44,6 @@ const EditorProvider = ({ children }: { children: React.ReactNode }) => {
         setRealtimeOutputs(realtimeOutputs);
     }, []);
 
-    const setCurrentPlaybackTimestamp = useCallback((timestamp: number) => {
-        console.log("useCallback setCurrentPlaybackTimestamp called with ts:", timestamp)
-    }, []);
-
     // Side effects
     useEffect(() => {
         if (data) {
@@ -52,13 +51,19 @@ const EditorProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [data, updateRealtimeOutputs]);
 
+    // useEffect(() => {
+    //     console.log("current time :", playbackTimestamp)
+    // }, [playbackTimestamp])
+
     // Render
     return <EditorContext.Provider value={{
         realtimeOutputs,
 
         updateRealtimeOutputs,
-        setCurrentPlaybackTimestamp,
+        setPlaybackTimestamp,
         playbackTimestamp,
+        playbackRemote,
+        setPlaybackRemote,
 
         _page_isLoading: isLoading,
         _page_error: error,
