@@ -1,3 +1,4 @@
+import './styles.css';
 import { PrimaryTitle } from '../../../../app_atomic/Title';
 import useWebTitle from '../../../../app_hooks/useWebTitle';
 import PageLoading from '../../../Loading/PageLoading';
@@ -10,6 +11,7 @@ const PageWrapper = ({
     isLoading = false,
     error = null,
     extendedTitle = undefined,
+    usePadding = true,
 }: PageWrapperProps) => {
 
     useWebTitle(`${pageTitle} | Wispio Dashboard`);
@@ -25,7 +27,9 @@ const PageWrapper = ({
                 </h2>
             }
         </div>
-        <div className="p-4 sm:p-5 md:p-6 relative h-full">
+        <div className={
+            usePadding ? "p-4 sm:p-5 md:p-6 relative h-full page-wrapper-agent" : "relative h-full page-wrapper-agent"
+        }>
             {
                 error ? <PageError message={error} /> :
                     isLoading ? <PageLoading /> : children

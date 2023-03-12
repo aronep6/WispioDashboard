@@ -4,4 +4,5 @@ export interface PageWrapperProps {
     isLoading?: boolean;
     error?: string | null | undefined | Error;
     extendedTitle?: string | undefined;
+    usePadding?: boolean;
 }
