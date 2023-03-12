@@ -1,52 +1,20 @@
-import type { RealtimeOutput } from '../../../../app_common/Service/Application/EditorService/interfaces';
 import useEditor from "../../../../app_hooks/contexts_hooks/useEditor";
-
-import { SecondaryTitle } from '../../../../app_atomic/Title';
-import EditorVideoPlayer from '../components/VideoPlayer';
-
-const SingleFlow = ({ singleOutput }: { singleOutput: RealtimeOutput }) => {
-    const { from, to, output } = singleOutput;
-
-    return <div className='flex flex-col py-3 px-5 border-b border-gray-300 group hover:bg-gray-200'>
-        <span className='text-xs text-slate-600'>
-            {from} to {to}
-        </span>
-        <p className='font-medium'>
-            {output}
-        </p>
-    </div>
-}
-
-const Flow = () => {
-    const { realtimeOutputs, playbackTimestamp } = useEditor();
-
-    return <div className="grid grid-cols-1 gap-2.5 border border-slate-500 pt-3 pb-7 rounded">
-        <SecondaryTitle add="px-5">
-            Realtime Outputs
-        </SecondaryTitle>
-        Current playback timestamp : {
-            playbackTimestamp
-        }
-        <div className='flex flex-col'>
-            {
-                realtimeOutputs.map((singleOutput, index) => <SingleFlow key={index} singleOutput={singleOutput} />)
-            }
-        </div>
-    </div>
-};
+import Flow from "./components/Flow";
+import VideoPlayerWrapper from '../components/VideoPlayerWrapper';
 
 const ProjectEditor = () => {
+    const { realtimeOutputs } = useEditor();
 
-    return (
-        <section className="grid grid-cols-2 gap-4 min-h-full">
-            <div className="col-span-1">
-                <Flow />
-            </div>
-            <div className="col-span-1">
-                <EditorVideoPlayer />
-            </div>
-        </section>
-    );
+    // We applied  absolute inset-0 to this section bescause the outlet 
+    // from react-router-dom is making a div upper this section
+    return <section className="grid max-h-full grid-cols-12 absolute inset-0 justify-start">
+        <div className="col-span-5 max-h-full overflow-y-auto">
+            <Flow realtimeOutputs={realtimeOutputs} />
+        </div>
+        <div className="col-span-7">
+            <VideoPlayerWrapper />
+        </div>
+    </section>
 };
 
 export default ProjectEditor;
