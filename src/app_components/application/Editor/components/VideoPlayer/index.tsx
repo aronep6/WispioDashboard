@@ -1,38 +1,37 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import 'vidstack/styles/defaults.css';
-import { MediaOutlet, MediaPlayer, useMediaStore } from '@vidstack/react';
+import { MediaOutlet, MediaPlayer, useMediaRemote } from '@vidstack/react';
 import video from '../../ProjectEditor/src/cocadmin_video.mp4';
 import useEditor from "../../../../../app_hooks/contexts_hooks/useEditor";
-import { type MediaPlayerElement } from 'vidstack';
+
+import { type RefObject } from "react";
+import { type MediaPlayerElement } from "vidstack";
+
+export type EditorPlayerRefType = RefObject<MediaPlayerElement | undefined>
 
 function EditorVideoPlayer() {
     const playerRef = useRef<MediaPlayerElement>(null);
-    const { playbackTimestamp } = useEditor();
+    const remote = useMediaRemote(playerRef);
+    const { setPlaybackTimestamp, setPlaybackRemote } = useEditor();
 
-    const { currentTime } = useMediaStore(playerRef);
-
-    // // Side effect for subscribing to the current video timestamp
-    // useEffect(() => {
-    //     // Or, subscribe for updates.
-    //     return playerRef?.subscribe(({ currentTime }) => {
-    //       // ...
-    //     });
-    // })
-
+    // Pipe current time to current playback timestamp in editor context
     useEffect(() => {
-        console.log("Current currentTime", currentTime)
-    }, [currentTime]);
+        return playerRef?.current?.subscribe(({ currentTime }) => setPlaybackTimestamp(currentTime));
+    }, []);
 
-    return <div className="">
-        <MediaPlayer
-            ref={playerRef}
-            src={video}
-            controls
-            className='rounded overflow-hidden shadow-xl'
-        >
-            <MediaOutlet />
-        </MediaPlayer>
-    </div>
+    // Pipe current remote to current playback remote in editor context
+    useEffect(() => {
+        setPlaybackRemote(remote);
+    }, [remote]);
+
+    return <MediaPlayer
+        ref={playerRef}
+        src={video}
+        controls={playerRef ? true : false}
+        className='overflow-hidden'
+    >
+        <MediaOutlet />
+    </MediaPlayer>
 }
 
-export default EditorVideoPlayer;
+export default memo(EditorVideoPlayer, () => false);
