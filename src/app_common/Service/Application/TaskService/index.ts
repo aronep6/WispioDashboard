@@ -78,7 +78,7 @@ class TaskService extends Core {
     };
 
     getTasks = async () => {
-        await sleep(9000);
+        await sleep(3000);
         
         return {
             success: true,
