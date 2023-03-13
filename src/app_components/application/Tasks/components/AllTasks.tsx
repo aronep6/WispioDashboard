@@ -1,9 +1,19 @@
+import { useMemo } from "react";
 import NewTask from "./NewTask";
 import type { Task } from "../../../../app_common/Service/Application/TaskService";
 import WhisperTaskStatusMapper from "../interfaces/WhisperTaskStatusMapper";
 import { Fragment } from "react";
+import firestoreTimestampToDate from "../../../../app_common/functions/firestore-timestamp-to-date";
+import dateFromNow from "../../../../app_common/functions/date-from-now";
 
 const SingleTask = ({ task }: { task: Task }) => {
+
+    const taskLastUpdate = useMemo(() => {
+        return dateFromNow(
+            firestoreTimestampToDate(task.data.lastUpdate)
+        );
+    }, [task.data.lastUpdate]);
+
     return <div className="bg-white border 
     cursor-pointer
     shadow-lg shadow-slate-200/40 rounded-lg 
@@ -27,9 +37,7 @@ const SingleTask = ({ task }: { task: Task }) => {
                 </li>
             }
             <li>
-                Dernière mise à jour : {
-                    task.data.lastUpdate
-                }
+                Dernière mise à jour : { taskLastUpdate || "Jamais" }
             </li>
             <li>
                 Statut : {
@@ -40,7 +48,7 @@ const SingleTask = ({ task }: { task: Task }) => {
     </div>
 };
 
-const AllTasks = ({ tasks }: { tasks: Task[] }) => {
+const AllTasks = ({ tasks }: { tasks: Task[] }) => {    
     return <Fragment>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <NewTask />
