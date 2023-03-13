@@ -1,8 +1,6 @@
 import Core from "../../Core";
 import type { RealtimeOutput } from "./interfaces";
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 const _fake_realtime_transcription_response_: RealtimeOutput[] = [
     {
         from: 0,
@@ -139,7 +137,7 @@ class EditorService extends Core {
     subscribeToRealtimeTranscription = async (id: string) => {
         // throw new Error("subscribeToRealtimeTranscription is not implemented yet");
 
-        await sleep(3000);
+        await this.sleep(3000);
 
         return {
             success: true,

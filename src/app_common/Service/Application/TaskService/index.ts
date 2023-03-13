@@ -69,8 +69,6 @@ export interface Task {
 }
 
 export type TasksList = Task[];
-    
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 class TaskService extends Core {
     constructor() {
@@ -78,7 +76,7 @@ class TaskService extends Core {
     };
 
     getTasks = async () => {
-        await sleep(3000);
+        await this.sleep(3000);
         
         return {
             success: true,

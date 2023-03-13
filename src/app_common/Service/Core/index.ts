@@ -29,12 +29,17 @@ const db = initializeFirestore(app, firebaseDatabaseConfiguration);
 // Authentification initialization and configuration
 const auth = getAuth(app);
 
+// Sleep function
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 class Core {
     db: Firestore;
     auth: Auth;
+    sleep: (ms: number) => Promise<unknown>;
     constructor() {
         this.db = db;
         this.auth = auth;
+        this.sleep = sleep;
     }
 }
 
