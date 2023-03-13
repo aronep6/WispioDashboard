@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && GENERATE_SOURCEMAP=false vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ts-check": "tsc --noEmit"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
