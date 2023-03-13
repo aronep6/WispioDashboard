@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useService } from '../../hooks';
+import useAuth from '../../app_hooks/contexts_hooks/useAuth';
 
 function SignOut() {
     let navigate = useNavigate();
-    const service = useService();
+    const auth = useAuth();
 
     useEffect(() => {
         const run = async () => {
@@ -13,7 +13,7 @@ function SignOut() {
             const code = urlParams.get('code');
             if (code) {
                 if (code === 'service_communication_error') { 
-                    await service.logout()
+                    auth.signOut();
                 } // If code is present, show error message
             } else {
                 navigate("/") // If code is not present, redirect to sign in page
@@ -34,7 +34,7 @@ function SignOut() {
 
     return <div className="text-2xl inter inset-0 mx-auto max-w-6xl fixed flex-col justify-center flex p-5 font-medium">
               Déconnexion en cours ...
-              <span className="text-sm text-gray-500">Nous sommes en train de vous déconnecter des services de Seendy.<br />
+              <span className="text-sm text-gray-500">Nous sommes en train de vous déconnecter des services Wispio.
               Vous allez être redirigé vers la page d'accueil.</span>
           </div>
 }

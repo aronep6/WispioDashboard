@@ -10,6 +10,7 @@ const AuthOutletWrapper = lazy(() => import('./app_components/Auth/OutletWrapper
 const ForgotPassword = lazy(() => import('./app_components/Auth/ForgotPassword'));
 const SignIn = lazy(() => import('./app_components/Auth/SignIn'));
 const SignUp = lazy(() => import('./app_components/Auth/SignUp'));
+const SignOut = lazy(() => import('./app_components/Auth/SignOut'));
 
 // Application components
 const ApplicationWrapper = lazy(() => import('./app_components/application/common/ApplicationWrapper'));
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="signin" element={<SignIn />}/>
           <Route path="signup" element={<SignUp />}/>
           <Route path="forgot-password" element={<ForgotPassword />}/>
+          <Route path="signout" element={<SignOut />}/>
         </Route>
 
         <Route path="/loading" element={
