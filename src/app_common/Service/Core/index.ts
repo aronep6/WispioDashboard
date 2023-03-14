@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 
-import type { Firestore, DocumentData } from "firebase/firestore";
+import type { Firestore, DocumentData, DocumentReference, CollectionReference } from "firebase/firestore";
 import { initializeFirestore, collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 import type { Auth } from "firebase/auth";
@@ -45,20 +45,45 @@ class Core {
         this.sleep = sleep;
     }
 
-    getCurrentUserID = () => {
-        return this.auth.currentUser?.uid as string;
+    getCurrentUserID = (): string => {
+        const userId = this.auth.currentUser?.uid;
+        if (!userId) throw new Error("User is not logged in!");
+        return userId;
     }
+
+    getDocumentReference = (
+        collection: UserAccessibleCollection, 
+        document: string
+    ): DocumentReference => {
+        try {
+            const userId = this.getCurrentUserID();
+
+            return doc(this.db, FirebaseRootCollection, userId, collection, document);
+
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    };
+
+    getCollectionReference = (
+        target_collection: UserAccessibleCollection
+    ): CollectionReference => {
+        try {
+            const userId = this.getCurrentUserID();
+
+            return collection(this.db, FirebaseRootCollection, userId, target_collection);
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    };      
 
     getDocument = async (
         collection: UserAccessibleCollection,
         document: string
     ): Promise<DocumentData> => {
         try {
-            const userId = this.getCurrentUserID();
+            const docRef = this.getDocumentReference(collection, document);
 
-            if (!userId) throw new Error("User is not logged in!");
-
-            const docRef = doc(this.db, FirebaseRootCollection, userId, collection, document);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
@@ -76,12 +101,7 @@ class Core {
         target_collection: UserAccessibleCollection,
     ): Promise<MultipleDocumentsResponse[]> => {
         try {
-            const userId = this.getCurrentUserID();
-
-            if (!userId) throw new Error("User is not logged in!");
-
-
-            const collectionRef = collection(this.db, FirebaseRootCollection, userId, target_collection);
+            const collectionRef = this.getCollectionReference(target_collection);
             const docSnap = await getDocs(collectionRef);
 
             return docSnap.docs.map((doc) => {

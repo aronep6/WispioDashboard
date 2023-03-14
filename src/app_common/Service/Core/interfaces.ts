@@ -20,7 +20,7 @@ export interface MultipleDocumentsResponse {
 
 export enum UserAccessibleCollection {
     Tasks = "tasks",
-    Files = "files",
+    Outputs = "outputs",
 }
 
 export const FirebaseRootCollection = "application" as const;
