@@ -1,17 +1,20 @@
-import React from 'react';
+import { Box } from 'react-feather';
 import { Link } from 'react-router-dom';
-import { PrimaryButton } from '../../../../app_atomic/Button';
+import PageGenericPoster from '../../../PagePoster/PageGenericDisplay';
 
 function NoProjectOpened() {
     return (
-        <div>
-            No project opened, you need to open a project to use the editor
-            <Link to="/editor/default">
-                <PrimaryButton>
-                    Open the default project
-                </PrimaryButton>
-            </Link>
-        </div>
+        <PageGenericPoster
+            icon={{
+                type: Box,
+            }}
+            title="Aucun projet ouvert"
+            message={
+                <span>
+                    Vous n'avez ouvert aucun projet. Ouvrez un projet dans l'éditeur directement depuis votre liste des <Link to="/tasks" className="text-indigo-600 font-medium">tâches actives</Link>, pour commencer à éditer vos contenus.
+                </span>
+            }
+        />
     );
 }
 

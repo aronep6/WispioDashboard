@@ -1,8 +1,10 @@
 import { memo, useEffect, useRef } from "react";
 import 'vidstack/styles/defaults.css';
 import { MediaOutlet, MediaPlayer, useMediaRemote } from '@vidstack/react';
-import video from '../../ProjectEditor/src/cocadmin_video.mp4';
 import useEditor from "../../../../../app_hooks/contexts_hooks/useEditor";
+
+import _content_ from '../../ProjectEditor/src/cocadmin_video.mp4';
+// import _content_ from '../../ProjectEditor/src/mee_to_story_gaspard_g.mp3';
 
 import { type RefObject } from "react";
 import { type MediaPlayerElement } from "vidstack";
@@ -26,7 +28,7 @@ function EditorVideoPlayer() {
 
     return <MediaPlayer
         ref={playerRef}
-        src={video}
+        src={_content_}
         controls={playerRef ? true : false}
         className='overflow-hidden'
     >

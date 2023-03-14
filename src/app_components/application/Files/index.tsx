@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { Folder } from "react-feather";
+import PageGenericPoster from "../../PagePoster/PageGenericDisplay";
 import PageWrapper from "../common/PageWrapper";
 
 const pageProps = {
@@ -6,9 +9,17 @@ const pageProps = {
 
 const Files = () => {
     return <PageWrapper {...pageProps}>
-        <div className="flex flex-col">
-            This is the files page content area (not the sidebar)
-        </div>
+        <PageGenericPoster
+            icon={{
+                type: Folder,
+            }}
+            title="Aucun fichier importé"
+            message={
+                <span>
+                    Vous n'avez importé aucun fichier pour le moment. Importez un fichier dans Wispio directement en créant une nouvelle tâche depuis votre liste <Link to="/tasks" className="text-indigo-600 font-medium">tâches actives</Link>.
+                </span>
+            }
+        />
     </PageWrapper>;
 }
 

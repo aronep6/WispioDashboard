@@ -3,7 +3,6 @@ import { Sliders } from 'react-feather';
 const iconProps = {
     size: 26,
     strokeWidth: 2,
-
 };
 
 function NoControlsEnabled() {

@@ -2,7 +2,7 @@ import _logo_ from "../../assets/wispio_logo.webp";
 
 function Loading({ message, showLoader = true }: { message?: string, showLoader?: boolean }) {
     return (
-        <div className="z-50 bg-gray-900 inter
+        <div className="z-30 bg-gray-900 inter
             fixed inset-0 flex items-center justify-center min-h-screen min-w-screen">
             <div className="flex flex-col items-center justify-center w-full">
                 <img src={_logo_} alt="Wispio AI Platform" className="w-12 h-12 rounded mb-4" />

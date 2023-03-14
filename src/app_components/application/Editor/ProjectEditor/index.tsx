@@ -1,5 +1,5 @@
 
-import PageError from "../../../Error/PageError";
+import PageError from "../../../PagePoster/PageError";
 import PageLoading from "../../../Loading/PageLoading";
 
 import ProjectEditor from "./ProjectEditor";

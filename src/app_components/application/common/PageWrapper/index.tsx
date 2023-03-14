@@ -2,7 +2,7 @@ import './styles.css';
 import { PrimaryTitle } from '../../../../app_atomic/Title';
 import useWebTitle from '../../../../app_hooks/useWebTitle';
 import PageLoading from '../../../Loading/PageLoading';
-import PageError from '../../../Error/PageError';
+import PageError from '../../../PagePoster/PageError';
 import type { PageWrapperProps } from './interfaces';
 
 const PageWrapper = ({
