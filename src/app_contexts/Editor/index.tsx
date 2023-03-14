@@ -2,12 +2,13 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import type { ProjectId } from "../../app_components/application/common/interfaces/Editor";
 import type { RealtimeOutput } from "../../app_common/Service/Application/EditorService/interfaces";
 import useEditorService from "../../app_hooks/contexts_hooks/useEditorService";
-import useServiceFetch from "../../app_hooks/useServiceFetch";
+import useServiceSubscribe from "../../app_hooks/useServiceSubscribe";
 import { type MediaRemoteControl } from "vidstack";
 import type { 
     IsLoadingType,
     ErrorType
 } from "../../app_hooks/interfaces";
+import RealtimeOutputResponseDTO from "../../app_common/Service/Application/EditorService/interfaces";
 
 const EditorContext = createContext({
     // Editor core values
@@ -32,10 +33,9 @@ const EditorProvider = ({ projectId, children }: { projectId: ProjectId, childre
 
     // Hooks
     const editorService = useEditorService();
-    const { isLoading, data, error } = useServiceFetch<any>(
+    const { isLoading, data, error } = useServiceSubscribe<RealtimeOutputResponseDTO>(
         {
-            method: editorService.subscribeToRealtimeTranscription,
-            payload: projectId,
+            subscribeRef: editorService.subscribeToRealtimeTranscription(projectId)
         },
     );
 
@@ -47,7 +47,7 @@ const EditorProvider = ({ projectId, children }: { projectId: ProjectId, childre
     // Side effects
     useEffect(() => {
         if (data) {
-            updateRealtimeOutputs(data);
+            updateRealtimeOutputs(data.records);
         }
     }, [data, updateRealtimeOutputs]);
 

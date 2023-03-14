@@ -1,4 +1,6 @@
+import type { DocumentData, DocumentReference } from "firebase/firestore";
 import Core from "../../Core";
+import { UserAccessibleCollection } from "../../Core/interfaces";
 import type { RealtimeOutput } from "./interfaces";
 
 const _fake_realtime_transcription_response_: RealtimeOutput[] = [
@@ -134,17 +136,10 @@ class EditorService extends Core {
         super();
     }
 
-    subscribeToRealtimeTranscription = async (id: string) => {
-        // throw new Error("subscribeToRealtimeTranscription is not implemented yet");
-
-        await this.sleep(3000);
-
-        return {
-            success: true,
-            data: _fake_realtime_transcription_response_,
-            error: null,
-        };
-    }
+    subscribeToRealtimeTranscription = (taskId: string | undefined): DocumentReference<DocumentData> => {
+        if (!taskId) throw new Error("No project task id was provided, cannot subscribe to realtime transcription");
+        return this.getDocumentReference(UserAccessibleCollection.Outputs, taskId);
+    };
 }
 
 export default EditorService;

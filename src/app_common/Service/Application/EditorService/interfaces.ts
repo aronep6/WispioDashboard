@@ -3,3 +3,6 @@ export interface RealtimeOutput {
     to: number;
     output: string;
 }
+export default interface RealtimeOutputResponseDTO {
+    records: RealtimeOutput[];
+}
