@@ -1,3 +1,5 @@
+import type { DocumentData, DocumentReference } from 'firebase/firestore';
+
 export type IsLoadingType = boolean;
 export type DataType = undefined;
 export type ErrorType = null | string | Error;
@@ -19,4 +21,10 @@ export interface ServiceFetchProps<T> {
     payload?: any | undefined,
     defaultLoadingStatus?: boolean
     doCheckBeforeFetch?: () => boolean
+}
+
+export interface ServiceSubscribeProps<T> {
+    subscribeRef: DocumentReference<DocumentData>,
+    doCheckBeforeFetch?: () => boolean
+    pingOnSnapshot?: () => void
 }
