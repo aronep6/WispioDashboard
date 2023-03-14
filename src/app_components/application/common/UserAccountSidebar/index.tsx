@@ -8,7 +8,7 @@ const UserAccountSidebar = () => {
   return <div className="flex-shrink-0 flex bg-slate-700 p-4 inter">
     <Link to={AppRoutes.AccountSettings} className="flex-shrink-0 w-full group block">
       <div className="flex items-center">
-        <div>
+        <div className="flex-shrink-0">
           <img
             className="inline-block h-6 w-6 rounded-full bg-slate-900"
             src={user?.photoURL ? user.photoURL : undefined}
