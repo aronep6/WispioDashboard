@@ -1,8 +1,4 @@
-import { memo } from "react";
-import { Outlet, useParams } from "react-router-dom";
-import { EditorProvider } from "../../../app_contexts/Editor";
-import { EditorServiceProvider } from "../../../app_contexts/EditorService";
-import { type ProjectId } from "../common/interfaces/Editor";
+import { Outlet } from "react-router-dom";
 import PageWrapper from "../common/PageWrapper";
 
 const pageProps = {
@@ -18,14 +14,4 @@ const Editor = () => {
     </PageWrapper>;
 };
 
-function index() {
-    const projectId: ProjectId = useParams<{ projectId: ProjectId }>().projectId;
-
-    return <EditorServiceProvider>
-        <EditorProvider projectId={projectId}>
-            <Editor />
-        </EditorProvider>
-    </EditorServiceProvider>
-};
-
-export default memo(index, () => false);
+export default Editor;
