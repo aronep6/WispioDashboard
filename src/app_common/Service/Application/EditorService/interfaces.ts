@@ -6,3 +6,8 @@ export interface RealtimeOutput {
 export default interface RealtimeOutputResponseDTO {
     records: RealtimeOutput[];
 }
+
+export interface EditingOutput {
+    index: number,
+    output: RealtimeOutput,
+}

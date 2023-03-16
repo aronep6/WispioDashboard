@@ -1,7 +1,8 @@
+import { updateDoc } from "firebase/firestore";
 import type { DocumentData, DocumentReference } from "firebase/firestore";
 import Core from "../../Core";
 import { UserAccessibleCollection } from "../../Core/interfaces";
-import type { RealtimeOutput } from "./interfaces";
+import type { RealtimeOutput, EditingOutput } from "./interfaces";
 
 const _fake_realtime_transcription_response_: RealtimeOutput[] = [
     {
@@ -140,6 +141,30 @@ class EditorService extends Core {
         if (!taskId) throw new Error("No project task id was provided, cannot subscribe to realtime transcription");
         return this.getDocumentReference(UserAccessibleCollection.Outputs, taskId);
     };
+
+    updateOutput = async (taskId: string, newOutputContent: EditingOutput, allRealtimeOutputs: RealtimeOutput[]): Promise<void> => {
+        
+        const updatedRealtimeOutputs: RealtimeOutput[] = allRealtimeOutputs.map((realtimeOutput, index) => {
+            if (index === newOutputContent.index) {
+                return {
+                    ...newOutputContent.output,
+                };
+            }
+            return realtimeOutput;
+        });
+        
+        const docRef = this.getDocumentReference(UserAccessibleCollection.Outputs, taskId);
+
+        try {
+            await updateDoc(docRef, {
+                records: updatedRealtimeOutputs,
+            });
+
+            await this.updateLastUpdateTaskField(taskId);
+        } catch (error: any) {
+            console.log('Error updating document: ', error);
+        }
+    }
 }
 
 export default EditorService;

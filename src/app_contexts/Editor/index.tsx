@@ -1,6 +1,6 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import type { ProjectId } from "../../app_components/application/common/interfaces/Editor";
-import type { RealtimeOutput } from "../../app_common/Service/Application/EditorService/interfaces";
+import type { RealtimeOutput, EditingOutput } from "../../app_common/Service/Application/EditorService/interfaces";
 import useEditorService from "../../app_hooks/contexts_hooks/useEditorService";
 import useServiceSubscribe from "../../app_hooks/useServiceSubscribe";
 import { type MediaRemoteControl } from "vidstack";
@@ -8,36 +8,26 @@ import type {
     IsLoadingType,
     ErrorType
 } from "../../app_hooks/interfaces";
-import type { EditingOutput } from "./interfaces";
 import type RealtimeOutputResponseDTO from "../../app_common/Service/Application/EditorService/interfaces";
 
 const EditorContext = createContext({
     // Editor core values
     realtimeOutputs: [] as RealtimeOutput[],
-    updateRealtimeOutputs: (realtimeOutputs: RealtimeOutput[]) => { },
+    updateRealtimeOutputs: (realtimeOutputs: RealtimeOutput[]) => {},
     // Playback timestamp control
-    setPlaybackTimestamp: (playbackTimestamp: number) => { },
+    setPlaybackTimestamp: (playbackTimestamp: number) => {},
     // Playback remote
     playbackRemote: undefined as unknown as MediaRemoteControl,
-    setPlaybackRemote: (remote: MediaRemoteControl) => { },
+    setPlaybackRemote: (remote: MediaRemoteControl) => {},
     // Playback current matched output
     currentHighlightedOutputIndex: -1 as number,
     // Editing output
     currentEditingOutput: null as EditingOutput | null,
-    setCurrentEditingOutput: (currentEditingOutput: EditingOutput | null) => { },
+    setCurrentEditingOutput: (currentEditingOutput: EditingOutput | null) => {},
     // Page loader
     _page_isLoading: false as IsLoadingType,
     _page_error: null as ErrorType,
 });
-
-// const DEFAULT_CURRENT_EDITING_OUTPUT = {
-//     index: 2,
-//     output: {
-//         from: 20,
-//         to: 30,
-//         output: "And I'm going to show you how to do that in this video.",
-//     }
-// };
 
 const DEFAULT_CURRENT_EDITING_OUTPUT = null;
 

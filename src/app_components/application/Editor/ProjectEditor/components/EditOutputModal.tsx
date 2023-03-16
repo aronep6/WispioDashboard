@@ -1,12 +1,20 @@
 import { Edit } from 'react-feather';
-import { Controller, useForm } from 'react-hook-form';
-import { PrimaryButton, SecondaryButton } from '../../../../../app_atomic/Button';
+import { Controller, useForm, type FieldValues } from 'react-hook-form';
+import { SecondaryButton, SubmitPrimaryButton } from '../../../../../app_atomic/Button';
 import { Card } from '../../../../../app_atomic/Card';
 import { InputBlock, InputBlockArea } from '../../../../../app_atomic/Input';
 import { Modal, ModalHr } from '../../../../../app_atomic/Modal';
 import { Paragraph } from '../../../../../app_atomic/Paragraph';
 import { PrimaryTitle } from '../../../../../app_atomic/Title';
 import { EditingOutput } from '../../../../../app_contexts/Editor/interfaces';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+import { editOutputSchema } from './functions';
+import { EditingOutputFormDataType } from './interfaces';
+import useEditorService from '../../../../../app_hooks/contexts_hooks/useEditorService';
+import { ProjectId } from '../../../common/interfaces/Editor';
+import { useParams } from 'react-router-dom';
+import useEditor from '../../../../../app_hooks/contexts_hooks/useEditor';
 
 const EditOutputModal = ({
     currentEditingOutput,
@@ -15,11 +23,15 @@ const EditOutputModal = ({
     currentEditingOutput: EditingOutput,
     setCurrentEditingOutput: (editingOutput: EditingOutput | null) => void,
 }) => {
+    const editorService = useEditorService();
+    const { realtimeOutputs } = useEditor();
+
+    const projectId: ProjectId = useParams<{ projectId: ProjectId }>().projectId as string;
     const { from, to, output } = currentEditingOutput.output;
 
     // Handle form submission dans datas
     const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
-        // resolver: yupResolver(signInValidationSchema)
+        resolver: yupResolver(editOutputSchema),
         defaultValues: {
             from_timestamp: from,
             to_timestamp: to,
@@ -29,21 +41,28 @@ const EditOutputModal = ({
 
     const onClose = () => setCurrentEditingOutput(null);
 
-    const handleOutputEdit = async (data: any) => {
-        // try {
-        //     setIsLoading(true);
-        //     const _user_ = await auth.loginWithEmail(data.signin_form_email, data.signin_form_password);            
-        //     setGlobalError(null);
-        //     console.log("Need to check for registration redirection (Aborted) : Not implemented yet :( ")
-        //     // checkForRegistrationRedirection(_user_.user.uid);
-        //     // Check if the user 
-        // } catch (err: Error | unknown) {
-        //     inDev && console.log("Une erreur est survenue lors de la connexion de l'utilisateur : ", err);
-        //     const _err = getErrors(err);
-        //     setGlobalError(_err);
-        // } finally {
-        //     setIsLoading(false);
-        // }
+    const handleOutputEdit = async (data: FieldValues) => {
+        const { 
+            from_timestamp, 
+            to_timestamp, 
+            output_transcription
+        } = data as EditingOutputFormDataType;
+
+        const newOutputContent: EditingOutput = {
+            index: currentEditingOutput.index,
+            output: {
+                from: from_timestamp,
+                to: to_timestamp,
+                output: output_transcription,
+            }
+        };
+
+        try {
+            await editorService.updateOutput(projectId, newOutputContent, realtimeOutputs);
+            onClose();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return <Modal onClose={onClose}>
@@ -79,7 +98,7 @@ const EditOutputModal = ({
                             }) => (
                                 <InputBlock
                                     name="from_timestamp"
-                                    label="From (ms)"
+                                    label="From (s)"
                                     placeholder="3500"
                                     type="number"
                                     value={value}
@@ -101,7 +120,7 @@ const EditOutputModal = ({
                             }) => (
                                 <InputBlock
                                     name="to_timestamp"
-                                    label="To (ms)"
+                                    label="To (s)"
                                     placeholder="3500"
                                     type="number"
                                     value={value}
@@ -140,9 +159,9 @@ const EditOutputModal = ({
                 <ModalHr />
 
                 <div className="grid grid-cols-2 gap-2 items-center">
-                    <PrimaryButton>
+                    <SubmitPrimaryButton disabled={!isValid || isSubmitting}>
                         Enregistrer les modifications
-                    </PrimaryButton>
+                    </SubmitPrimaryButton>
                     <SecondaryButton action={onClose}>
                         Annuler les modifications
                     </SecondaryButton>
