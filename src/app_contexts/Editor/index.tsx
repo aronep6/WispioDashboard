@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import type { ProjectId } from "../../app_components/application/common/interfaces/Editor";
 import type { RealtimeOutput } from "../../app_common/Service/Application/EditorService/interfaces";
 import useEditorService from "../../app_hooks/contexts_hooks/useEditorService";
@@ -8,28 +8,45 @@ import type {
     IsLoadingType,
     ErrorType
 } from "../../app_hooks/interfaces";
-import RealtimeOutputResponseDTO from "../../app_common/Service/Application/EditorService/interfaces";
+import type { EditingOutput } from "./interfaces";
+import type RealtimeOutputResponseDTO from "../../app_common/Service/Application/EditorService/interfaces";
 
 const EditorContext = createContext({
     // Editor core values
     realtimeOutputs: [] as RealtimeOutput[],
     updateRealtimeOutputs: (realtimeOutputs: RealtimeOutput[]) => { },
-    // Playback
-    playbackTimestamp: 0 as number,
+    // Playback timestamp control
     setPlaybackTimestamp: (playbackTimestamp: number) => { },
     // Playback remote
-    playbackRemote: {} as MediaRemoteControl,
+    playbackRemote: undefined as unknown as MediaRemoteControl,
     setPlaybackRemote: (remote: MediaRemoteControl) => { },
+    // Playback current matched output
+    currentHighlightedOutputIndex: -1 as number,
+    // Editing output
+    currentEditingOutput: null as EditingOutput | null,
+    setCurrentEditingOutput: (currentEditingOutput: EditingOutput | null) => { },
     // Page loader
     _page_isLoading: false as IsLoadingType,
     _page_error: null as ErrorType,
 });
 
+// const DEFAULT_CURRENT_EDITING_OUTPUT = {
+//     index: 2,
+//     output: {
+//         from: 20,
+//         to: 30,
+//         output: "And I'm going to show you how to do that in this video.",
+//     }
+// };
+
+const DEFAULT_CURRENT_EDITING_OUTPUT = null;
+
 const EditorProvider = ({ projectId, children }: { projectId: ProjectId, children: React.ReactNode }) => {    
     // States
     const [realtimeOutputs, setRealtimeOutputs] = useState<RealtimeOutput[]>([]);
     const [playbackTimestamp, setPlaybackTimestamp] = useState<number>(0);
-    const [playbackRemote, setPlaybackRemote] = useState<MediaRemoteControl>({} as MediaRemoteControl);
+    const [playbackRemote, setPlaybackRemote] = useState<MediaRemoteControl>(undefined as unknown as MediaRemoteControl);
+    const [currentEditingOutput, setCurrentEditingOutput] = useState<EditingOutput | null>(DEFAULT_CURRENT_EDITING_OUTPUT);
 
     // Hooks
     const editorService = useEditorService();
@@ -39,6 +56,11 @@ const EditorProvider = ({ projectId, children }: { projectId: ProjectId, childre
         },
     );
 
+    // Memoized values
+    const currentHighlightedOutputIndex = useMemo(() => realtimeOutputs.findIndex((singleOutput) => {
+        return singleOutput.from <= playbackTimestamp && singleOutput.to > playbackTimestamp;
+    }), [playbackTimestamp, realtimeOutputs]);
+    
     // Callbacks
     const updateRealtimeOutputs = useCallback((realtimeOutputs: RealtimeOutput[]) => {
         setRealtimeOutputs(realtimeOutputs);
@@ -51,6 +73,17 @@ const EditorProvider = ({ projectId, children }: { projectId: ProjectId, childre
         }
     }, [data, updateRealtimeOutputs]);
 
+    useEffect(() => {
+        // Pause the video when the user opens the output editor modal
+        if (!playbackRemote) return;
+
+        if (currentEditingOutput) {
+            playbackRemote.pause();
+        } else {
+            playbackRemote.play();
+        }
+    }, [currentEditingOutput, playbackRemote]);
+
     // useEffect(() => {
     //     console.log("current time :", playbackTimestamp)
     // }, [playbackTimestamp])
@@ -58,10 +91,13 @@ const EditorProvider = ({ projectId, children }: { projectId: ProjectId, childre
     // Render
     return <EditorContext.Provider value={{
         realtimeOutputs,
+        
+        currentEditingOutput,
+        setCurrentEditingOutput,
 
         updateRealtimeOutputs,
         setPlaybackTimestamp,
-        playbackTimestamp,
+        currentHighlightedOutputIndex: useMemo(() => currentHighlightedOutputIndex, [currentHighlightedOutputIndex]),
         playbackRemote,
         setPlaybackRemote,
 
@@ -69,7 +105,7 @@ const EditorProvider = ({ projectId, children }: { projectId: ProjectId, childre
         _page_error: error,
     }}>
         { children }
-    </EditorContext.Provider>;
+    </EditorContext.Provider>
 };
 
 export { EditorProvider };
