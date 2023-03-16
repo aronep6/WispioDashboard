@@ -14,7 +14,7 @@ const Modal = ({
     onClose = () => {},
 }: ModalProps) => {
     return <Fragment>
-        <div className="fixed inset-0 bg-slate-800 opacity-75 z-40"></div>
+        <div className="fixed inset-0 bg-slate-900 opacity-75 z-40"></div>
         <ModalContainer onClose={onClose}>
             { children }
         </ModalContainer>
@@ -26,7 +26,7 @@ const ModalContainer = ({
     onClose,
 }: ModalProps) => {
     return <div onClick={onClose}
-        className="fixed h-screen modal-bg-animation w-screen backdrop-blur-sm inset-0 z-50 flex items-center justify-center -mt-7">
+        className="fixed h-screen modal-bg-animation w-screen backdrop-blur-sm inset-0 modal-bg-animation z-50 flex items-center justify-center">
         <section className="overflow-hidden m-2 duration-150 modal-animation" onClick={e => e.stopPropagation()}>
             { children }
         </section>

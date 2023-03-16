@@ -39,7 +39,7 @@ const SubmitPrimaryButton = ({ children, add, disabled, useMargin = true }: Subm
 const SecondaryButton = ({ children, add, action, disabled, useMargin = true }: ButtonProps) => {
     return <button onClick={ action } disabled={disabled}
         className={`rounded-md grotesk tracking-tighter py-2.5 px-4 font-semibold border-solid border-2 border-indigo-600 text-sm md:text-base disabled:opacity-25
-        text-indigo-600 hover:bg-indigo-200 duration-100 focus:ring focus:ring-indigo-300 ${ useMargin && "m-1" } max-w-max ${add}`}>
+        text-indigo-600 hover:bg-indigo-200 duration-100 focus:ring focus:ring-indigo-300 ${ useMargin && "m-1" } ${add}`}>
         { children }
     </button>
 };
@@ -55,7 +55,7 @@ const TertiaryButton = ({ children, add, action, disabled }: ButtonProps) => {
 const DangerPrimaryButton = ({ children, add, action, disabled, useMargin = true }: ButtonProps) => {
     return <button onClick={ action } disabled={disabled}
         className={`rounded-md grotesk tracking-tighter py-2.5 px-4 font-semibold text-white text-sm md:text-base
-        bg-red-600 hover:bg-red-700 duration-100 focus:ring focus:ring-red-300 ${ useMargin && "m-1" } max-w-max ${add}`}>
+        bg-red-600 hover:bg-red-700 duration-100 focus:ring focus:ring-red-300 ${ useMargin && "m-1" } ${add}`}>
         {children}
     </button>
 };
@@ -63,7 +63,7 @@ const DangerPrimaryButton = ({ children, add, action, disabled, useMargin = true
 const DangerSecondaryButton = ({ children, add, action, disabled, useMargin = true }: ButtonProps) => {
     return <button onClick={ action } disabled={disabled}
         className={`rounded-md grotesk tracking-tighter py-2.5 px-4 font-semibold bg-red-100 text-sm md:text-base
-        text-red-600 hover:bg-red-200 duration-100 focus:ring focus:ring-red-300 ${ useMargin && "m-1" } max-w-max ${add}`}>
+        text-red-600 hover:bg-red-200 duration-100 focus:ring focus:ring-red-300 ${ useMargin && "m-1" } ${add}`}>
         { children }
     </button>
 };

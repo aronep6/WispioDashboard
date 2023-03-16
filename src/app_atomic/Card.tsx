@@ -7,6 +7,7 @@ interface CardProps {
     add?: string;
     isLoading?: boolean;
     background?: string;
+    modal?: boolean;
 }
 
 const Card = ({ 
@@ -14,8 +15,9 @@ const Card = ({
     children, 
     add, 
     isLoading,
+    modal,
 }: CardProps) => {
-    return <div className={`relative overflow-hidden rounded-md shadow-sm p-3 md:p-4 ${ border && "border" } border-solid ${add}`}>
+    return <div className={`relative overflow-hidden rounded-md bg-white shadow-sm p-3 md:p-4 ${!modal && "shadow-md shadow-slate-200 border"} ${ border && "border" } border-solid ${add}`}>
         { isLoading && <div className="absolute cursor-wait duration-150 opacity-75 over-all h-full w-full inset-0 flex items-center justify-center">
             <Loader className="h-8 w-8 animate-spin"/>
         </div> }
