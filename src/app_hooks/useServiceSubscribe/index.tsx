@@ -13,7 +13,7 @@ function useServiceSubscribe<MethodResponseDTO>({
     doCheckBeforeFetch = () => true,
     pingOnSnapshot = undefined,
 }: ServiceSubscribeProps<MethodResponseDTO>): CustomHookReturn<MethodResponseDTO> {    
-    const [isLoading, setIsLoading] = useState<IsLoadingType>(false);
+    const [isLoading, setIsLoading] = useState<IsLoadingType>(true);
     const [data, setData] = useState<DataType | MethodResponseDTO>(undefined);
     const [error, setError] = useState<ErrorType>(null);
 
