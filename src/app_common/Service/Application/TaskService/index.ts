@@ -1,5 +1,5 @@
 import Core from "../../Core";
-import type { Timestamp } from "@firebase/firestore-types";
+import type { TasksList } from "./interfaces";
 import { UserAccessibleCollection } from "../../Core/interfaces";
 
 const user_tasks_response = [
@@ -53,25 +53,6 @@ const user_tasks_response = [
     },
 ];
 
-export interface Task {
-    id: string,
-    data: {
-        configuration: {
-            language: string,
-            model: string,
-            source: string,
-            translation: {
-                translate: boolean,
-                translateToLanguage: string,
-            }
-        },
-        lastUpdate: Timestamp,
-        status: string,
-    }
-}
-
-export type TasksList = Task[];
-
 class TaskService extends Core {
     constructor() {
         super();
@@ -79,11 +60,7 @@ class TaskService extends Core {
 
     getTasks = async () => {
         try {
-            // await this.sleep(3000);
-            // const tasks = user_tasks_response as TasksList;
-
             const tasks = await this.getMultipleDocuments(UserAccessibleCollection.Tasks) as TasksList;
-            
             return {
                 success: true,
                 data: tasks,
