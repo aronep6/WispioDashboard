@@ -13,10 +13,12 @@ import { InputBlock } from "../../../app_atomic/Input";
 import { getErrors, signInValidationSchema } from '../functions';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { AppRoutes } from "../../../app_common/interfaces/AppRoutes";
 
 const inDev = !import.meta.env.PROD;
 
 const SignIn = () => {
+    let navigate = useNavigate();
     const auth = useAuth();
     const user = useUserSession();
 
@@ -80,6 +82,7 @@ const SignIn = () => {
             console.log("Need to check for registration redirection (Aborted) : Not implemented yet :( ")
             // checkForRegistrationRedirection(_user_.user.uid);
             // Check if the user 
+            navigate(AppRoutes.Dashboard);
         } catch (err: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de la connexion de l'utilisateur : ", err);
             const _err = getErrors(err);
