@@ -1,17 +1,24 @@
 import { initializeApp } from "firebase/app";
-
-import type { Firestore, DocumentData, DocumentReference, CollectionReference } from "firebase/firestore";
-import { initializeFirestore, collection, doc, getDoc, getDocs } from "firebase/firestore";
-
-import type { Auth } from "firebase/auth";
-import { getAuth } from "firebase/auth";
+import { type Auth, getAuth } from "firebase/auth";
+import { 
+    Firestore, 
+    DocumentData, 
+    DocumentReference, 
+    CollectionReference,
+    updateDoc,
+    initializeFirestore, 
+    collection, 
+    doc,
+    getDoc,
+    getDocs,
+} from "firebase/firestore";
 
 import {
     firebaseDatabaseConfiguration,
     FirebaseRootCollection,
-    MultipleDocumentsResponse,
+    type MultipleDocumentsResponse,
     type FirebaseServiceConfiguration,
-    type UserAccessibleCollection
+    UserAccessibleCollection
 } from "./interfaces";
 
 const service_config: FirebaseServiceConfiguration = {
@@ -45,13 +52,21 @@ class Core {
         this.sleep = sleep;
     }
 
-    getCurrentUserID = (): string => {
+    protected logError = (error: any): void => {
+        console.warn("An error occured at Wispio Service level: ", error);
+    }
+
+    protected getCurrentUserID = (): string => {
         const userId = this.auth.currentUser?.uid;
-        if (!userId) throw new Error("User is not logged in!");
+        if (!userId) {
+            let error_message = "User is not logged in!";
+            this.logError(error_message);
+            throw new Error(error_message);
+        }
         return userId;
     }
 
-    getDocumentReference = (
+    protected getDocumentReference = (
         collection: UserAccessibleCollection, 
         document: string
     ): DocumentReference => {
@@ -61,11 +76,12 @@ class Core {
             return doc(this.db, FirebaseRootCollection, userId, collection, document);
 
         } catch (error: any) {
+            this.logError(error);
             throw new Error(error.message);
         }
     };
 
-    getCollectionReference = (
+    protected getCollectionReference = (
         target_collection: UserAccessibleCollection
     ): CollectionReference => {
         try {
@@ -73,11 +89,12 @@ class Core {
 
             return collection(this.db, FirebaseRootCollection, userId, target_collection);
         } catch (error: any) {
+            this.logError(error);
             throw new Error(error.message);
         }
     };      
 
-    getDocument = async (
+    protected getDocument = async (
         collection: UserAccessibleCollection,
         document: string
     ): Promise<DocumentData> => {
@@ -89,7 +106,9 @@ class Core {
             if (docSnap.exists()) {
                 return docSnap.data();
             } else {
-                throw new Error("The target document does not exist, or you're not authorized to access it.");
+                const error_message = "The target document does not exist, or you're not authorized to access it.";
+                this.logError(error_message);
+                throw new Error(error_message);
             }
 
         } catch (error: any) {
@@ -97,7 +116,7 @@ class Core {
         }
     }
     
-    getMultipleDocuments = async (
+    protected getMultipleDocuments = async (
         target_collection: UserAccessibleCollection,
     ): Promise<MultipleDocumentsResponse[]> => {
         try {
@@ -111,7 +130,23 @@ class Core {
                 }
             });
         } catch (error: any) {
+            this.logError(error);
             throw new Error(error.message);
+        }
+    }
+
+    protected updateLastUpdateTaskField = async (
+        taskId: string, 
+        updateDate?: Date
+    ): Promise<void> => {
+        const docRef = this.getDocumentReference(UserAccessibleCollection.Tasks, taskId);
+
+        try {
+            await updateDoc(docRef, {
+                lastUpdate: updateDate || new Date(),
+            });
+        } catch (error) {
+            this.logError(error);
         }
     }
 }
