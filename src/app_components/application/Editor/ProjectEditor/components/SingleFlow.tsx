@@ -13,17 +13,26 @@ const iconProps = {
 
 const SingleFlow = ({ 
     singleOutput,
+    editingIndex,
     isHighlighted = false,
 }: { 
     singleOutput: RealtimeOutput,
+    editingIndex: number,
     isHighlighted: boolean,
 }) => {
     const { from, to, output } = singleOutput;
-    const { playbackRemote } = useEditor();
+    const { playbackRemote, setCurrentEditingOutput } = useEditor();
 
     const handleSeekTo = useCallback(() => {
         playbackRemote.seek(from)
     }, [from, playbackRemote]);
+
+    const handleEditOutput = useCallback(() => {
+        setCurrentEditingOutput({
+            index: editingIndex,
+            output: singleOutput,
+        });
+    }, [singleOutput, setCurrentEditingOutput]);
 
     return <div onClick={handleSeekTo}
         title={`Lire à partir de ${from}s`}
@@ -33,7 +42,9 @@ const SingleFlow = ({
             <span className='text-xs'>From {from}s to {to}s ({to - from}s)</span>
             <p className='font-medium'>{output}</p>
         </div>
-        <div className='flex flex-row relative group-hover:right-4 group group-hover:absolute gap-3 items-center group-hover:text-indigo-800 group-hover:shadow transition-colors duration-150 group-hover:bg-indigo-300 justify-center shrink-0 rounded-full group-hover:rounded-lg group-hover:px-3 h-9 w-9 group-hover:w-auto hover:brightness-150'>
+        <div title="Modifier la transcription de cette sortie"
+            onClick={handleEditOutput}
+            className='flex flex-row relative group-hover:right-4 group group-hover:absolute gap-3 items-center group-hover:text-indigo-800 group-hover:shadow transition-colors duration-150 group-hover:bg-indigo-300 justify-center shrink-0 rounded-full group-hover:rounded-lg group-hover:px-3 h-9 w-9 group-hover:w-auto hover:brightness-150'>
             <Edit2 {...iconProps} />
             <div className='text-xs group-hover:block hidden'>
                 <span className='text-xs'>Modifier</span>
