@@ -2,7 +2,7 @@ export enum AppRoutes {
     AuthSignIn = '/auth/signin',
     AuthSignUp = '/auth/signup',
 
-    Dashboard = '/dashboard',
+    Dashboard = '/',
 
     NotFound = '*',
     Loading = '/loading',
