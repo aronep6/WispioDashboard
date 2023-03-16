@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Sliders } from 'react-feather';
 
 const iconProps = {
@@ -16,4 +17,4 @@ function NoControlsEnabled() {
     );
 }
 
-export default NoControlsEnabled;
+export default memo(NoControlsEnabled, () => true);
