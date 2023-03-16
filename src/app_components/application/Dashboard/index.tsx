@@ -1,7 +1,7 @@
 import PageWrapper from "../common/PageWrapper";
 
 const pageProps = {
-    pageTitle: "Dashboard",
+    pageTitle: "Tableau de bord",
 };
 
 const Dashboard = () => {

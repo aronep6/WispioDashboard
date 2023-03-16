@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import PageWrapper from "../common/PageWrapper";
 
 const pageProps = {
-    pageTitle: "Editor",
+    pageTitle: "Éditeur de transcriptions",
     usePadding: false,
 };
 

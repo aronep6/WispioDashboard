@@ -4,11 +4,11 @@ import useServiceFetch from "../../../app_hooks/useServiceFetch";
 import PageWrapper from "../common/PageWrapper";
 import AllTasks from "./components/AllTasks";
 
-import type { TasksList } from "../../../app_common/Service/Application/TaskService";
+import type { TasksList } from "../../../app_common/Service/Application/TaskService/interfaces";
 import { useMemo } from "react";
 
 const pageProps = {
-    pageTitle: "Tasks",
+    pageTitle: "Tâches",
 };
 
 const Tasks = () => {

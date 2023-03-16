@@ -4,7 +4,7 @@ import PageGenericPoster from "../../PagePoster/PageGenericDisplay";
 import PageWrapper from "../common/PageWrapper";
 
 const pageProps = {
-    pageTitle: "Files",
+    pageTitle: "Fichiers",
 };
 
 const Files = () => {

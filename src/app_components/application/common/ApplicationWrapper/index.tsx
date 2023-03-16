@@ -17,10 +17,10 @@ import UserAccountSidebar from '../UserAccountSidebar';
 import _logo_ from '../../../../assets/wispio_logo_white_invisible_bkg.png';
 
 const navigation = [
-  { name: 'Dashboard', link: '/', icon: Grid, current: true },
-  { name: 'Editor', link: '/editor', icon: Box, current: false },
-  { name: 'Tasks', link: '/tasks', icon: List, current: false },
-  { name: 'Files', link: '/files', icon: Folder, current: false },
+  { name: 'Tableau de bord', link: '/', icon: Grid, current: true },
+  { name: 'Éditeur', link: '/editor', icon: Box, current: false },
+  { name: 'Tâches', link: '/tasks', icon: List, current: false },
+  { name: 'Fichiers', link: '/files', icon: Folder, current: false },
 ]
 
 const ApplicationWrapper = () => {
