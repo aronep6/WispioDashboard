@@ -1,3 +1,4 @@
+import { NotificationsServiceProvider } from '../../../../app_contexts/NotificationsService';
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react'
 import { NavLink, Outlet } from 'react-router-dom';
@@ -9,10 +10,10 @@ import {
   Folder,
   X,
   Menu,
+  Bell,
 } from 'react-feather';
 
 import UserAccountSidebar from '../UserAccountSidebar';
-
 // import _logo_ from '../../../../assets/wispio_logo.webp';
 import _logo_ from '../../../../assets/wispio_logo_white_invisible_bkg.png';
 
@@ -21,6 +22,7 @@ const navigation = [
   { name: 'Éditeur', link: '/editor', icon: Box, current: false },
   { name: 'Tâches', link: '/tasks', icon: List, current: false },
   { name: 'Fichiers', link: '/files', icon: Folder, current: false },
+  { name: 'Notifications', link: '/notifications', icon: Bell, current: false },
 ]
 
 const ApplicationWrapper = () => {
@@ -181,4 +183,10 @@ const ApplicationWrapper = () => {
   )
 };
 
-export default ApplicationWrapper;
+function index() {
+  return <NotificationsServiceProvider>
+    <ApplicationWrapper />
+  </NotificationsServiceProvider>
+};
+
+export default index;

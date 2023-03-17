@@ -18,6 +18,7 @@ const Dashboard = lazy(() => import('./app_components/application/Dashboard'));
 const Files = lazy(() => import('./app_components/application/Files'));
 const Tasks = lazy(() => import('./app_components/application/Tasks'));
 const Editor = lazy(() => import('./app_components/application/Editor'));
+const Notifications = lazy(() => import('./app_components/application/Notifications'));
 
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
             <Route index element={<NoProjectOpened />} />
             <Route path=':projectId' element={<ProjectEditor />} />
           </Route>
+          <Route path='notifications' element={<Notifications />} />
         </Route>
 
         <Route path="/auth" element={<Suspense fallback={<Loading /> }><AuthOutletWrapper /></Suspense>}>
