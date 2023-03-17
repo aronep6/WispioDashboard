@@ -1,32 +1,33 @@
-import { NotificationsServiceProvider } from '../../../../app_contexts/NotificationsService';
-import { Fragment, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
+import type { NavigationLink } from './interfaces';
+
+// Icons & UI
 import { Dialog, Transition } from '@headlessui/react'
 import { NavLink, Outlet } from 'react-router-dom';
+import { Grid, Box, List, Folder, X, Menu, Bell } from 'react-feather';
 
-import {
-  Grid,
-  Box,
-  List,
-  Folder,
-  X,
-  Menu,
-  Bell,
-} from 'react-feather';
+// Notifications
+import { NotificationsServiceProvider } from '../../../../app_contexts/NotificationsService';
+import { NotificationsProvider } from '../../../../app_contexts/Notifications';
+import useNotifications from '../../../../app_hooks/contexts_hooks/useNotifications';
 
 import UserAccountSidebar from '../UserAccountSidebar';
 // import _logo_ from '../../../../assets/wispio_logo.webp';
 import _logo_ from '../../../../assets/wispio_logo_white_invisible_bkg.png';
 
-const navigation = [
-  { name: 'Tableau de bord', link: '/', icon: Grid, current: true },
-  { name: 'Éditeur', link: '/editor', icon: Box, current: false },
-  { name: 'Tâches', link: '/tasks', icon: List, current: false },
-  { name: 'Fichiers', link: '/files', icon: Folder, current: false },
-  { name: 'Notifications', link: '/notifications', icon: Bell, current: false },
-]
-
 const ApplicationWrapper = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const { unReadedNotificationsCount } = useNotifications();
+
+  const navigation: NavigationLink[] = useMemo(() => [
+    { name: 'Tableau de bord', link: '/', icon: Grid, badgeCount: null },
+    { name: 'Éditeur', link: '/editor', icon: Box, badgeCount: null },
+    { name: 'Tâches', link: '/tasks', icon: List, badgeCount: null },
+    { name: 'Fichiers', link: '/files', icon: Folder, badgeCount: null },
+    { name: 'Notifications', link: '/notifications', icon: Bell, badgeCount: unReadedNotificationsCount === 0 ? null : unReadedNotificationsCount }
+  ]
+  , [unReadedNotificationsCount]);
 
   return (
     <>
@@ -90,7 +91,7 @@ const ApplicationWrapper = () => {
                       alt="Wispio AI"
                     />
                   </div>
-                  <nav className="mt-5 px-2 space-y-1">
+                  <nav className="mt-5 px-2 space-y-1 relative">
                     {navigation.map((item, index) => (
                       <NavLink
                         to={item.link}
@@ -108,6 +109,9 @@ const ApplicationWrapper = () => {
                           strokeWidth={1.5}
                         />
                         {item.name}
+                        {item.badgeCount && <div className='bg-indigo-700 text-white font-bold flex items-center h-7 w-7 text-xs rounded-full absolute right-2 justify-center'>
+                          {item.badgeCount}
+                        </div>}
                       </NavLink>
                     ))}
                   </nav>
@@ -141,9 +145,9 @@ const ApplicationWrapper = () => {
                     key={index}
                     className={
                       ({ isActive }) => isActive ?
-                        "bg-slate-900 text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                        "bg-slate-900 relative text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
                         :
-                        "text-slate-300 hover:bg-slate-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                        "text-slate-300 relative hover:bg-slate-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
                     }
                   >
                     <item.icon
@@ -152,6 +156,9 @@ const ApplicationWrapper = () => {
                       strokeWidth={1.5}
                     />
                     {item.name}
+                    {item.badgeCount && <div className='bg-indigo-700 text-white font-bold flex items-center h-7 w-7 text-xs rounded-full absolute right-2 justify-center'>
+                      {item.badgeCount}
+                    </div>}
                   </NavLink>
                 ))}
               </nav>
@@ -183,10 +190,10 @@ const ApplicationWrapper = () => {
   )
 };
 
-function index() {
+export default function index() {
   return <NotificationsServiceProvider>
-    <ApplicationWrapper />
+    <NotificationsProvider>
+      <ApplicationWrapper />
+    </NotificationsProvider>
   </NotificationsServiceProvider>
 };
-
-export default index;
