@@ -1,33 +1,31 @@
-import { Bell } from "react-feather";
-import PageGenericPoster from "../../PagePoster/PageGenericDisplay";
+import { useMemo } from "react";
 import PageWrapper from "../common/PageWrapper";
-import { Fragment } from "react";
-import { PrimaryButton } from "../../../app_atomic/Button";
+import useNotificationsService from "../../../app_hooks/contexts_hooks/useNotificationsService";
+import NoNotifications from "./components/NoNotifications";
+import AllNotifications from "./components/AllNotifications";
+import useNotifications from "../../../app_hooks/contexts_hooks/useNotifications";
 
-const pageProps = {
-    pageTitle: "Notifications",
-};
+const Notifications = () => {
+    const notificationService = useNotificationsService();
+    const { unReadedNotificationsCount, liveNotifications } = useNotifications();
 
-const Files = () => {
+    const notificationAreAllowed = useMemo(() => {
+        return notificationService.areAllowedByUser();
+    }, [notificationService]);
+
+    const pageProps = useMemo(() => {
+        return {
+            pageTitle: unReadedNotificationsCount > 0 ? `Notifications : ${ unReadedNotificationsCount } non lue(s)` : "Notifications"
+        }
+    }, [unReadedNotificationsCount])
+
     return <PageWrapper {...pageProps}>
-        <PageGenericPoster
-            icon={{
-                type: Bell,
-            }}
-            title="Aucune notification pour le moment"
-            message={
-                <Fragment>
-                    <span>
-                        Vous n'avez aucune notification pour le moment. Vous recevrez une notification dès lors que le status d'une tâche sera modifié par Wispio.
-                    </span>
-                    <br /><br />
-                    <PrimaryButton>
-                        Send a test notification
-                    </PrimaryButton>
-                </Fragment>
-            }
-        />
+        { liveNotifications.length === 0 ?
+            <NoNotifications areAllowedByUser={ notificationAreAllowed } /> 
+            :
+            <AllNotifications liveNotifications={ liveNotifications } />
+        }
     </PageWrapper>;
 }
 
-export default Files;
+export default Notifications;
