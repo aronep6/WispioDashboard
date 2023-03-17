@@ -27,9 +27,7 @@ const ProtectedRoute = ({
     useEffect(() => {
         if (user === null) {
             return navigate(AppRoutes.AuthSignIn);
-        } else if (user === undefined) {
-            return navigate(AppRoutes.AuthSignIn);
-        } else {
+        } else if (user !== undefined) {
             return navigate(AppRoutes.Dashboard);
         }
     }, [user]);
