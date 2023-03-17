@@ -1,5 +1,7 @@
 // import React from "react";
-import { Loader } from "react-feather";
+import { HelpCircle, Loader } from "react-feather";
+import { Paragraph } from "./Paragraph";
+import { SecondaryTitle } from "./Title";
 
 interface CardProps {
     children: JSX.Element | JSX.Element[];
@@ -35,4 +37,27 @@ const CardFilled = ({
     </div>
 }
 
-export { Card, CardFilled };
+const InformativeCard = ({ 
+    title, 
+    description,
+}: {
+    title: string;
+    description: string;
+}) => {
+    return <CardFilled background="bg-indigo-50 border border-indigo-500 text-indigo-700">
+        <div className="flex flex-row gap-3">
+            <HelpCircle className="h-6 w-6 text-scooter-500 my-0.5 shrink-0"></HelpCircle>
+
+            <div className="flex flex-col items-start text-left gap-1">
+                <SecondaryTitle add="text-indigo-800">
+                    {title}
+                </SecondaryTitle>
+                <Paragraph>
+                    { description }
+                </Paragraph>
+            </div>
+        </div>
+    </CardFilled>
+}
+
+export { Card, CardFilled, InformativeCard };

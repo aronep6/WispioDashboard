@@ -8,7 +8,7 @@ const PrimaryTitle = ({ children, add = "" }: { children: React.ReactNode | stri
 };
 
 const SecondaryTitle = ({ children, add = "" }: { children: React.ReactNode | string, add?: string }) => {
-    return <h2 className={`grotesk dark:text-white flex flex-row items-center tracking-tighter py-2.5 px-0.5 leading-6 font-medium text-lg md:text-xl ${add}`}> {/*text-slate-600*/}
+    return <h2 className={`grotesk dark:text-white flex flex-row items-center tracking-tighter leading-6 font-medium text-lg md:text-xl ${add}`}> {/*text-slate-600*/}
         {children}
     </h2>
 };
