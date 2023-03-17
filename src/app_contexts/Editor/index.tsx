@@ -56,7 +56,7 @@ const EditorProvider = ({ projectId, children }: { projectId: ProjectId, childre
         setRealtimeOutputs(realtimeOutputs);
     }, []);
 
-    // Side effects
+    // Side effects (binding to states)
     useEffect(() => {
         if (data) {
             updateRealtimeOutputs(data.records);
