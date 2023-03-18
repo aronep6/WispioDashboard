@@ -48,7 +48,7 @@ const SignIn = () => {
     //         const params = new URLSearchParams(window.location.search);
 
     //         const flow = params.get('flow');
-            
+
     //         if (flow === 'addProfessionnalEmail' && claims.userIsReadyToUse) {
     //             return navigate('/services/emails/create');
     //         }
@@ -64,9 +64,16 @@ const SignIn = () => {
 
     useEffect(() => {
         if (user === null || user === undefined) return;
-        // Checking if user is already connected
-        console.log("Need to check for registration redirection (Aborted) : Not implemented yet :( ")
-        // checkForRegistrationRedirection(user.uid);
+        // Check if the url contains a redirectionUrl param
+        const params = new URLSearchParams(window.location.search);
+        const redirectionUrl = params.get('redirectUrl');
+
+        if (redirectionUrl) {
+            const decodedUrl = decodeURIComponent(redirectionUrl);
+            return window.location.replace(decodedUrl);
+        } else {
+            return window.location.replace(AppRoutes.Dashboard);
+        }
     }, [user]);
 
     // Handle form submission dans datas
@@ -77,12 +84,8 @@ const SignIn = () => {
     const handleFormLogin = async (data: any) => {
         try {
             setIsLoading(true);
-            const _user_ = await auth.loginWithEmail(data.signin_form_email, data.signin_form_password);            
+            await auth.loginWithEmail(data.signin_form_email, data.signin_form_password);
             setGlobalError(null);
-            console.log("Need to check for registration redirection (Aborted) : Not implemented yet :( ")
-            // checkForRegistrationRedirection(_user_.user.uid);
-            // Check if the user 
-            navigate(AppRoutes.Dashboard);
         } catch (err: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de la connexion de l'utilisateur : ", err);
             const _err = getErrors(err);
@@ -98,14 +101,14 @@ const SignIn = () => {
         }
     }, []);
 
-    return <AuthWrapper 
+    return <AuthWrapper
         title="Se connecter à Wispio"
         titleDescription="Connectez-vous à votre compte pour commencer à utiliser les outils Wispio."
         description="L'authentification est nécessaire pour accéder à votre compte Wispio."
-        isLoading={ isLoading }
+        isLoading={isLoading}
         returnLink="/"
-        error={ globalError }
-        setError={ setGlobalError }
+        error={globalError}
+        setError={setGlobalError}
     >
         <form onSubmit={handleSubmit(handleFormLogin)} className="inter mt-2">
 
@@ -187,14 +190,14 @@ const SignIn = () => {
             </SecondaryButton>
         </div>
 
-        { false && <div className="justify-center flex w-full">
+        {false && <div className="justify-center flex w-full">
             <SecondaryButton add="max-w-xs w-full flex flex-row items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" viewBox="0 0 248 204" className="fill-indigo-600 h-5 mr-4 text-white">
                     <path d="m222 51.3.1 6.5c0 66.8-50.8 143.7-143.7 143.7A143 143 0 0 1 1 178.8a101.4 101.4 0 0 0 74.7-21 50.6 50.6 0 0 1-47.1-35 50.3 50.3 0 0 0 22.8-.8 50.5 50.5 0 0 1-40.5-49.5v-.7c7 4 14.8 6.1 22.9 6.3A50.6 50.6 0 0 1 18 10.7a143.3 143.3 0 0 0 104.1 52.8 50.5 50.5 0 0 1 86-46c11.4-2.3 22.2-6.5 32.1-12.3A50.7 50.7 0 0 1 218.1 33c10-1.2 19.8-3.9 29-8-6.7 10.2-15.3 19-25.2 26.2z" />
                 </svg>
                 Se connecter avec Twitter
             </SecondaryButton>
-        </div> }
+        </div>}
 
     </AuthWrapper>
 };

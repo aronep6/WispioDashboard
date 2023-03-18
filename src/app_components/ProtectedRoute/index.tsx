@@ -26,9 +26,8 @@ const ProtectedRoute = ({
 
     useEffect(() => {
         if (user === null) {
-            return navigate(AppRoutes.AuthSignIn);
-        } else if (user !== undefined) {
-            return navigate(AppRoutes.Dashboard);
+            const encoredRedirectUrl = encodeURIComponent(window.location.pathname);
+            return navigate(`${AppRoutes.AuthSignIn}?redirectUrl=${encoredRedirectUrl}`);
         }
     }, [user]);
 
