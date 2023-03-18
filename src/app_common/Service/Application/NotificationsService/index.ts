@@ -44,8 +44,10 @@ class NotificationsService extends Core {
 
     public push = async (
         _notification: PushNotificationPayload,
-        onClosed?: undefined | (() => void),
+        onClick?: undefined | (() => void),
+        onClose?: undefined | (() => void),
         onError?: undefined | (() => void),
+        onShow?: undefined | (() => void),
     ): Promise<void> => {
         const { title, message, type, link } = _notification;
 
@@ -55,16 +57,23 @@ class NotificationsService extends Core {
         });
 
         notification.onclick = () => {
-            if (link) return window.open(link);
-            if (onClosed) return onClosed();
+            if (link) {
+                window.open(link);
+            }
+            if (onClick) return onClick();
+            if (onClose) return onClose();
         }
 
         notification.onclose = () => {
-            if (onClosed) return onClosed();
+            if (onClose) return onClose();
         }
 
         notification.onerror = () => {
             if (onError) return onError();
+        }
+
+        notification.onshow = () => {
+            if (onShow) return onShow();
         }
 
         return;
