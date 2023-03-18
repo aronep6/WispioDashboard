@@ -50,7 +50,7 @@ export default function App() {
           </ProtectedRoute>}
         />
 
-        <Route path="*" element={<div>Not Found</div>} />
+        <Route path="*" element={<div className='text-center p-8 inter text-2xl'>404 - Page not found</div>} />
 
       </Routes>
     </BrowserRouter>
