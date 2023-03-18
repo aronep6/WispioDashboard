@@ -1,8 +1,10 @@
 import Core from "../../Core";
 import _logo_ from "../../../../assets/wispio_logo.webp";
-import type { DocumentData, DocumentReference } from "firebase/firestore";
+import { type DocumentData, type DocumentReference } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
 import { UserAccessibleCollection } from "../../Core/interfaces";
 import {
+    NotificationInterface,
     NotificationPermission,
     UserAccessibleNotificationsDocument,
     type PushNotificationPayload,
@@ -53,7 +55,8 @@ class NotificationsService extends Core {
         });
 
         notification.onclick = () => {
-            if (link) window.open(link);
+            if (link) return window.open(link);
+            if (onClosed) return onClosed();
         }
 
         notification.onclose = () => {
@@ -71,11 +74,47 @@ class NotificationsService extends Core {
         return this.allowedToSendNotifications;
     }
 
-    public subscribeToRealtimeNotifications = (): DocumentReference<DocumentData> => {
+    public getLiveNotificationsDocumentReference = (): DocumentReference<DocumentData> => {
         return this.getDocumentReference(
             UserAccessibleCollection.Notifications,
             UserAccessibleNotificationsDocument.LiveNotifications
         )
+    }
+
+    protected toogleNotificationAsRead = async (_notification: NotificationInterface, newStatement: boolean): Promise<boolean> => {
+        try {
+
+            const notifications = await this.getDocument(UserAccessibleCollection.Notifications, UserAccessibleNotificationsDocument.LiveNotifications);
+
+            const newNotifications = notifications.records.map((notification: NotificationInterface) => {
+                if (notification.id === _notification.id) {
+                    return {
+                        ...notification,
+                        read: newStatement,
+                    };
+                }
+                return notification;
+            });
+
+            const docRef = this.getLiveNotificationsDocumentReference();
+
+            await updateDoc(docRef, {
+                records: newNotifications,
+            });
+
+            return true;
+        } catch (error) {
+            this.logError(error);
+            return false;
+        }
+    }
+
+    public markNotificationAsRead = async (_notification: NotificationInterface): Promise<boolean> => {
+        return this.toogleNotificationAsRead(_notification, true);
+    }
+
+    public markNotificationAsUnread = async (_notification: NotificationInterface): Promise<boolean> => {
+        return this.toogleNotificationAsRead(_notification, false);
     }
 }
 

@@ -1,5 +1,8 @@
 import type { Timestamp } from "firebase/firestore";
+
+export type NotificationId = number;
 export interface NotificationInterface {
+    id: NotificationId,
     title: string,
     message: string,
     at: Timestamp,
@@ -26,8 +29,8 @@ export enum NotificationPermission {
 export interface PushNotificationPayload {
     title: string;
     message: string;
-    type?: NotificationType;
-    link?: string;
+    type: NotificationType;
+    link: string | null;
 }
 
 export enum UserAccessibleNotificationsDocument {
