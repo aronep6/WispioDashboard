@@ -160,7 +160,7 @@ class EditorService extends Core {
                 records: updatedRealtimeOutputs,
             });
 
-            await this.updateLastUpdateTaskField(taskId);
+            await this.updateLastUpdateTaskFieldToNow(taskId);
         } catch (error: any) {
             console.log('Error updating document: ', error);
         }

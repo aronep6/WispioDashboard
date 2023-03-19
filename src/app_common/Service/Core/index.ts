@@ -11,6 +11,7 @@ import {
     doc,
     getDoc,
     getDocs,
+    serverTimestamp,
 } from "firebase/firestore";
 
 import {
@@ -135,15 +136,14 @@ class Core {
         }
     }
 
-    protected updateLastUpdateTaskField = async (
+    protected updateLastUpdateTaskFieldToNow = async (
         taskId: string, 
-        updateDate?: Date
     ): Promise<void> => {
         const docRef = this.getDocumentReference(UserAccessibleCollection.Tasks, taskId);
 
         try {
             await updateDoc(docRef, {
-                lastUpdate: updateDate || new Date(),
+                lastUpdate: serverTimestamp(),
             });
         } catch (error) {
             this.logError(error);
