@@ -1,16 +1,13 @@
-import { Fragment, useMemo, useState } from 'react';
 import type { NavigationLink } from './interfaces';
-
+import { Fragment, useMemo, useState } from 'react';
 // Icons & UI
 import { Dialog, Transition } from '@headlessui/react'
 import { NavLink, Outlet } from 'react-router-dom';
 import { Grid, Box, List, Folder, X, Menu, Bell, Settings } from 'react-feather';
-
 // Notifications
 import { NotificationsServiceProvider } from '../../../../app_contexts/NotificationsService';
 import { NotificationsProvider } from '../../../../app_contexts/Notifications';
 import useNotifications from '../../../../app_hooks/contexts_hooks/useNotifications';
-
 import UserAccountSidebar from '../UserAccountSidebar';
 // import _logo_ from '../../../../assets/wispio_logo.webp';
 import _logo_ from '../../../../assets/wispio_logo_white_invisible_bkg.png';
@@ -26,20 +23,12 @@ const ApplicationWrapper = () => {
     { name: 'Tâches', link: '/tasks', icon: List, badgeCount: null },
     { name: 'Fichiers', link: '/files', icon: Folder, badgeCount: null },
     { name: 'Notifications', link: '/notifications', icon: Bell, badgeCount: unReadedNotificationsCount === 0 ? null : unReadedNotificationsCount },
-    { name: 'Mes paramètres', link: '/account-settings', icon: Settings, badgeCount: null },
+    { name: 'Paramètres', link: '/account-settings', icon: Settings, badgeCount: null },
   ]
   , [unReadedNotificationsCount]);
 
   return (
-    <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-slate-100">
-        <body class="h-full">
-        ```
-      */}
+    <Fragment>
       <div className="inter">
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog as="div" className="fixed inset-0 flex z-40 md:hidden" onClose={setSidebarOpen}>
@@ -135,9 +124,11 @@ const ApplicationWrapper = () => {
                 <img
                   className="h-8 w-auto rounded"
                   src={_logo_}
-                  alt="Wispio AI"
+                  alt={import.meta.env.VITE_APPLICATION_NAME}
                 />
-                Wispio Dashboard
+                {
+                  import.meta.env.VITE_APPLICATION_NAME
+                }
               </div>
               <nav className="mt-5 flex-1 px-2 space-y-1">
                 {navigation.map((item, index) => (
@@ -187,7 +178,7 @@ const ApplicationWrapper = () => {
 
         </div>
       </div>
-    </>
+    </Fragment>
   )
 };
 
