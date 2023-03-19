@@ -21,6 +21,13 @@ const Editor = lazy(() => import('./app_components/application/Editor'));
 const Notifications = lazy(() => import('./app_components/application/Notifications'));
 const AccountSettings = lazy(() => import('./app_components/application/AccountSettings'));
 
+// Account settings components
+import GeneralSettings from './app_components/application/AccountSettings/components/GeneralSettings';
+import NotificationsSettings from './app_components/application/AccountSettings/components/Notifications';
+import SecuritySettings from './app_components/application/AccountSettings/components/Security';
+import BillingSettings from './app_components/application/AccountSettings/components/Billing';
+import ServicesSettings from './app_components/application/AccountSettings/components/Services';
+
 
 export default function App() {
   return <Fragment>
@@ -36,7 +43,13 @@ export default function App() {
             <Route path=':projectId' element={<ProjectEditor />} />
           </Route>
           <Route path='notifications' element={<Notifications />} />
-          <Route path='account-settings' element={<AccountSettings />} />
+          <Route path='account-settings' element={<AccountSettings />}>
+            <Route path='overview' element={<GeneralSettings />} />
+            <Route path='notifications' element={<NotificationsSettings />} />
+            <Route path='security' element={<SecuritySettings />} />
+            <Route path='billing' element={<BillingSettings />} />
+            <Route path='services' element={<ServicesSettings />} />
+          </Route>
         </Route>
 
         <Route path="/auth" element={<Suspense fallback={<Loading /> }><AuthOutletWrapper /></Suspense>}>
