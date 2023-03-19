@@ -54,7 +54,7 @@ const ForgotPassword = () => {
         if (forgot_password_form_email_ref.current) {
             forgot_password_form_email_ref.current.focus();
         }
-    }, []);
+    }, [globalError]);
 
     return <AuthWrapper
         title="Mot de passe oublié"

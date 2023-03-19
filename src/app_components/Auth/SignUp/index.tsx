@@ -75,7 +75,7 @@ const SignUp = () => {
         if (signup_form_first_name_ref.current) {
             signup_form_first_name_ref.current.focus();
         }
-    }, []);
+    }, [globalError]);
 
     return <AuthWrapper
         title="Bienvenue sur Wispio 😊"

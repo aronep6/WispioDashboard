@@ -2,11 +2,10 @@ import { SecondaryButton, SubmitPrimaryButton } from "../../../app_atomic/Button
 import { useEffect, useState, useRef } from "react";
 
 import AuthWrapper from "../layout";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import useUserSession from "../../../app_hooks/contexts_hooks/useUserSession";
 import useAuth from "../../../app_hooks/contexts_hooks/useAuth";
-
+import useUserSession from "../../../app_hooks/contexts_hooks/useUserSession";
 import { InputBlock } from "../../../app_atomic/Input";
 
 // Form validation schema and deps
@@ -15,10 +14,10 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AppRoutes } from "../../../app_common/interfaces/AppRoutes";
 
+
 const inDev = !import.meta.env.PROD;
 
 const SignIn = () => {
-    let navigate = useNavigate();
     const auth = useAuth();
     const user = useUserSession();
 
@@ -33,8 +32,8 @@ const SignIn = () => {
         const code = params.get('code');
 
         if (code) {
-            if (code === 'claims_disrupt') {
-                setGlobalError("Vous devez vous connecter avant de consulter cette page");
+            if (code === 'claims-disrupt') {
+                setGlobalError("Vous devez vous connecter avant de pouvoir accéder à Dashboard");
             }
         }
     }, []);
@@ -99,11 +98,11 @@ const SignIn = () => {
         if (signin_form_email_ref.current) {
             signin_form_email_ref.current.focus();
         }
-    }, []);
+    }, [globalError]); // We scope on global error for automatically put the focus if the error is updated
 
     return <AuthWrapper
-        title="Se connecter à Wispio"
-        titleDescription="Connectez-vous à votre compte pour commencer à utiliser les outils Wispio."
+        title="Se connecter à Dashboard"
+        titleDescription={`Connectez-vous à votre compte pour commencer à utiliser ${ import.meta.env.VITE_APPLICATION_NAME }.`}
         description="L'authentification est nécessaire pour accéder à votre compte Wispio."
         isLoading={isLoading}
         returnLink="/"
