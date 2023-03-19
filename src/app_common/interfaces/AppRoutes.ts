@@ -7,5 +7,5 @@ export enum AppRoutes {
     NotFound = '*',
     Loading = '/loading',
 
-    AccountSettings = '/account/settings',
+    AccountSettings = '/account-settings/overview',
 };
