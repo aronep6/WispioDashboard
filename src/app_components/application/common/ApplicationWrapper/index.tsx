@@ -4,7 +4,7 @@ import type { NavigationLink } from './interfaces';
 // Icons & UI
 import { Dialog, Transition } from '@headlessui/react'
 import { NavLink, Outlet } from 'react-router-dom';
-import { Grid, Box, List, Folder, X, Menu, Bell } from 'react-feather';
+import { Grid, Box, List, Folder, X, Menu, Bell, Settings } from 'react-feather';
 
 // Notifications
 import { NotificationsServiceProvider } from '../../../../app_contexts/NotificationsService';
@@ -25,7 +25,8 @@ const ApplicationWrapper = () => {
     { name: 'Éditeur', link: '/editor', icon: Box, badgeCount: null },
     { name: 'Tâches', link: '/tasks', icon: List, badgeCount: null },
     { name: 'Fichiers', link: '/files', icon: Folder, badgeCount: null },
-    { name: 'Notifications', link: '/notifications', icon: Bell, badgeCount: unReadedNotificationsCount === 0 ? null : unReadedNotificationsCount }
+    { name: 'Notifications', link: '/notifications', icon: Bell, badgeCount: unReadedNotificationsCount === 0 ? null : unReadedNotificationsCount },
+    { name: 'Mes paramètres', link: '/account-settings', icon: Settings, badgeCount: null },
   ]
   , [unReadedNotificationsCount]);
 

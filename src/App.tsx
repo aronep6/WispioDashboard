@@ -19,6 +19,7 @@ const Files = lazy(() => import('./app_components/application/Files'));
 const Tasks = lazy(() => import('./app_components/application/Tasks'));
 const Editor = lazy(() => import('./app_components/application/Editor'));
 const Notifications = lazy(() => import('./app_components/application/Notifications'));
+const AccountSettings = lazy(() => import('./app_components/application/AccountSettings'));
 
 
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
             <Route path=':projectId' element={<ProjectEditor />} />
           </Route>
           <Route path='notifications' element={<Notifications />} />
+          <Route path='account-settings' element={<AccountSettings />} />
         </Route>
 
         <Route path="/auth" element={<Suspense fallback={<Loading /> }><AuthOutletWrapper /></Suspense>}>
