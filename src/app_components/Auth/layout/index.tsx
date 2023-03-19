@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import type { AuthLayoutProps } from "./interfaces";
 
 import _transparent_logo_ from '../../../assets/wispio_logo_white_invisible_bkg.png';
@@ -7,12 +7,9 @@ import _block_logo_ from '../../../assets/wispio_logo.webp';
 import { Link } from 'react-router-dom';
 import { PrimaryTitle } from '../../../app_atomic/Title';
 import { DangerPrimaryButton, ReturnButton } from '../../../app_atomic/Button';
-
 import { AlertTriangle, ChevronLeft } from 'react-feather';
 import defaultIconSet from "../../../app_common/interfaces/DefaultIconsSet";
-
 import useWebTitle from "../../../app_hooks/useWebTitle";
-
 import "./style.css";
 
 const AuthWrapper = ({
@@ -27,30 +24,39 @@ const AuthWrapper = ({
     setError
 }: AuthLayoutProps) => {
 
-    useWebTitle(`Wispio AI - ${title}`);
+    useWebTitle(`${ import.meta.env.VITE_APPLICATION_NAME } - ${title}`);
+
+    useEffect(() => {
+        if (!error) return;
+
+        const timeout = setTimeout(() => {
+            setError(null);
+        }, 6500);
+
+        return () => clearTimeout(timeout);
+    }, [error]);
 
     return <Fragment>
         <div className='
             bg-white dark:bg-stone-900 duration-150 inter
             sm:bg-gradient-to-br from-slate-200 to-slate-300
-            relative min-h-screen pt-4 sm:py-14'>
+            relative min-h-screen pt-4 sm:py-12'>
 
             <section className="w-full auth-wrapper-ui-agent relative
-                flex flex-col md:grid md:grid-cols-2 sm:rounded-xl gap-1
+                flex flex-col md:grid md:grid-cols-2 sm:rounded-xl
                 max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto
                 overflow-hidden
                 duration-150
-                z-30 bg-white dark:bg-stone-900 modal-animation sm:shadow md:shadow-xl shadow-slate-500/40"
+                z-30 bg-white dark:bg-stone-900 modal-animation sm:shadow md:shadow-md shadow-slate-500/40"
             >
                 {
-                    isLoading && <div className="flex inset-0 rounded-lg absolute flex-col text-indigo-700 inter text-lg font-medium items-center justify-center w-full backdrop-blur-2xl duration-300">
+                    isLoading && <div className="flex z-50 inset-0 rounded-lg absolute flex-col text-indigo-700 inter text-lg font-medium items-center justify-center w-full backdrop-blur-2xl duration-300">
                         <div className="animate-spin rounded-full mb-4 h-12 w-12 border-b-2 border-indigo-600 dark:border-gray-100"></div>
                         {loadingMessage !== "" ? loadingMessage : null}
                     </div>
                 }
 
                 <div className="auth-wrapper-ui hidden md:flex bg-gradient-to-b from-indigo-600 to-indigo-800 flex-col justify-between select-none p-8">
-
 
                     <div className="flex flex-col gap-5 text-white">
                         <Link to={returnLink}>
@@ -74,7 +80,7 @@ const AuthWrapper = ({
 
                 </div>
 
-                <div className="flex flex-col gap-4 py-6 px-6 sm:py-8 sm:pr-5 md:pr-6">
+                <div className="flex flex-col gap-4 py-6 px-6 sm:py-8 sm:pr-5 md:pl-7 md:pr-6 relative overflow-hidden">
                     <div className="flex flex-col justify-center gap-2 relative">
                         <Link to={returnLink} className="absolute md:hidden top-0 left-0">
                             <ReturnButton icon={<ChevronLeft {...defaultIconSet} />} />
@@ -87,29 +93,29 @@ const AuthWrapper = ({
                             {title}
                         </PrimaryTitle>
 
-                        { description && <p className="block md:hidden inter font-medium text-gray-600 dark:text-gray-400 text-center max-w-[18em] mb-1.5 text-sm mx-auto leading-tight">
-                            { description }
-                        </p> }
+                        {description && <p className="block md:hidden inter font-medium text-gray-600 dark:text-gray-400 text-center max-w-[18em] mb-1.5 text-sm mx-auto leading-tight">
+                            {description}
+                        </p>}
 
                     </div>
                     <div>
                         {children}
                     </div>
-                </div>
+                    {
+                        error && <div className="flex inset-0 rounded-lg absolute border-red-600 flex-col text-red-700 inter text-lg font-medium items-center justify-center w-full backdrop-blur-2xl duration-300">
+                            <AlertTriangle className="mb-4 animate-pulse" size={40} strokeWidth={1.2} />
+                            <div className="text-center max-w-xs leading-tight">
+                                {error}
+                            </div>
 
-
-                {
-                    error && <div className="flex inset-0 rounded-lg absolute border-red-600 flex-col text-red-700 inter text-lg font-medium items-center justify-center w-full backdrop-blur-2xl duration-300">
-                        <AlertTriangle className="mb-4 animate-pulse" size={40} />
-                        <div className="text-center max-w-xs leading-tight">
-                            {error}
+                            <DangerPrimaryButton add="mt-4" action={() => setError(null)}>
+                                Réessayer
+                            </DangerPrimaryButton>
+                            <div className="animation-error-timeout-bar inset-x-0 bg-red-600 h-2 bottom-0 absolute">
+                            </div>
                         </div>
-
-                        <DangerPrimaryButton add="mt-4" action={() => setError(null)}>
-                            Réessayer
-                        </DangerPrimaryButton>
-                    </div>
-                }
+                    }
+                </div>
 
             </section>
         </div>

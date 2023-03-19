@@ -6,6 +6,6 @@ export interface AuthLayoutProps {
     children: React.ReactNode;
     isLoading?: boolean;
     loadingMessage?: string;
-    error?: any;
+    error: string | null;
     setError: (error: any) => void;
 }

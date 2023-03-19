@@ -15,3 +15,16 @@
         opacity: 1;
     }
 }
+
+.animation-error-timeout-bar{
+    animation: errorBarAnimation 6.5s linear 0s 1 normal forwards;
+}
+
+@keyframes errorBarAnimation {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}
