@@ -1,4 +1,6 @@
 import SingleSettingPageWrapper from "../SingleSettingPageWrapper";
+import SecurityInformations from "./components/SecurityInformations";
+import UpdatePassword from "./components/UpdatePassword";
 
 const pageProps = {
     title: "Sécurité",
@@ -7,7 +9,8 @@ const pageProps = {
 
 const SecuritySettings = () => {
     return <SingleSettingPageWrapper {...pageProps}>
-
+        <SecurityInformations />
+        <UpdatePassword />
     </SingleSettingPageWrapper>
 };
 
