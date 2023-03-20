@@ -22,7 +22,8 @@ const Notifications = lazy(() => import('./app_components/application/Notificati
 const AccountSettings = lazy(() => import('./app_components/application/AccountSettings'));
 
 // Account settings components
-import GeneralSettings from './app_components/application/AccountSettings/components/GeneralSettings';
+import NoAccountSettingsOpened from './app_components/application/AccountSettings/components/NoAccountSettingsOpened';
+import Overview from './app_components/application/AccountSettings/components/Overview';
 import NotificationsSettings from './app_components/application/AccountSettings/components/Notifications';
 import SecuritySettings from './app_components/application/AccountSettings/components/Security';
 import BillingSettings from './app_components/application/AccountSettings/components/Billing';
@@ -44,7 +45,8 @@ export default function App() {
           </Route>
           <Route path='notifications' element={<Notifications />} />
           <Route path='account-settings' element={<AccountSettings />}>
-            <Route path='overview' element={<GeneralSettings />} />
+            <Route index element={<NoAccountSettingsOpened />} />
+            <Route path='overview' element={<Overview />} />
             <Route path='notifications' element={<NotificationsSettings />} />
             <Route path='security' element={<SecuritySettings />} />
             <Route path='billing' element={<BillingSettings />} />

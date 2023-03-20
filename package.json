@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && GENERATE_SOURCEMAP=false vite build",
+    "build": "tsc && vite --config vite.config.js build",
     "preview": "vite preview",
     "ts-check": "tsc --noEmit"
   },

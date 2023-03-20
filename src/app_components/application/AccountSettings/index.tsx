@@ -28,13 +28,15 @@ const AccountSettings = () => {
                     }
                 />
             </PageWrapper>
-            :
-            <PageWrapper {...pageProps}>
-                <div className="flex flex-row h-full">
-                    <AccountSettingsNavigation />
-                    <Outlet />
-                </div>
-            </PageWrapper>
+                :
+                <PageWrapper {...pageProps}>
+                    <div className="flex flex-row h-full">
+                        <AccountSettingsNavigation />
+                        <div className="relative h-full w-full">
+                            <Outlet />
+                        </div>
+                    </div>
+                </PageWrapper>
         }
     </Fragment>
 

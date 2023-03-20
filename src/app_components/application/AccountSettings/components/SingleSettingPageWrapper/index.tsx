@@ -12,7 +12,7 @@ const SingleSettingPageWrapper = ({
   useWebTitle(`${title} - Paramètres - ${ import.meta.env.VITE_APPLICATION_NAME }`);
 
   return (
-    <div className="flex flex-col w-full h-full p-4 opening-page-wrapper">
+    <div className="flex flex-col w-full h-full p-4 opening-page-wrapper gap-2">
       <Card add="flex flex-col gap-1">
         <SecondaryTitle>
           { title }
@@ -21,9 +21,11 @@ const SingleSettingPageWrapper = ({
           { description }
         </p>
       </Card>
-      {
-        children
-      }
+      <div className="flex flex-col gap-2">
+        {
+          children
+        }
+      </div>
     </div>
   );
 };
