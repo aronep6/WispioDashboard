@@ -22,7 +22,7 @@ interface SubmitButtonProps {
 }
 
 const PrimaryButton = ({ children, add, action, disabled, useMargin = true }: ButtonProps) => {
-    return <button onClick={ action } disabled={disabled}
+    return <button onClick={ action } disabled={disabled} title={disabled ? "Action non disponible" : ""}
         className={`rounded-md grotesk tracking-tighter py-2.5 px-4 font-semibold border-solid border-2 border-indigo-600 dark:border-indigo-500 text-white text-sm md:text-base disabled:opacity-25 disabled:text-indigo-100
         bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark-hover:bg-indigo-700 duration-100 focus:ring focus:ring-indigo-300 ${ useMargin && "m-1" } disabled:cursor-not-allowed ${add}`}>
         {children}
@@ -30,14 +30,14 @@ const PrimaryButton = ({ children, add, action, disabled, useMargin = true }: Bu
 };
 
 const SubmitPrimaryButton = ({ children, add, disabled, useMargin = true }: SubmitButtonProps) => {
-    return <input type="submit" disabled={disabled} value={children}
+    return <input type="submit" disabled={disabled} value={children} title={disabled ? "Action non disponible" : ""}
         className={`rounded-md grotesk tracking-tighter py-2.5 px-4 font-semibold border-solid border-2 border-indigo-600 dark:border-indigo-500 text-white text-sm md:text-base disabled:opacity-25 disabled:text-indigo-100 cursor-pointer
         bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark-hover:bg-indigo-700 duration-100 focus:ring focus:ring-indigo-300 ${ useMargin && "m-1" } disabled:cursor-not-allowed ${add}`}>
     </input>
 };
 
 const SecondaryButton = ({ children, add, action, disabled, useMargin = true }: ButtonProps) => {
-    return <button onClick={ action } disabled={disabled}
+    return <button onClick={ action } disabled={disabled} title={disabled ? "Action non disponible" : ""}
         className={`rounded-md grotesk tracking-tighter py-2.5 px-4 font-semibold border-solid border-2 border-indigo-600 text-sm md:text-base disabled:opacity-25
         text-indigo-600 hover:bg-indigo-200 duration-100 focus:ring focus:ring-indigo-300 ${ useMargin && "m-1" } ${add}`}>
         { children }
@@ -45,7 +45,7 @@ const SecondaryButton = ({ children, add, action, disabled, useMargin = true }: 
 };
 
 const TertiaryButton = ({ children, add, action, disabled }: ButtonProps) => {
-    return <button onClick={ action } disabled={disabled}
+    return <button onClick={ action } disabled={disabled} title={disabled ? "Action non disponible" : ""}
         className={`rounded-md grotesk tracking-tighter py-2.5 px-4 font-semibold text-white-600 text-sm md:text-base hover:text-indigo-600
         duration-100 focus:outline-none outline-none mx-1 disabled:cursor-not-allowed ${add}`}>
         {children}
@@ -53,7 +53,7 @@ const TertiaryButton = ({ children, add, action, disabled }: ButtonProps) => {
 };
 
 const DangerPrimaryButton = ({ children, add, action, disabled, useMargin = true }: ButtonProps) => {
-    return <button onClick={ action } disabled={disabled}
+    return <button onClick={ action } disabled={disabled} title={disabled ? "Action non disponible" : ""}
         className={`rounded-md grotesk tracking-tighter py-2.5 px-4 font-semibold text-white text-sm md:text-base
         bg-red-600 hover:bg-red-700 duration-100 focus:ring focus:ring-red-300 ${ useMargin && "m-1" } ${add}`}>
         {children}
@@ -61,7 +61,7 @@ const DangerPrimaryButton = ({ children, add, action, disabled, useMargin = true
 };
 
 const DangerSecondaryButton = ({ children, add, action, disabled, useMargin = true }: ButtonProps) => {
-    return <button onClick={ action } disabled={disabled}
+    return <button onClick={ action } disabled={disabled} title={disabled ? "Action non disponible" : ""}
         className={`rounded-md grotesk tracking-tighter py-2.5 px-4 font-semibold bg-red-100 text-sm md:text-base
         text-red-600 hover:bg-red-200 duration-100 focus:ring focus:ring-red-300 ${ useMargin && "m-1" } ${add}`}>
         { children }

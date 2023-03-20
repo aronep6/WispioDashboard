@@ -1,7 +1,7 @@
 // import React from "react";
 import { HelpCircle, Loader } from "react-feather";
 import { Paragraph } from "./Paragraph";
-import { SecondaryTitle } from "./Title";
+import { SecondaryTitle, TertiaryTitle } from "./Title";
 
 interface CardProps {
     children: JSX.Element | JSX.Element[];
@@ -20,8 +20,11 @@ const Card = ({
     modal,
 }: CardProps) => {
     return <div className={`relative overflow-hidden rounded-md bg-white shadow-sm p-3 md:p-4 ${!modal && "shadow-md shadow-slate-200 border"} ${ border && "border" } border-solid ${add}`}>
-        { isLoading && <div className="absolute cursor-wait duration-150 opacity-75 over-all h-full w-full inset-0 flex items-center justify-center">
-            <Loader className="h-8 w-8 animate-spin"/>
+        { isLoading && <div 
+            title='Chargement des données...'
+            className="absolute z-20 bg-white cursor-wait duration-150 opacity-75 over-all h-full w-full inset-0 flex items-center justify-center">
+            <div className="h-10 w-10 animate-spin border-b-2 border-indigo-600 rounded-full">
+            </div>
         </div> }
         {children}
     </div>
@@ -48,13 +51,13 @@ const InformativeCard = ({
         <div className="flex flex-row gap-3">
             <HelpCircle className="h-6 w-6 text-scooter-500 my-0.5 shrink-0"></HelpCircle>
 
-            <div className="flex flex-col items-start text-left gap-1">
-                <SecondaryTitle add="text-indigo-800">
+            <div className="flex flex-col items-start text-indigo-800 text-left gap-1">
+                <h4 className="font-bold">
                     {title}
-                </SecondaryTitle>
-                <Paragraph>
-                    { description }
-                </Paragraph>
+                </h4>
+                <p className="text-sm">
+                    {description}
+                </p>
             </div>
         </div>
     </CardFilled>
