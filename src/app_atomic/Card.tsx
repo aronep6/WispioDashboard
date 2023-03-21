@@ -10,6 +10,7 @@ interface CardProps {
     isLoading?: boolean;
     background?: string;
     modal?: boolean;
+    useShadow?: boolean;
 }
 
 const Card = ({ 
@@ -33,9 +34,10 @@ const Card = ({
 const CardFilled = ({ 
     children, 
     add, 
-    background
+    background,
+    useShadow = true,
 }: CardProps) => {
-    return <div className={`rounded-md shadow-md p-3 md:p-4 ${add} ${background}`}>
+    return <div className={`rounded-md ${ useShadow && "shadow-md" } p-3 md:p-4 ${add} ${background}`}>
         {children}
     </div>
 }
@@ -47,11 +49,13 @@ const InformativeCard = ({
     title: string;
     description: string;
 }) => {
-    return <CardFilled background="bg-indigo-50 border border-indigo-500 text-indigo-700">
+    return <CardFilled 
+        useShadow={false}
+        background="bg-indigo-50 border border-indigo-400 text-indigo-700 h-full">
         <div className="flex flex-row gap-3">
             <HelpCircle className="h-6 w-6 text-scooter-500 my-0.5 shrink-0"></HelpCircle>
 
-            <div className="flex flex-col items-start text-indigo-800 text-left gap-1">
+            <div className="flex flex-col items-start text-indigo-700 text-left gap-1">
                 <h4 className="font-bold">
                     {title}
                 </h4>
