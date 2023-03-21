@@ -4,6 +4,8 @@ import { Outlet } from "react-router-dom";
 import PageWrapper from "../common/PageWrapper"
 import PageGenericPoster from "../../PagePoster/PageGenericDisplay";
 import AccountSettingsNavigation from "./components/Navigation";
+import { AccountSettingsProvider } from "../../../app_contexts/AccountSettings";
+import { AccountSettingsServiceProvider } from "../../../app_contexts/AccountSettingsService";
 
 const pageProps = {
     pageTitle: "Paramètres du compte",
@@ -29,14 +31,19 @@ const AccountSettings = () => {
                 />
             </PageWrapper>
                 :
-                <PageWrapper {...pageProps}>
-                    <div className="flex flex-row h-full">
-                        <AccountSettingsNavigation />
-                        <div className="relative h-full w-full">
-                            <Outlet />
-                        </div>
-                    </div>
-                </PageWrapper>
+                <AccountSettingsServiceProvider>
+                    <AccountSettingsProvider>
+                        <PageWrapper {...pageProps}>
+                            <div className="flex flex-row h-full">
+                                <AccountSettingsNavigation />
+                                <div className="relative h-full w-full">
+                                    <Outlet />
+                                </div>
+                            </div>
+                        </PageWrapper>
+                    </AccountSettingsProvider>
+                </AccountSettingsServiceProvider>
+
         }
     </Fragment>
 

@@ -16,7 +16,7 @@ const SettingsSectionGroup = ({
             <TertiaryTitle>
                 {title}
             </TertiaryTitle>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2.5">
                 {children}
             </div>
         </Card>

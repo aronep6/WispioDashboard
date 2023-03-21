@@ -4,7 +4,7 @@ import useUserSession from "../../../../../../app_hooks/contexts_hooks/useUserSe
 import InformationTable, { SingleInformationTableRowInterface } from "../../../../../common/InformationTable";
 import SettingsSectionGroup from "../../../common/components/SettingsSectionGroup";
 
-const SecurityInformations = () => {
+const PasswordInformations = () => {
     const user = useUserSession();
 
     const lastPasswordEditTimestamp = useMemo(() => {
@@ -15,13 +15,8 @@ const SecurityInformations = () => {
     const readableTableDatas = useMemo(() => {
         return [
             {
-                key: "Dernière connexion",
-                value: user?.metadata?.lastSignInTime ? dateFromNow(
-                    new Date(user?.metadata?.lastSignInTime)
-                ) : "Non renseigné",
-            }, {
-                key: "Adresse IP de la dernière connexion",
-                value: "Donnée indisponible pour le moment",
+                key: "Mot de passe",
+                value: "****************",
             }, {
                 key: "Dernière modification du mot de passe",
                 value: lastPasswordEditTimestamp ? dateFromNow(
@@ -31,9 +26,9 @@ const SecurityInformations = () => {
         ] as SingleInformationTableRowInterface[];
     }, [user, lastPasswordEditTimestamp]);
 
-    return <SettingsSectionGroup title="Informations de sécurité" isLoading={!user}>
+    return <SettingsSectionGroup title="Mot de passe" isLoading={!user}>
         <InformationTable table={readableTableDatas} />
     </SettingsSectionGroup>
 };
 
-export default SecurityInformations;
+export default PasswordInformations;
