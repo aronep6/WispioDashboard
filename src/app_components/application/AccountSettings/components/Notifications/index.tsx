@@ -1,7 +1,7 @@
 import SingleSettingPageWrapper from "../SingleSettingPageWrapper";
 
 const pageProps = {
-    title: "Notifications",
+    title: "Gestion des notifications",
     description: "Gérez vos préférences de notifications.",
 };
 
