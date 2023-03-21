@@ -1,7 +1,7 @@
 import SingleSettingPageWrapper from "../SingleSettingPageWrapper";
 
 const pageProps = {
-    title: "Services",
+    title: "Paramètres des services",
     description: "Gérez vos services et vos configurations externes.",
 };
 
