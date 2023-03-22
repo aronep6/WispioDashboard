@@ -16,7 +16,7 @@ class NotificationsService extends Core {
     public allowedToSendNotifications: boolean;
     constructor() {
         super();
-        this.init();
+        // this.init();
         this.permission = undefined;
         this.allowedToSendNotifications = false;
         this.notification_logo = _logo_;

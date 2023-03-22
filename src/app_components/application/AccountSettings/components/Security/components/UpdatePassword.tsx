@@ -22,21 +22,33 @@ const UpdatePassword = () => {
     });
 
     const handlePasswordEdit = async (data: FieldValues) => {
+        const event_scope = "Mot de passe";
+
         const {
             password_update, 
             password_update_retype, 
         } = data as UpdatePasswordFormDataType;
 
         try {
-            await ac_service._security_updatePassword(password_update, password_update_retype)
+            const success_message = await ac_service._security_updatePassword(password_update, password_update_retype)
+
+            const _success_event_: EventNotificationInterface = {
+                title: event_scope,
+                message: success_message,
+                type: EventNotificationType.Error,
+            }
+
+            ac_context.pushEventNotification(_success_event_);
+
+            window.location.reload();
         } catch (error: any) {
-            const _event_ : EventNotificationInterface = {
-                title: "Mot de passe",
+            const _error_event_ : EventNotificationInterface = {
+                title: event_scope,
                 message: error.message as string,
                 type: EventNotificationType.Error,
             };
 
-            ac_context.pushEventNotification(_event_);
+            ac_context.pushEventNotification(_error_event_);
         }
     };
 
