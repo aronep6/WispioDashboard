@@ -3,6 +3,7 @@ import type { Icon } from "react-feather";
 
 export enum AccountSettingsNavigationLink {
     Overview = "/account-settings/overview",
+    MyProfile = "/account-settings/my-profile",
     Security = "/account-settings/security",
     Notifications = "/account-settings/notifications",
     Billing = "/account-settings/billing",

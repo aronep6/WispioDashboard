@@ -1,4 +1,4 @@
-import { Bell, Box, CreditCard, Hexagon, Shield } from "react-feather";
+import { Bell, Box, CreditCard, Hexagon, Shield, User } from "react-feather";
 import { 
     AccountSettingsNavigationLink,
     type AccountSettingsLinksInterface
@@ -10,8 +10,12 @@ export const accountSettingsLinks: AccountSettingsLinksInterface[] = [
         link: AccountSettingsNavigationLink.Overview,
         icon: Hexagon,
         isAvailable: true,
-    },
-    {
+    },{
+        name: "Mon profil",
+        link: AccountSettingsNavigationLink.MyProfile,
+        icon: User,
+        isAvailable: true,
+    }, {
         name: "Sécurité & confidentialité",
         link: AccountSettingsNavigationLink.Security,
         icon: Shield,
