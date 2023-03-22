@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { type Auth, getAuth } from "firebase/auth";
+import { getAuth, type Auth, type User } from "firebase/auth";
 import { 
     Firestore, 
     DocumentData, 
@@ -55,6 +55,10 @@ class Core {
 
     protected logError = (error: any): void => {
         console.warn("An error occured at Wispio Service level: ", error);
+    }
+
+    protected getCurrentUser = (): User => {
+        return this.auth.currentUser as User;
     }
 
     protected getCurrentUserID = (): string => {
