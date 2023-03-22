@@ -35,7 +35,7 @@ const UpdatePassword = () => {
             const _success_event_: EventNotificationInterface = {
                 title: event_scope,
                 message: success_message,
-                type: EventNotificationType.Error,
+                type: EventNotificationType.Success,
             }
 
             ac_context.pushEventNotification(_success_event_);
