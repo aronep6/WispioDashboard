@@ -40,7 +40,7 @@ export interface OnCallFunctionRequest {
 
 export interface OnCallFunctionResponse<T> {
     success: boolean
-    data: T | null,
+    data: T | undefined,
     error: Error | null,
     errorCode?: WebErrorCode
 }

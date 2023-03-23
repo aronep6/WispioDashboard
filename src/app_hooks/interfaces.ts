@@ -1,4 +1,5 @@
 import type { DocumentData, DocumentReference } from 'firebase/firestore';
+import type { OnCallFunctionResponse } from '../app_common/Service/Core/interfaces';
 
 export type IsLoadingType = boolean;
 export type DataType = undefined;
@@ -18,6 +19,13 @@ export interface CommonResponseDTO<T> {
 
 export interface ServiceFetchProps<T> {
     method: (payload?: any) => Promise<CommonResponseDTO<T>>,
+    payload?: any | undefined,
+    defaultLoadingStatus?: boolean
+    doCheckBeforeFetch?: () => boolean
+}
+
+export interface StrawberryFetchProps<T> {
+    method: (payload?: any) => Promise<OnCallFunctionResponse<T>>,
     payload?: any | undefined,
     defaultLoadingStatus?: boolean
     doCheckBeforeFetch?: () => boolean
