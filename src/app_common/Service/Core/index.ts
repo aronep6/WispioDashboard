@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, type Auth, type User } from "firebase/auth";
+import { getFunctions, httpsCallable, connectFunctionsEmulator, type Functions, HttpsCallableOptions, HttpsCallableResult } from "firebase/functions";
 import { 
     Firestore, 
     DocumentData, 
@@ -19,7 +20,9 @@ import {
     FirebaseRootCollection,
     type MultipleDocumentsResponse,
     type FirebaseServiceConfiguration,
-    UserAccessibleCollection
+    UserAccessibleCollection,
+    CallableFunctions,
+    OnCallFunctionResponse
 } from "./interfaces";
 
 const service_config: FirebaseServiceConfiguration = {
@@ -28,7 +31,8 @@ const service_config: FirebaseServiceConfiguration = {
     projectId: "wispiostaging",
     storageBucket: "wispiostaging.appspot.com",
     messagingSenderId: "178535508231",
-    appId: "1:178535508231:web:056f27013f06d5baa5bda2"
+    appId: "1:178535508231:web:056f27013f06d5baa5bda2",
+    region_functions_emplacement: "europe-west1",
 };
 
 // App initialization
@@ -40,6 +44,9 @@ const db = initializeFirestore(app, firebaseDatabaseConfiguration);
 // Authentification initialization and configuration
 const auth = getAuth(app);
 
+// Functions initialization
+const functions = getFunctions(app, service_config.region_functions_emplacement);
+
 // Sleep function
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -47,10 +54,12 @@ class Core {
     db: Firestore;
     auth: Auth;
     sleep: (ms: number) => Promise<unknown>;
+    functions: Functions;
     constructor() {
         this.db = db;
         this.auth = auth;
         this.sleep = sleep;
+        this.functions = functions;
     }
 
     protected logError = (error: any): void => {
@@ -153,6 +162,31 @@ class Core {
             this.logError(error);
         }
     }
+
+    private async httpCallableBuilder (
+        functionName: CallableFunctions,
+        payload?: any,
+    ): Promise<HttpsCallableResult> {
+        const function_instance = httpsCallable(this.functions, functionName);
+
+        try {
+            return await function_instance(payload ? payload : {});
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    };
+
+    protected async fetchStrawberryAPI<T>(
+        functionName: CallableFunctions,
+        payload?: any,
+    ): Promise<OnCallFunctionResponse<T>> {
+        try {
+            return await this.httpCallableBuilder(functionName, payload) as OnCallFunctionResponse<T>;
+        } catch (error: any) {
+            this.logError(error);
+            throw new Error(error.message);
+        }
+    };
 }
 
 export default Core;

@@ -7,6 +7,11 @@ export interface FirebaseServiceConfiguration {
     storageBucket: string;
     messagingSenderId: string;
     appId: string;
+    region_functions_emplacement: string;
+}
+
+export enum WebErrorCode {
+    InternalServiceError = 500,
 }
 
 export const firebaseDatabaseConfiguration = {
@@ -22,6 +27,22 @@ export enum UserAccessibleCollection {
     Tasks = "tasks",
     Outputs = "outputs",
     Notifications = "notifications",
+}
+
+export enum CallableFunctions {
+    GetBillingInformations = "getBillingInformations"
+}
+
+export interface OnCallFunctionRequest {
+    data: any,
+    context: any,
+}
+
+export interface OnCallFunctionResponse<T> {
+    success: boolean
+    data: T | null,
+    error: Error | null,
+    errorCode?: WebErrorCode
 }
 
 export const FirebaseRootCollection = "application" as const;
