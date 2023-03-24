@@ -1,6 +1,7 @@
 import Core from "../../Core";
 import { updatePassword } from "firebase/auth";
 import getFirebaseError from "./functions";
+import { CallableFunctions } from "../../Core/interfaces";
 class AccountSettingsService extends Core {
     constructor() {
         super();
@@ -19,6 +20,15 @@ class AccountSettingsService extends Core {
         } catch (error: any) {
             const firebaseReadableError = getFirebaseError(error.message);
             throw new Error(firebaseReadableError);
+        }
+    }
+
+    // Get billing informations (This.method is calling the API to get the billing informations)
+    _billing_getBillingInformations = async (): Promise<any> => {
+        try {
+            return await this.fetchStrawberryAPI(CallableFunctions.GetBillingInformations, {})
+        } catch (error: any) {
+            throw new Error(error.message);
         }
     }
 }
