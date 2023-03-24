@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, type Auth, type User } from "firebase/auth";
-import { getFunctions, httpsCallable, connectFunctionsEmulator, type Functions, HttpsCallableOptions, HttpsCallableResult } from "firebase/functions";
+import { getFunctions, httpsCallable, connectFunctionsEmulator, type Functions, HttpsCallableResult } from "firebase/functions";
 import { 
     Firestore, 
     DocumentData, 
@@ -35,6 +35,11 @@ const service_config: FirebaseServiceConfiguration = {
     region_functions_emplacement: "europe-west1",
 };
 
+// Dev variables
+const use_local_emulators = import.meta.env.DEV;
+const _server_ip = "localhost";
+const _local_functions_port = 5001;
+
 // App initialization
 const app = initializeApp(service_config);
 
@@ -46,6 +51,12 @@ const auth = getAuth(app);
 
 // Functions initialization
 const functions = getFunctions(app, service_config.region_functions_emplacement);
+
+// Binding to local emulators (if needed)
+
+if (use_local_emulators) {
+    connectFunctionsEmulator(functions, `${_server_ip}`, _local_functions_port);
+};
 
 // Sleep function
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
