@@ -6,19 +6,22 @@ const SettingsSectionGroup = ({
     title,
     children,
     isLoading = false,
+    isError = false,
 }: {
     title: string
     children: ReactNode
     isLoading: boolean,
+    isError?: boolean,
 }) => {
     return <section>
         <Card border={true} isLoading={isLoading}>
             <TertiaryTitle>
                 {title}
             </TertiaryTitle>
-            <div className="flex flex-col gap-2.5">
+
+            { !isLoading && !isError ? <div className="flex flex-col gap-2.5">
                 {children}
-            </div>
+            </div> : <></> }
         </Card>
     </section>
 };
