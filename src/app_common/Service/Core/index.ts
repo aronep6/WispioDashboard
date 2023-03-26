@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, type Auth, type User } from "firebase/auth";
+import { type Analytics, getAnalytics, logEvent } from "firebase/analytics";
 import { getFunctions, httpsCallable, connectFunctionsEmulator, type Functions, HttpsCallableResult } from "firebase/functions";
 import { 
     Firestore, 
@@ -53,10 +54,12 @@ const auth = getAuth(app);
 const functions = getFunctions(app, service_config.region_functions_emplacement);
 
 // Binding to local emulators (if needed)
-
 if (use_local_emulators) {
     connectFunctionsEmulator(functions, `${_server_ip}`, _local_functions_port);
 };
+
+// Analytics initialization
+const analyticsProvider = getAnalytics(app);
 
 // Sleep function
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -66,11 +69,18 @@ class Core {
     auth: Auth;
     sleep: (ms: number) => Promise<unknown>;
     functions: Functions;
+    analyticsProvider: Analytics;
     constructor() {
         this.db = db;
         this.auth = auth;
         this.sleep = sleep;
         this.functions = functions;
+        this.analyticsProvider = analyticsProvider;
+    }
+
+    protected analytics = (event: any, payload: any = {}): void => {
+        if (!import.meta.env.PROD) return console.warn("Analytics are disabled in development mode");
+        return logEvent(this.analyticsProvider, event, payload);
     }
 
     protected logError = (error: any): void => {
@@ -190,9 +200,10 @@ class Core {
     protected async fetchStrawberryAPI<T>(
         functionName: CallableFunctions,
         payload?: any,
-    ): Promise<OnCallFunctionResponse<T>> {
+    ): Promise<T | undefined> {
         try {
-            return await this.httpCallableBuilder(functionName, payload) as OnCallFunctionResponse<T>;
+            const { data } = await this.httpCallableBuilder(functionName, payload) as OnCallFunctionResponse<T>;
+            return data;
         } catch (error: any) {
             this.logError(error);
             throw new Error(error.message);
