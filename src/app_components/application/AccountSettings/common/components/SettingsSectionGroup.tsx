@@ -1,5 +1,6 @@
-import type { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import { Card } from "../../../../../app_atomic/Card";
+import ErrorDisplayer from "../../../../../app_atomic/Error";
 import { TertiaryTitle } from "../../../../../app_atomic/Title";
 
 const SettingsSectionGroup = ({
@@ -18,10 +19,14 @@ const SettingsSectionGroup = ({
             <TertiaryTitle>
                 {title}
             </TertiaryTitle>
-
-            { !isLoading && !isError ? <div className="flex flex-col gap-2.5">
-                {children}
-            </div> : <></> }
+            {
+                isError ? 
+                    <ErrorDisplayer error="Une erreur est survenue lors du chargement de cette section, veuillez réessayer." />
+                    :
+                    <Fragment>
+                        { children }
+                    </Fragment>
+            }
         </Card>
     </section>
 };

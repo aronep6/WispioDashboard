@@ -1,3 +1,8 @@
+import { Fragment } from "react";
+import { Card } from "../../../../../../app_atomic/Card";
+import { Paragraph } from "../../../../../../app_atomic/Paragraph";
+import { PrimaryTitle, TertiaryTitle } from "../../../../../../app_atomic/Title";
+import { type StripeSubscription } from "../../../../../../app_common/Service/Application/AccountSettingsService/interfaces";
 import useAccountSettingsService from "../../../../../../app_hooks/contexts_hooks/useAccountSettingsService";
 import useStrawberryFetch from "../../../../../../app_hooks/useStrawberryFetch";
 import SettingsSectionGroup from "../../../common/components/SettingsSectionGroup";
@@ -5,7 +10,7 @@ import SettingsSectionGroup from "../../../common/components/SettingsSectionGrou
 const BillingDetails = () => {
     const { _billing_getBillingInformations } = useAccountSettingsService();
 
-    const { isLoading, data, error } = useStrawberryFetch({
+    const { isLoading, data, error } = useStrawberryFetch<StripeSubscription>({
         method: _billing_getBillingInformations,
     });
 
@@ -13,11 +18,18 @@ const BillingDetails = () => {
         isLoading={isLoading} 
         isError={error ? true : false}
     >
-        <div>
-            {
-                JSON.stringify(data)
-            }
-        </div>
+        <Card>
+            <TertiaryTitle>
+                Plan Premium
+            </TertiaryTitle>
+
+            <Paragraph>
+                <Fragment>
+                    Identifiant de l'abonnement : { data?.id }
+                    Renouvellement automatique : 
+                </Fragment>
+            </Paragraph>
+        </Card>
     </SettingsSectionGroup>
 };
 
