@@ -23,6 +23,7 @@ class Authentication extends Core {
     ) => {
         try {
             const user = await this.SIWEAP(this.auth, email, password);
+            this.analytics("login");
             return user;
         } catch (err) {
             throw err;
@@ -40,6 +41,7 @@ class Authentication extends Core {
         try {
             const user = await this.CUWEAP(this.auth, `${email}`, `${password}`);
             if (this.auth.currentUser) {
+                this.analytics("signup");
                 await this.updateProfile(this.auth.currentUser, { displayName });
             } else {
                 throw new Error("No user found");
