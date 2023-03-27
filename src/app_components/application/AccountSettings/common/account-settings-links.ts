@@ -10,24 +10,22 @@ export const accountSettingsLinks: AccountSettingsLinksInterface[] = [
         link: AccountSettingsNavigationLink.Overview,
         icon: Hexagon,
         isAvailable: true,
-    },{
-        name: "Mon profil",
-        link: AccountSettingsNavigationLink.MyProfile,
-        icon: User,
-        isAvailable: true,
     }, {
         name: "Sécurité & confidentialité",
         link: AccountSettingsNavigationLink.Security,
         icon: Shield,
         isAvailable: true,
-    },
-    {
+    },{
         name: "Facturation & abonnement",
         link: AccountSettingsNavigationLink.Billing,
         icon: CreditCard,
         isAvailable: true,
-    },
-    {
+    },{
+        name: "Mon profil",
+        link: AccountSettingsNavigationLink.MyProfile,
+        icon: User,
+        isAvailable: false,
+    }, {
         name: "Gestion des notifications",
         link: AccountSettingsNavigationLink.Notifications,
         icon: Bell,
