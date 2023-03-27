@@ -24,7 +24,7 @@ export interface StripeSubscription {
     customer: string;
     days_until_due: null | number;
     default_payment_method: null | any;
-    default_source: null | any;
+    default_source: string;
     default_tax_rates: any[];
     description: null | string;
     discount: null | any;
@@ -70,7 +70,7 @@ export interface StripeSubscription {
         has_more: boolean;
         url: string;
     };
-    latest_invoice: null | any;
+    latest_invoice: string;
     livemode: boolean;
     metadata: any;
     next_pending_invoice_item_invoice: null | any;
@@ -79,7 +79,43 @@ export interface StripeSubscription {
     payment_settings: {
         payment_method_options: null | any;
         payment_method_types: null | any;
-        save_default_payment_method: null | any;
+        save_default_payment_method: string;
     };
     pending_invoice_item_interval: null | any;
+    pending_setup_intent: null | any;
+    pending_update: null | any;
+    schedule: null | any;
+    start_date: number;
+    status: StripeSubscriptionStatus;
+    test_clock: null | any;
+    transfer_data: null | any;
+    trial_end: null | any;
+    trial_settings: {
+        end_behavior: {
+            missing_payment_method: string;
+        };
+    };
+    trial_start: null | any;
 };
+
+export enum StripeSubscriptionStatus {
+    Active = 'active',
+    PastDue = 'past_due',
+    Unpaid = 'unpaid',
+    Canceled = 'canceled',
+    Incomplete = 'incomplete',
+    IncompleteExpired = 'incomplete_expired',
+    Trialing = 'trialing',
+    Paused = 'paused'
+};
+
+export const stripeSubscriptionMap = new Map<StripeSubscriptionStatus, string>([
+    [StripeSubscriptionStatus.Active, 'Actif'],
+    [StripeSubscriptionStatus.PastDue, 'A échéance'],
+    [StripeSubscriptionStatus.Unpaid, 'Impayé'],
+    [StripeSubscriptionStatus.Canceled, 'Annulé'],
+    [StripeSubscriptionStatus.Incomplete, 'Incomplet'],
+    [StripeSubscriptionStatus.IncompleteExpired, 'Incomplet expiré'],
+    [StripeSubscriptionStatus.Trialing, 'En période d\'essai'],
+    [StripeSubscriptionStatus.Paused, 'En pause'],
+]);
