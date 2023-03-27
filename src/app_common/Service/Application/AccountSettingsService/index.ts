@@ -23,7 +23,7 @@ class AccountSettingsService extends Core {
         }
     }
 
-    // Get billing informations (This.method is calling the API to get the billing informations)
+    // Get billing informations (this method is calling the API to get the billing informations)
     _billing_getBillingInformations = async (): Promise<any> => {
         try {
             return await this.fetchStrawberryAPI(CallableFunctions.GetBillingInformations, {})

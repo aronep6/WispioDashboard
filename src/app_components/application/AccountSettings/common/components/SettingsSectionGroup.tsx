@@ -8,11 +8,13 @@ const SettingsSectionGroup = ({
     children,
     isLoading = false,
     isError = false,
+    errorMessage = "Une erreur est survenue lors du chargement de cette section, veuillez réessayer.",
 }: {
     title: string
     children: ReactNode
     isLoading: boolean,
     isError?: boolean,
+    errorMessage?: string,
 }) => {
     return <section>
         <Card border={true} isLoading={isLoading}>
@@ -21,11 +23,11 @@ const SettingsSectionGroup = ({
             </TertiaryTitle>
             {
                 isError ? 
-                    <ErrorDisplayer error="Une erreur est survenue lors du chargement de cette section, veuillez réessayer." />
+                    <ErrorDisplayer message={errorMessage} />
                     :
-                    <Fragment>
+                    !isLoading ? <Fragment>
                         { children }
-                    </Fragment>
+                    </Fragment> : <></>
             }
         </Card>
     </section>

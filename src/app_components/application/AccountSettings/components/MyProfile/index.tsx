@@ -1,5 +1,5 @@
 import SingleSettingPageWrapper from "../SingleSettingPageWrapper";
-import UpdateProfilePicture from "./components/UpdateProfilePicture";
+// import UpdateProfilePicture from "./components/UpdateProfilePicture";
 
 const pageProps = {
     title: "Mon profil",
@@ -8,7 +8,7 @@ const pageProps = {
 
 const MyProfileSettings = () => {
     return <SingleSettingPageWrapper {...pageProps}>
-        <UpdateProfilePicture />
+        {/* <UpdateProfilePicture /> */}
     </SingleSettingPageWrapper>
 };
 
