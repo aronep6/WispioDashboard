@@ -17,6 +17,7 @@ const ApplicationWrapper = lazy(() => import('./app_components/application/commo
 const Dashboard = lazy(() => import('./app_components/application/Dashboard'));
 const Files = lazy(() => import('./app_components/application/Files'));
 const Tasks = lazy(() => import('./app_components/application/Tasks'));
+const CreateNewTask = lazy(() => import('./app_components/application/Tasks/CreateNewTask'));
 const Editor = lazy(() => import('./app_components/application/Editor'));
 const Notifications = lazy(() => import('./app_components/application/Notifications'));
 const AccountSettings = lazy(() => import('./app_components/application/AccountSettings'));
@@ -38,7 +39,9 @@ export default function App() {
         
         <Route path="/" element={<ProtectedRoute><ApplicationWrapper /></ProtectedRoute>}>
           <Route index element={<Dashboard />} />
-          <Route path='tasks' element={<Tasks />} />
+          <Route path='tasks' element={<Tasks />}>
+            <Route path='new' element={<CreateNewTask />} />
+          </Route>
           <Route path='files' element={<Files />} />
           <Route path='editor' element={<Editor />}>
             <Route index element={<NoProjectOpened />} />

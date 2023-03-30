@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import NewTask from "./NewTask";
+import NewTask from "./EmptyNewTask";
 import type { Task } from "../../../../app_common/Service/Application/TaskService/interfaces";
 import WhisperTaskStatusMapper from "../interfaces/WhisperTaskStatusMapper";
 import { Fragment } from "react";
