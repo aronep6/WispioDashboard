@@ -39,7 +39,7 @@ const BigTitle = ({ children, add = "" }: { children: React.ReactNode | string, 
 };
 
 const Hint = ({ children, add = "" }: { children: React.ReactNode | string, add?: string }) => {
-    return <span className={`text-xs text-gray-600 dark:text-gray-400 leading-snug mx-0.5 ${ add }`}>{ children }</span>;
+    return <div className={`text-xs text-gray-600 dark:text-gray-400 leading-snug tracking-normal mx-0.5 ${ add }`}>{ children }</div>;
 };
 
 export { PrimaryTitle, SecondaryTitle, TertiaryTitle, FloatingTitle, UserAt, BigTitle, Hint };

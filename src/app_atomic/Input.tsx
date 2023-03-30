@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { ChangeEventHandler, forwardRef } from "react";
 import { FieldError } from "react-hook-form/dist/types";
 
 interface InputProps {
@@ -8,7 +8,7 @@ interface InputProps {
     add?: string;
     type?: string;
     required?: boolean;
-    onChange?: (value: string) => void;
+    onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     disabled?: boolean;
     placeholder?: string;
     error?: FieldError | boolean;
@@ -59,7 +59,7 @@ ref: React.Ref<HTMLInputElement> | undefined
             type={type}
             value={value}
             spellCheck={false}
-            onChange={(e) => { onChange(e.target.value) }}
+            onChange={onChange}
             disabled={disabled}
             required={required}
             placeholder={placeholder}
@@ -109,7 +109,7 @@ ref: React.Ref<HTMLTextAreaElement> | undefined
                 text-base p-3.5`}
             value={value}
             spellCheck={false}
-            onChange={(e) => { onChange(e.target.value) }}
+            onChange={onChange}
             disabled={disabled}
             required={required}
             placeholder={placeholder}
@@ -120,4 +120,69 @@ ref: React.Ref<HTMLTextAreaElement> | undefined
     </section>
 });
 
-export { InputBlock, InputBlockArea };
+type OptionType = string | number; // TODO: Make this more generic
+
+interface SelectableOption<V, L> {
+    value: V;
+    label: L;
+}
+
+interface SelectableProps<V, L> {
+    name: string;
+    label: L;
+    value: V;
+    onChange: ChangeEventHandler<HTMLSelectElement>;
+    options: SelectableOption<OptionType, OptionType>[];
+    error?: FieldError | boolean;
+    errorMessage?: string;
+    add?: string;
+    disabled?: boolean;
+};
+
+const SelectForm = ({
+    name,
+    label, 
+    value, 
+    onChange, 
+    options, 
+    error, 
+    errorMessage,
+    add = "",
+    disabled = false
+}: SelectableProps<OptionType, OptionType>) => {
+    return (
+        <div className="flex flex-col items-start w-full">
+
+            { label && <label className="text-slate-700 mb-1.5 ml-0.5 text-sm font-medium tracking-tight">{ label }</label> }
+
+            <select value={value}
+                onChange={onChange}
+                className={`
+                    h-12 w-full relative
+                    bg-white shadow-sm
+                    ${add}
+                    text-stone-900
+                    border-stone-300 ${ error ? "border-red-500" : "border" }
+                    border border-solid box-border
+                    focus:border-scooter-500 focus:shadow-outline-scooter
+                    focus:ring focus:ring-scooter-400 duration-100
+                    focus:outline-none
+                    rounded-lg
+                    font-medium placeholder:text-sm
+                    placeholder-gray-500
+                    ${disabled && "cursor-not-allowed"}
+                    text-base px-3.5`}
+            >
+                <option value="_NO_VALUE_">Sélectionnez une option</option>
+                {
+                    options.map((option, index) => <option key={index} value={option.value}>{option.label}</option> )
+                }
+            </select>
+            {
+                error && <span className="text-red-500 text-xs font-medium mt-0.5">{ errorMessage }</span>
+            }
+        </div>
+    );
+};
+
+export { InputBlock, InputBlockArea, SelectForm };

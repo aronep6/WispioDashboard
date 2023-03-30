@@ -1,7 +1,5 @@
 // import React from "react";
-import { HelpCircle, Loader } from "react-feather";
-import { Paragraph } from "./Paragraph";
-import { SecondaryTitle, TertiaryTitle } from "./Title";
+import { HelpCircle } from "react-feather";
 
 interface CardProps {
     children: JSX.Element | JSX.Element[];
