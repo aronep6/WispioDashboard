@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { createPortal } from "react-dom";
+import { TertiaryButton } from "./Button";
 import { Hint, SecondaryTitle } from "./Title";
 const modalRoot = document.getElementById('modal-root') as HTMLElement;
 
@@ -23,7 +24,7 @@ const Modal = ({
                 {children}
             </ModalContainer>
         </Fragment>
-    , modalRoot);
+        , modalRoot);
 };
 
 const ModalContainer = ({
@@ -44,12 +45,32 @@ const ModalHr = ({
     return <hr className={`-mx-20 my-2.5 ${color}`} />
 };
 
-const ModalSection = ({ title, children }: { title: string, children: React.ReactNode }) => {
-    return <div className='flex flex-col px-2 gap-2'>
-        <SecondaryTitle>{ title }</SecondaryTitle>
-        <div className='flex flex-col gap-2'>
-            {children}
+const ModalSection = ({
+    title,
+    children,
+    show = true,
+    toggleShowFn = () => { },
+    toggleTitleShow = null,
+}: {
+    title: string,
+    children: React.ReactNode,
+    show?: boolean,
+    toggleShowFn?: () => void;
+    toggleTitleShow?: string | null
+}) => {
+    return <div className='flex flex-col max-h-max gap-5 border p-5 rounded-lg bg-slate-50'>
+        <div className="flex flex-row justify-between items-center gap-2">
+            <SecondaryTitle>{title}</SecondaryTitle>
+            {toggleTitleShow && <div
+                className="max-w-max cursor-pointer py-1 hover:underline text-sm text-indigo-600"
+                onClick={toggleShowFn}
+            >
+                {toggleTitleShow}
+            </div>}
         </div>
+        {show && <div className='flex flex-col gap-2'>
+            {children}
+        </div>}
     </div>
 };
 

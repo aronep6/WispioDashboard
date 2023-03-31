@@ -1,5 +1,8 @@
-import { ChangeEventHandler, forwardRef } from "react";
+import { ChangeEventHandler, forwardRef, ReactNode } from "react";
+import { File, Icon } from "react-feather";
 import { FieldError } from "react-hook-form/dist/types";
+import DashedBorder from "../app_components/application/common/EmptyStates/DashedBorder";
+import EmptyNewTask from "../app_components/application/Tasks/components/EmptyNewTask";
 
 interface InputProps {
     name: string;
@@ -185,4 +188,16 @@ const SelectForm = ({
     );
 };
 
-export { InputBlock, InputBlockArea, SelectForm };
+interface FileSelectorProps {
+    icon: ReactNode,
+    title: string,
+}
+
+const FileSelector = ({ icon, title }: FileSelectorProps) => {
+    return <DashedBorder
+        icon={icon}
+        title={title}
+    ></DashedBorder>
+};
+
+export { InputBlock, InputBlockArea, SelectForm, FileSelector };
