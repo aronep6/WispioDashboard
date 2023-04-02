@@ -23,7 +23,8 @@ import {
     type FirebaseServiceConfiguration,
     UserAccessibleCollection,
     CallableFunctions,
-    OnCallFunctionResponse
+    OnCallFunctionResponse,
+    UserAccessibleClaims
 } from "./interfaces";
 
 const service_config: FirebaseServiceConfiguration = {
@@ -207,6 +208,18 @@ class Core {
         } catch (error: any) {
             this.logError(error);
             throw new Error(error.message);
+        }
+    };
+
+    protected getUserClaim = async (
+        claim: UserAccessibleClaims
+    ): Promise<string | null> => {
+        const user = this.getCurrentUser();
+        if (user) {
+            const token = await user.getIdTokenResult();
+            return token.claims[claim];
+        } else {
+            return null;
         }
     };
 }

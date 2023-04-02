@@ -45,4 +45,9 @@ export interface OnCallFunctionResponse<T> {
     errorCode?: WebErrorCode
 }
 
+export enum UserAccessibleClaims {
+    Plan = "plan",
+    BillingIsActive = "billing_is_active",
+}
+
 export const FirebaseRootCollection = "application" as const;
