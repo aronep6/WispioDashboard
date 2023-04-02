@@ -86,6 +86,20 @@ class Authentication extends Core {
             window.location.href = redirect;
         }
     }
+
+    // For the login flow
+    /**
+     * Check if the current billing status is active or not
+     * @returns {boolean} true if the billing is active, false otherwise
+     */
+    checkBillingStatus = async (): Promise<boolean> => {
+        const { UserAccessibleClaims } = await import("../../../app_common/Service/Core/interfaces");
+        const claim = await this.getUserClaim(UserAccessibleClaims.BillingIsActive);
+        
+        if (claim === "true") return true;
+        return false;
+    }
 }
 
-export default Authentication;
+export default Authentication; 
+export type AuthenticationInterface = typeof Authentication.prototype;
