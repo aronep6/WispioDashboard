@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { createPortal } from "react-dom";
-import { TertiaryButton } from "./Button";
-import { Hint, SecondaryTitle } from "./Title";
+import { SecondaryTitle } from "./Title";
 const modalRoot = document.getElementById('modal-root') as HTMLElement;
 
 interface ModalProps {

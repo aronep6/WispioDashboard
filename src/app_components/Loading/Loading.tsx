@@ -10,7 +10,7 @@ function Loading({ message, showLoader = true }: { message?: string, showLoader?
                     {message ? message : 'Wispio AI Platform'}
                 </h3>
                 {
-                    showLoader && <div className="bg-gray-700 h-2.5 max-w-xs w-full rounded-full mb-8 relative overflow-hidden">
+                    showLoader && <div className="bg-gray-700 h-2 max-w-xs w-full rounded-full mb-8 relative overflow-hidden">
                         <div className="an_load_bar bg-white"></div>
                     </div>
                 }

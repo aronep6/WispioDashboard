@@ -4,7 +4,7 @@ import ErrorDisplayer from "../../../../../app_atomic/Error";
 import { TertiaryTitle } from "../../../../../app_atomic/Title";
 
 const SettingsSectionGroup = ({
-    title,
+    title = "",
     children,
     isLoading = false,
     isError = false,
@@ -18,15 +18,15 @@ const SettingsSectionGroup = ({
 }) => {
     return <section>
         <Card border={true} isLoading={isLoading}>
-            <TertiaryTitle>
+            {title !== "" ? <TertiaryTitle>
                 {title}
-            </TertiaryTitle>
+            </TertiaryTitle> : <></>}
             {
-                isError ? 
+                isError ?
                     <ErrorDisplayer message={errorMessage} />
                     :
                     !isLoading ? <Fragment>
-                        { children }
+                        {children}
                     </Fragment> : <></>
             }
         </Card>
