@@ -24,7 +24,7 @@ const AuthWrapper = ({
     setError
 }: AuthLayoutProps) => {
 
-    useWebTitle(`${ import.meta.env.VITE_APPLICATION_NAME } - ${title}`);
+    useWebTitle(`${import.meta.env.VITE_APPLICATION_NAME} - ${title}`);
 
     useEffect(() => {
         if (!error) return;
@@ -50,10 +50,14 @@ const AuthWrapper = ({
                 z-30 bg-white dark:bg-stone-900 modal-animation sm:shadow md:shadow-md shadow-slate-500/40"
             >
                 {
-                    isLoading && <div className="flex z-50 inset-0 rounded-lg absolute flex-col text-indigo-700 inter text-lg font-medium items-center justify-center w-full backdrop-blur-2xl duration-300">
-                        <div className="animate-spin rounded-full mb-4 h-12 w-12 border-b-2 border-indigo-600 dark:border-gray-100"></div>
-                        {loadingMessage !== "" ? loadingMessage : null}
-                    </div>
+                    isLoading && <Fragment>
+                        <div className="flex z-50 inset-0 rounded-lg absolute flex-col text-indigo-700 inter text-lg font-medium items-center justify-center w-full backdrop-blur-lg duration-300">
+                            {loadingMessage !== "" ? loadingMessage : null}
+                        </div>
+                        <div className="progress">
+                            <div className="progress-bar"></div>
+                        </div>
+                    </Fragment>
                 }
 
                 <div className="auth-wrapper-ui hidden md:flex bg-gradient-to-b from-indigo-600 to-indigo-800 flex-col justify-between select-none p-8">

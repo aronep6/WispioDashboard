@@ -1,4 +1,5 @@
 import SingleSettingPageWrapper from "../SingleSettingPageWrapper";
+import LogOutAction from "./component/LogOutAction";
 import UserGeneralInfos from "./component/UserGeneralInfos";
 
 const pageProps = {
@@ -9,6 +10,7 @@ const pageProps = {
 const Overview = () => {
     return <SingleSettingPageWrapper {...pageProps}>
         <UserGeneralInfos />
+        <LogOutAction />
     </SingleSettingPageWrapper>
 };
 

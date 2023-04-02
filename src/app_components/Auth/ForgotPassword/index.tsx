@@ -12,8 +12,13 @@ import { CheckCircle } from "react-feather";
 import { ForgotPasswordFormDataType } from "./interfaces";
 import useAuth from "../../../app_hooks/contexts_hooks/useAuth";
 
-
 const inDev = !import.meta.env.PROD;
+
+const getSnapshotFromUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    const snapshot = params.get("snapshot");
+    return snapshot;
+};
 
 const ForgotPassword = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +32,10 @@ const ForgotPassword = () => {
     // Handle form submission dans datas
     const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
         mode: "onChange",
-        resolver: yupResolver(forgotPasswordValidationSchema)
+        resolver: yupResolver(forgotPasswordValidationSchema),
+        defaultValues: {
+            forgot_password_form_email: getSnapshotFromUrl() || "",
+        },
     });
 
     const onSubmit = async (data: FieldValues) => {
@@ -67,7 +75,7 @@ const ForgotPassword = () => {
         setError={setGlobalError}
     >
         <div className="flex-col items-center justify-center w-full">
-            <form onSubmit={ handleSubmit(onSubmit) }
+            <form onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col items-center justify-center my-2 w-full inter">
 
                 <Controller
@@ -93,22 +101,22 @@ const ForgotPassword = () => {
 
                 <div className="h-3 w-full block"></div>
 
-                { !success ?<Hint>
-                    Nous allons vous envoyer un email avec un lien pour réinitialiser votre mot de passe. 
+                {!success ? <Hint>
+                    Nous allons vous envoyer un email avec un lien pour réinitialiser votre mot de passe.
                     Vérifiez votre boîte de réception. Si vous ne trouvez pas l'email, vérifiez votre dossier spam.
                 </Hint> : <div className="flex items-center justify-center bg-green-100 rounded p-3">
                     <CheckCircle className="text-green-600 mr-3" size={28} />
                     <p className="text-xs text-green-700 mx-0.5">
                         Un email de réinitialisation de mot de passe vous a été envoyé. Vérifiez votre boîte de réception.
                     </p>
-                </div> }
+                </div>}
 
                 <div className="w-full pt-8 flex flex-row items-center justify-end">
                     <SubmitPrimaryButton
-                        disabled={ isSubmitting || !isValid || success }
+                        disabled={isSubmitting || !isValid || success}
                         add="w-full"
                     >
-                        { isSubmitting ? "Un instant..." : "Réinitialiser mon mot de passe" }
+                        {isSubmitting ? "Un instant..." : "Réinitialiser mon mot de passe"}
                     </SubmitPrimaryButton>
 
                 </div>

@@ -1,5 +1,5 @@
 import { SecondaryButton, SubmitPrimaryButton } from "../../../app_atomic/Button";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 import AuthWrapper from "../layout";
 import { Link } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { getErrors, signInValidationSchema } from '../functions';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AppRoutes } from "../../../app_common/interfaces/AppRoutes";
+import checkBeforeLoginRedirection from "./functions";
 
 
 const inDev = !import.meta.env.PROD;
@@ -21,10 +22,16 @@ const SignIn = () => {
     const auth = useAuth();
     const user = useUserSession();
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [globalError, setGlobalError] = useState<string | null>(null);
+    const [emailEncodedSnapshot, setEncodedEmailSnapshot] = useState<string | null>(null);
 
     const signin_form_email_ref = useRef<HTMLInputElement>(null);
+
+    const setEmailSnapshot = useCallback((email: string) => {
+        const encodedEmail = encodeURIComponent(email);
+        setEncodedEmailSnapshot(encodedEmail);
+    }, []);
 
     useEffect(() => {
         // Checking URL params
@@ -38,41 +45,25 @@ const SignIn = () => {
         }
     }, []);
 
-    // const checkForRegistrationRedirection = async (uid: string) => {
-    //     try {
-    //         const { claims } = await service.getCustomClaims();
-
-    //         if (!claims) throw 'No custom claims found for this user';
-    //         // Check if the user need to add professional email
-    //         const params = new URLSearchParams(window.location.search);
-
-    //         const flow = params.get('flow');
-
-    //         if (flow === 'addProfessionnalEmail' && claims.userIsReadyToUse) {
-    //             return navigate('/services/emails/create');
-    //         }
-    //         if (claims.userIsReadyToUse) return navigate('/app/dashboard');
-    //         throw 'User is not ready to use';
-    //     } catch (err) {
-    //         inDev && console.log("Une erreur est survenue lors de la vérification de l'utilisateur connecté : ", err);
-    //         // Redirect to the registration page
-    //         navigate(`/auth/checkup?id=${uid}&isImperative=true&fallback=default&flow=default`);
-    //         return;
-    //     }
-    // };
-
     useEffect(() => {
-        if (user === null || user === undefined) return;
-        // Check if the url contains a redirectionUrl param
-        const params = new URLSearchParams(window.location.search);
-        const redirectionUrl = params.get('redirectUrl');
+        if (user === undefined) return;
+        if (user === null) return setIsLoading(false);
 
-        if (redirectionUrl) {
-            const decodedUrl = decodeURIComponent(redirectionUrl);
-            return window.location.replace(decodedUrl);
-        } else {
-            return window.location.replace(AppRoutes.Dashboard);
-        }
+        const check = async () => {
+            await checkBeforeLoginRedirection(auth);
+            // Check if the url contains a redirectionUrl param
+            const params = new URLSearchParams(window.location.search);
+            const redirectionUrl = params.get('redirectUrl');
+
+            if (redirectionUrl) {
+                const decodedUrl = decodeURIComponent(redirectionUrl);
+                return window.location.replace(decodedUrl);
+            } else {
+                return window.location.replace(AppRoutes.Dashboard);
+            }
+        };
+
+        check();
     }, [user]);
 
     // Handle form submission dans datas
@@ -87,9 +78,9 @@ const SignIn = () => {
             setGlobalError(null);
         } catch (err: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de la connexion de l'utilisateur : ", err);
+            setEmailSnapshot(data.signin_form_email);
             const _err = getErrors(err);
             setGlobalError(_err);
-        } finally {
             setIsLoading(false);
         }
     };
@@ -102,7 +93,7 @@ const SignIn = () => {
 
     return <AuthWrapper
         title="Se connecter à Dashboard"
-        titleDescription={`Connectez-vous à votre compte pour commencer à utiliser ${ import.meta.env.VITE_APPLICATION_NAME }.`}
+        titleDescription={`Connectez-vous à votre compte pour commencer à utiliser ${import.meta.env.VITE_APPLICATION_NAME}.`}
         description="L'authentification est nécessaire pour accéder à votre compte Wispio."
         isLoading={isLoading}
         returnLink="/"
@@ -152,14 +143,17 @@ const SignIn = () => {
                 )}
             ></Controller>
 
-            <Link to="/auth/forgot-password" className="text-sm text-indigo-600 text-right w-full block mb-2">
+            <Link
+                to={emailEncodedSnapshot ? `/auth/forgot-password?snapshot=${emailEncodedSnapshot}` : '/auth/forgot-password'}
+                className="text-sm text-indigo-600 text-right w-full block mb-2"
+            >
                 Mot de passe oublié ?
             </Link>
 
             <div className="grid gap-2.5 mt-4">
 
                 <div className="flex justify-center">
-                    <SubmitPrimaryButton add="w-full max-w-xs">
+                    <SubmitPrimaryButton add="w-full max-w-xs" disabled={isSubmitting}>
                         Se connecter
                     </SubmitPrimaryButton>
                 </div>
