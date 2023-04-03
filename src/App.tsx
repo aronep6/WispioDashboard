@@ -22,9 +22,6 @@ const Editor = lazy(() => import('./app_components/application/Editor'));
 const Notifications = lazy(() => import('./app_components/application/Notifications'));
 const AccountSettings = lazy(() => import('./app_components/application/AccountSettings'));
 
-// Application billing service
-const Billing = lazy(() => import('./app_components/application/Billing'));
-
 // Account settings components
 import NoAccountSettingsOpened from './app_components/application/AccountSettings/components/NoAccountSettingsOpened';
 import Overview from './app_components/application/AccountSettings/components/Overview';
@@ -68,12 +65,6 @@ export default function App() {
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="signout" element={<SignOut />} />
         </Route>
-
-        <Route path="/billing" element={
-          <ProtectedRoute>
-            <Billing />
-          </ProtectedRoute>
-        }></Route>
 
         <Route path="/loading" element={
           <ProtectedRoute isAvailableInProduction={false}>
