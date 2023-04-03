@@ -1,5 +1,7 @@
+import { BillingServiceProvider } from "../../../../../app_contexts/BillingService";
 import SingleSettingPageWrapper from "../SingleSettingPageWrapper";
 import BillingDetails from "./components/BillingDetails";
+import SubscribeToWispio from "./components/SubscribeToWispio";
 
 const pageProps = {
     title: "Facturation & abonnement",
@@ -9,7 +11,12 @@ const pageProps = {
 const BillingSettings = () => {
     return <SingleSettingPageWrapper {...pageProps}>
         <BillingDetails />
+        <SubscribeToWispio />
     </SingleSettingPageWrapper>
 };
 
-export default BillingSettings;
+export default function index() {
+    return <BillingServiceProvider>
+        <BillingSettings />
+    </BillingServiceProvider>
+};
