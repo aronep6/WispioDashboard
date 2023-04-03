@@ -1,24 +1,25 @@
-import type AuthenticationInterface from "../../../app_common/Service/Authentication";
-import { AppRoutes } from "../../../app_common/interfaces/AppRoutes";
+import type { NavigateFunction } from "react-router-dom";
+import type AuthenticationInterface from "../../app_common/Service/Authentication";
+import { AppRoutes } from "../../app_common/interfaces/AppRoutes";
 
-const removeRedirectUrlFromQuery = async (): Promise<void> => {
-    const url = new URL(window.location.href);
-    url.searchParams.delete('redirectUrl');
-    window.history.replaceState({}, document.title, url.toString());
-};
-
-const checkBeforeLoginRedirection = async (
-    auth: AuthenticationInterface
+const checkAfterUserLoginOnServices = async (
+    auth: AuthenticationInterface,
+    navigate: NavigateFunction,
 ): Promise<void> => {
+    // -- Check if the user as a current plan selected
+    const hasCurrentPlan = await auth.checkIfUserHasCurrentPlan();
+
+    if (!hasCurrentPlan) {
+        console.log('If user has selected plan :', hasCurrentPlan)
+    }
 
     // -- Checking the current billing status of the user
 
     const billingIsActive = await auth.checkBillingStatus();
 
     if (!billingIsActive) {
-        await removeRedirectUrlFromQuery();
-        window.location.href = AppRoutes.BillingService;
-        return;
+        const redirectUrl = `${AppRoutes.BillingService}?fallback=inactive-billing`;
+        navigate(redirectUrl);
     }
 
     // Do other checks here ...
@@ -49,4 +50,4 @@ const checkBeforeLoginRedirection = async (
     // };
 };
 
-export default checkBeforeLoginRedirection;
+export default checkAfterUserLoginOnServices;

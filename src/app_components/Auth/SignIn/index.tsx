@@ -2,7 +2,7 @@ import { SecondaryButton, SubmitPrimaryButton } from "../../../app_atomic/Button
 import { useEffect, useState, useRef, useCallback } from "react";
 
 import AuthWrapper from "../layout";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import useAuth from "../../../app_hooks/contexts_hooks/useAuth";
 import useUserSession from "../../../app_hooks/contexts_hooks/useUserSession";
@@ -13,12 +13,13 @@ import { getErrors, signInValidationSchema } from '../functions';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AppRoutes } from "../../../app_common/interfaces/AppRoutes";
-import checkBeforeLoginRedirection from "./functions";
+import checkAfterUserLoginOnServices from "../check-after-user-login-on-services";
 
 
 const inDev = !import.meta.env.PROD;
 
 const SignIn = () => {
+    let navigate = useNavigate();
     const auth = useAuth();
     const user = useUserSession();
 
@@ -50,7 +51,7 @@ const SignIn = () => {
         if (user === null) return setIsLoading(false);
 
         const check = async () => {
-            await checkBeforeLoginRedirection(auth);
+            await checkAfterUserLoginOnServices(auth, navigate);
             // Check if the url contains a redirectionUrl param
             const params = new URLSearchParams(window.location.search);
             const redirectionUrl = params.get('redirectUrl');
