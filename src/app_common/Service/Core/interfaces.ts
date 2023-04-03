@@ -30,7 +30,8 @@ export enum UserAccessibleCollection {
 }
 
 export enum CallableFunctions {
-    GetBillingInformations = "getBillingInformations"
+    GetBillingInformations = "getBillingInformations",
+    CreateSubscribeCheckoutSession = "createSubscribeCheckoutSession",
 }
 
 export interface OnCallFunctionRequest {
@@ -38,12 +39,9 @@ export interface OnCallFunctionRequest {
     context: any,
 }
 
-export interface OnCallFunctionResponse<T> {
-    success: boolean
-    data: T | undefined,
-    error: Error | null,
-    errorCode?: WebErrorCode
-}
+export enum StrawberryError {
+    InternalError = "__STRAWBERRY_INTERNAL_ERROR__",
+};
 
 export enum UserAccessibleClaims {
     Plan = "plan",

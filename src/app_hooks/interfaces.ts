@@ -1,5 +1,5 @@
 import type { DocumentData, DocumentReference } from 'firebase/firestore';
-import type { OnCallFunctionResponse } from '../app_common/Service/Core/interfaces';
+// import type { OnCallFunctionResponse } from '../app_common/Service/Core/interfaces';
 
 export type IsLoadingType = boolean;
 export type DataType = undefined;
@@ -25,7 +25,7 @@ export interface ServiceFetchProps<T> {
 }
 
 export interface StrawberryFetchProps<T> {
-    method: (payload?: any) => Promise<OnCallFunctionResponse<T>>,
+    method: (payload?: any) => Promise<T>,
     payload?: any | undefined,
     defaultLoadingStatus?: boolean
     doCheckBeforeFetch?: () => boolean

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type {
-    IsLoadingType, 
+    IsLoadingType,
     DataType,
     ErrorType,
     CustomHookReturn,
@@ -12,7 +12,7 @@ function useStrawberryFetch<MethodResponseDTO>({
     payload = undefined,
     defaultLoadingStatus = true,
     doCheckBeforeFetch = () => true,
-}: StrawberryFetchProps<MethodResponseDTO>): CustomHookReturn<MethodResponseDTO> {    
+}: StrawberryFetchProps<MethodResponseDTO>): CustomHookReturn<MethodResponseDTO> {
     const [isLoading, setIsLoading] = useState<IsLoadingType>(defaultLoadingStatus);
     const [data, setData] = useState<DataType | MethodResponseDTO>(undefined);
     const [error, setError] = useState<ErrorType>(null);
@@ -22,19 +22,11 @@ function useStrawberryFetch<MethodResponseDTO>({
         try {
             if (!doCheckBeforeFetch()) throw new Error("Check before fetch failed");
 
-            const { 
-                success, 
-                data, 
-                error,
-            } = await method(payload && payload);
-            
-            if (!success || error) {
-                throw error;
-            }
+            const data = await method(payload && payload);
 
             setData(data);
         } catch (error: any) {
-            const _err = 
+            const _err =
                 error?.message ?
                     error.message :
                     "Une erreur inconnue s'est produite, vérifiez votre connexion internet et réessayez.";
