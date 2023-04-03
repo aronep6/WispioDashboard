@@ -87,17 +87,21 @@ class Authentication extends Core {
         }
     }
 
-    // For the login flow
-    /**
-     * Check if the current billing status is active or not
-     * @returns {boolean} true if the billing is active, false otherwise
-     */
+    // For the check after user logged in on services
     checkBillingStatus = async (): Promise<boolean> => {
         const { UserAccessibleClaims } = await import("../../../app_common/Service/Core/interfaces");
         const claim = await this.getUserClaim(UserAccessibleClaims.BillingIsActive);
         
         if (claim === "true") return true;
         return false;
+    }
+
+    checkIfUserHasCurrentPlan = async (): Promise<boolean> => {
+        const { UserAccessibleClaims } = await import("../../../app_common/Service/Core/interfaces");
+        const claim = await this.getUserClaim(UserAccessibleClaims.Plan);
+        
+        if (claim === "none") return false;
+        return true;
     }
 }
 

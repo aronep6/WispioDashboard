@@ -8,5 +8,5 @@ export enum AppRoutes {
     Loading = '/loading',
 
     AccountSettings = '/account-settings/overview',
-    BillingService = '/services/billing',
+    BillingService = '/billing',
 };

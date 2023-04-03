@@ -22,6 +22,9 @@ const Editor = lazy(() => import('./app_components/application/Editor'));
 const Notifications = lazy(() => import('./app_components/application/Notifications'));
 const AccountSettings = lazy(() => import('./app_components/application/AccountSettings'));
 
+// Application billing service
+const Billing = lazy(() => import('./app_components/application/Billing'));
+
 // Account settings components
 import NoAccountSettingsOpened from './app_components/application/AccountSettings/components/NoAccountSettingsOpened';
 import Overview from './app_components/application/AccountSettings/components/Overview';
@@ -36,7 +39,7 @@ export default function App() {
   return <Fragment>
     <BrowserRouter>
       <Routes>
-        
+
         <Route path="/" element={<ProtectedRoute><ApplicationWrapper /></ProtectedRoute>}>
           <Route index element={<Dashboard />} />
           <Route path='tasks' element={<Tasks />}>
@@ -59,12 +62,18 @@ export default function App() {
           </Route>
         </Route>
 
-        <Route path="/auth" element={<Suspense fallback={<Loading /> }><AuthOutletWrapper /></Suspense>}>
-          <Route path="signin" element={<SignIn />}/>
-          <Route path="signup" element={<SignUp />}/>
-          <Route path="forgot-password" element={<ForgotPassword />}/>
-          <Route path="signout" element={<SignOut />}/>
+        <Route path="/auth" element={<Suspense fallback={<Loading />}><AuthOutletWrapper /></Suspense>}>
+          <Route path="signin" element={<SignIn />} />
+          <Route path="signup" element={<SignUp />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="signout" element={<SignOut />} />
         </Route>
+
+        <Route path="/billing" element={
+          <ProtectedRoute>
+            <Billing />
+          </ProtectedRoute>
+        }></Route>
 
         <Route path="/loading" element={
           <ProtectedRoute isAvailableInProduction={false}>
