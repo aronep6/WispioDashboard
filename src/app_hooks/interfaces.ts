@@ -30,7 +30,7 @@ export interface StrawberryFetchProps<T> {
     doCheckBeforeFetch?: () => boolean
 }
 
-export interface ServiceSubscribeProps {
+export interface ServiceSubscribeProps<T> {
     subscribeRef: DocumentReference<DocumentData>,
     doCheckBeforeFetch?: () => boolean
     pingOnSnapshot?: () => void

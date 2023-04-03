@@ -23,8 +23,8 @@ import {
     type FirebaseServiceConfiguration,
     UserAccessibleCollection,
     CallableFunctions,
-    OnCallFunctionResponse,
-    UserAccessibleClaims
+    UserAccessibleClaims,
+    StrawberryError
 } from "./interfaces";
 
 const service_config: FirebaseServiceConfiguration = {
@@ -203,7 +203,13 @@ class Core {
         payload?: any,
     ): Promise<T | undefined> {
         try {
-            const { data } = await this.httpCallableBuilder(functionName, payload) as OnCallFunctionResponse<T>;
+            const response = await this.httpCallableBuilder(functionName, payload);
+            const data = response.data as T;
+
+            if (data === StrawberryError.InternalError) {
+                throw new Error("An internal error occured on the server side.");
+            }
+            
             return data;
         } catch (error: any) {
             this.logError(error);
