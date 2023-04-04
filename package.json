@@ -1,11 +1,12 @@
 {
-  "name": "wispio-front",
+  "name": "wispio-dashboard",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite --config vite.config.js build",
+    "dev": "vite --config vite.config.js --mode staging",
+    "build:staging": "tsc && vite --config vite.config.js build --mode staging",
+    "build:production": "tsc && vite --config vite.config.js build --mode production",
     "preview": "vite preview",
     "ts-check": "tsc --noEmit"
   },
