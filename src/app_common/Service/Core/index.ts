@@ -20,22 +20,13 @@ import {
     firebaseDatabaseConfiguration,
     FirebaseRootCollection,
     type MultipleDocumentsResponse,
-    type FirebaseServiceConfiguration,
     UserAccessibleCollection,
     CallableFunctions,
     UserAccessibleClaims,
     StrawberryError
 } from "./interfaces";
 
-const service_config: FirebaseServiceConfiguration = {
-    apiKey: "AIzaSyBNj53fDhpeh0k6-cdKcYOFYlgw1ve2ETU",
-    authDomain: "wispiostaging.firebaseapp.com",
-    projectId: "wispiostaging",
-    storageBucket: "wispiostaging.appspot.com",
-    messagingSenderId: "178535508231",
-    appId: "1:178535508231:web:056f27013f06d5baa5bda2",
-    region_functions_emplacement: "europe-west1",
-};
+import service_config from "./service.config";
 
 // Dev variables
 const use_local_emulators = import.meta.env.DEV;
