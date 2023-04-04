@@ -1,3 +1,4 @@
+import { PrimaryButton } from "../../../../../../app_atomic/Button";
 import { CheckoutSessionResponse, WispioPlan } from "../../../../../../app_common/Service/Application/BillingService/interfaces";
 import useBillingService from "../../../../../../app_hooks/contexts_hooks/useBillingService";
 import useStrawberryFetch from "../../../../../../app_hooks/useStrawberryFetch";
@@ -11,10 +12,15 @@ const SubscribeToWispio = () => {
         // payload: WispioPlan.Premium,
     });
 
-    return <SettingsSectionGroup title="S'abonner à Wispio Premium" isLoading={isLoading} isError={!!error}>
+    return <SettingsSectionGroup title="Mon abonnement" isLoading={isLoading} isError={!!error}>
         <div>
-            <p>Vous pouvez vous abonner à Wispio pour bénéficier de toutes les fonctionnalités de la plateforme.</p>
-            {JSON.stringify(data)}
+            <p>Abonnez vous à Wispio Premium pour profiter de toutes les fonctionnalités de Wispio.</p>
+
+            <a href={data?.url} target="_blank">
+                <PrimaryButton>
+                    S'abonner à Wispio Premium
+                </PrimaryButton>
+            </a>
         </div>
     </SettingsSectionGroup>
 };
