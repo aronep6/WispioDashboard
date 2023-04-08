@@ -61,12 +61,14 @@ class Core {
     auth: Auth;
     sleep: (ms: number) => Promise<unknown>;
     functions: Functions;
+    isProductionEnv: boolean;
     analyticsProvider: Analytics;
     constructor() {
         this.db = db;
         this.auth = auth;
         this.sleep = sleep;
         this.functions = functions;
+        this.isProductionEnv = import.meta.env.PROD;
         this.analyticsProvider = analyticsProvider;
     }
 

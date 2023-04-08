@@ -16,14 +16,16 @@ class NotificationsService extends Core {
     public allowedToSendNotifications: boolean;
     constructor() {
         super();
-        // this.init();
+        this.init();
         this.permission = undefined;
         this.allowedToSendNotifications = false;
         this.notification_logo = _logo_;
     }
 
     private init = async () => {
-        await this.requestPermission();
+        if (this.isProductionEnv) {
+            await this.requestPermission();
+        }
     }
 
     private requestPermission = async (): Promise<void> => {
