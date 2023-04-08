@@ -1,6 +1,6 @@
 import Core from "../../Core";
-import { CallableFunctions } from "../../Core/interfaces";
-import { WispioPlan, CheckoutSessionResponse } from "./interfaces";
+import { CallableFunctions, UserAccessibleClaims } from "../../Core/interfaces";
+import { CheckoutSessionResponse } from "./interfaces";
 
 class BillingService extends Core {
     constructor() {
@@ -14,6 +14,12 @@ class BillingService extends Core {
         } catch (error: any) {
             throw new Error(error.message);
         }
+    }
+
+    public hasActiveSubscription = async (): Promise<boolean> => {
+        const claim = await this.getUserClaim(UserAccessibleClaims.BillingIsActive);
+        if (claim === "true") return true;
+        return false;
     }
 };
 
