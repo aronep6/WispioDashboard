@@ -23,12 +23,12 @@ const FloatingTitle = ({ title, add = "" }: { title: string, add?: string }) => 
     return <div className={`floating-title absolute grotesk hidden bg-zinc-800 text-zinc-100 py-1.5 text-sm px-3 rounded-md group-hover:flex ${add}`}>
         <p className="whitespace-nowrap">{title}</p>
     </div>
-}; 
+};
 
 const UserAt = ({ add, userId }: { add: string, userId: string }) => {
-    return <Link to={`/app/profile/${userId}`} 
+    return <Link to={`/app/profile/${userId}`}
         className={`text-blue-600 dark:text-blue-400 text-sm inter font-bold px-0.5 ${add}`}>
-        @{ userId }
+        @{userId}
     </Link>
 };
 
@@ -39,7 +39,7 @@ const BigTitle = ({ children, add = "" }: { children: React.ReactNode | string, 
 };
 
 const Hint = ({ children, add = "" }: { children: React.ReactNode | string, add?: string }) => {
-    return <div className={`text-xs text-gray-600 dark:text-gray-400 leading-snug tracking-normal mx-0.5 ${ add }`}>{ children }</div>;
+    return <div className={`text-xs text-gray-600 dark:text-gray-400 leading-snug tracking-normal ${add}`}>{children}</div>;
 };
 
 export { PrimaryTitle, SecondaryTitle, TertiaryTitle, FloatingTitle, UserAt, BigTitle, Hint };
