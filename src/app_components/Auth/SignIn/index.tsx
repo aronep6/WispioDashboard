@@ -97,7 +97,7 @@ const SignIn = () => {
         titleDescription={`Connectez-vous à votre compte pour commencer à utiliser ${import.meta.env.VITE_APPLICATION_NAME}.`}
         description="L'authentification est nécessaire pour accéder à votre compte Wispio."
         isLoading={isLoading}
-        returnLink="/"
+        returnLink={null}
         error={globalError}
         setError={setGlobalError}
     >
@@ -167,14 +167,17 @@ const SignIn = () => {
 
         </form>
 
+    </AuthWrapper>
+};
+
+export default SignIn;
+
+/*
         <div className="flex flex-row items-center justify-center mx-auto w-full py-3.5">
             <div className="h-px bg-slate-200 w-full mr-4"></div>
             <span className="text-center text-gray-500 text-sm inter font-medium">OU</span>
             <div className="h-px bg-slate-200 w-full ml-4"></div>
         </div>
-
-        { /* === Connexion avec Google ou Twitter === */}
-
         <div className="justify-center flex w-full">
             <SecondaryButton add="max-w-xs w-full flex flex-row items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512" className="fill-indigo-600 h-5 mr-4 text-white">
@@ -192,17 +195,4 @@ const SignIn = () => {
                 Se connecter avec Twitter
             </SecondaryButton>
         </div>}
-
-    </AuthWrapper>
-};
-
-export default SignIn;
-
-/*
-
-                    <div className="flex flex-row items-center justify-center w-full py-2">
-                        <div className="h-px bg-slate-200 w-full mx-4"></div>
-                        <span className="text-center text-gray-500 text-sm inter font-medium">OU</span>
-                        <div className="h-px bg-slate-200 w-full mx-4"></div>
-                    </div>
 */

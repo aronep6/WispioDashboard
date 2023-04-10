@@ -1,6 +1,6 @@
 export interface AuthLayoutProps {
     title: string;
-    returnLink?: string;
+    returnLink: string | null;
     titleDescription?: string;
     description?: string | null;
     children: React.ReactNode;
