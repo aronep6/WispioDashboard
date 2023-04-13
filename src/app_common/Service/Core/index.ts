@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app"
-import { getAuth, type Auth, type User } from "firebase/auth"
+import { getAuth, type Auth, type User, connectAuthEmulator } from "firebase/auth"
 import { type Analytics, getAnalytics, logEvent } from "firebase/analytics"
 import { getFunctions, httpsCallable, connectFunctionsEmulator, type Functions, HttpsCallableResult } from "firebase/functions"
 import { 
@@ -26,7 +26,7 @@ import {
     StrawberryError
 } from "./interfaces"
 
-import service_config from "./service.config"
+import service_config from "./core.config"
 
 // Dev variables
 const use_local_emulators = import.meta.env.DEV
@@ -48,6 +48,7 @@ const functions = getFunctions(app, service_config.region_functions_emplacement)
 // Binding to local emulators (if needed)
 if (use_local_emulators) {
     connectFunctionsEmulator(functions, `${_server_ip}`, _local_functions_port)
+    connectAuthEmulator(auth, "http://127.0.0.1:9099");
 }
 
 // Analytics initialization
