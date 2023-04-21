@@ -18,7 +18,7 @@ const checkAfterUserLoginOnServices = async (
     const billingIsActive = await auth.checkBillingStatus();
 
     if (!billingIsActive) {
-        const redirectUrl = `${AppRoutes.BillingService}?fallback=inactive-billing`;
+        const redirectUrl = AppRoutes.BillingSettingsSelectPlan;
         navigate(redirectUrl);
     }
 
