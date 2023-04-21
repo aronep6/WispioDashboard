@@ -22,36 +22,35 @@ class NotificationsService extends Core {
         this.notification_logo = _logo_;
     }
 
-    private init = async () => {
+    private async init() {
         if (this.isProductionEnv) {
             await this.requestPermission();
         }
     }
 
-    private requestPermission = async (): Promise<void> => {
+    private async requestPermission(): Promise<void> {
         try {
             if (!("Notification" in window)) throw new Error("This browser does not support desktop notification");
 
-            Notification.requestPermission()
-                .then((result) => {
-                    this.permission = result as NotificationPermission;
-                    this.allowedToSendNotifications = result === "granted";
-                    return;
-                })
-                .catch((error) => { throw new Error(error); });
+            const permission = await Notification.requestPermission();
+
+            this.permission = permission as NotificationPermission;
+            this.allowedToSendNotifications = permission === "granted";
+
+            return;
         } catch (error) {
             this.logError(error);
         }
     }
 
-    public push = async (
-        _notification: PushNotificationPayload,
+    public async push(
+        notificationPayload: PushNotificationPayload,
         onClick?: undefined | (() => void),
         onClose?: undefined | (() => void),
         onError?: undefined | (() => void),
         onShow?: undefined | (() => void),
-    ): Promise<void> => {
-        const { title, message, type, link } = _notification;
+    ): Promise<void> {
+        const { title, message, link } = notificationPayload;
 
         const notification = new Notification(`Wispio - ${title}`, {
             body: message,
@@ -81,31 +80,36 @@ class NotificationsService extends Core {
         return;
     }
 
-    public areAllowedByUser = (): boolean => {
+    public get areAllowedByUser() {
         return this.allowedToSendNotifications;
     }
 
-    public getLiveNotificationsDocumentReference = (): DocumentReference<DocumentData> => {
+    public getLiveNotificationsDocumentReference(): DocumentReference<DocumentData> {
         return this.getDocumentReference(
             UserAccessibleCollection.Notifications,
             UserAccessibleNotificationsDocument.LiveNotifications
         )
     }
 
-    protected toogleNotificationAsRead = async (_notification: NotificationInterface, newStatement: boolean): Promise<boolean> => {
+    protected async toggleNotificationRead(
+        notificationPayload: NotificationInterface,
+        newStatement: boolean
+    ): Promise<boolean> {
         try {
 
             const notifications = await this.getDocument(UserAccessibleCollection.Notifications, UserAccessibleNotificationsDocument.LiveNotifications);
 
-            const newNotifications = notifications.records.map((notification: NotificationInterface) => {
-                if (notification.id === _notification.id) {
-                    return {
-                        ...notification,
-                        read: newStatement,
-                    };
+            const newNotifications = notifications.records.map(
+                (notification: NotificationInterface) => {
+                    if (notification.id === notificationPayload.id) {
+                        return {
+                            ...notification,
+                            read: newStatement,
+                        };
+                    }
+                    return notification;
                 }
-                return notification;
-            });
+            );
 
             const docRef = this.getLiveNotificationsDocumentReference();
 
@@ -120,12 +124,12 @@ class NotificationsService extends Core {
         }
     }
 
-    public markNotificationAsRead = async (_notification: NotificationInterface): Promise<boolean> => {
-        return this.toogleNotificationAsRead(_notification, true);
+    public async markNotificationAsRead(_notification: NotificationInterface): Promise<boolean> {
+        return this.toggleNotificationRead(_notification, true);
     }
 
-    public markNotificationAsUnread = async (_notification: NotificationInterface): Promise<boolean> => {
-        return this.toogleNotificationAsRead(_notification, false);
+    public async markNotificationAsUnread(_notification: NotificationInterface): Promise<boolean> {
+        return this.toggleNotificationRead(_notification, false);
     }
 }
 
