@@ -26,10 +26,13 @@ import {
     StrawberryError
 } from "./interfaces"
 
-import service_config from "./core.config"
+import { 
+    service_config, 
+    is_production_env,
+    use_local_emulators,
+} from "./core.config"
 
 // Dev variables
-const use_local_emulators = import.meta.env.DEV
 const _server_ip = "localhost"
 const _local_functions_port = 5001
 
@@ -46,7 +49,7 @@ const auth = getAuth(app)
 const functions = getFunctions(app, service_config.region_functions_emplacement)
 
 // Binding to local emulators (if needed)
-if (use_local_emulators) {
+if (use_local_emulators && !is_production_env) {
     connectFunctionsEmulator(functions, `${_server_ip}`, _local_functions_port)
     connectAuthEmulator(auth, "http://127.0.0.1:9099");
 }
@@ -55,12 +58,15 @@ if (use_local_emulators) {
 const analyticsProvider = getAnalytics(app)
 
 // Sleep function
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+const sleep = (ms: number) => {
+    if (is_production_env) return;
+    return new Promise((resolve) => setTimeout(resolve, ms))
+}
 
 class Core {
     db: Firestore
     auth: Auth
-    sleep: (ms: number) => Promise<unknown>
+    sleep: (ms: number) => Promise<unknown> | undefined
     functions: Functions
     isProductionEnv: boolean
     analyticsProvider: Analytics
@@ -69,37 +75,37 @@ class Core {
         this.auth = auth
         this.sleep = sleep
         this.functions = functions
-        this.isProductionEnv = import.meta.env.PROD
+        this.isProductionEnv = is_production_env;
         this.analyticsProvider = analyticsProvider
     }
 
-    protected analytics = (event: any, payload: any = {}): void => {
+    protected analytics(event: any, payload: any = {}): void {
         if (!this.isProductionEnv) return console.warn("Analytics are disabled in development mode")
         return logEvent(this.analyticsProvider, event, payload)
     }
 
-    protected logError = (error: any): void => {
+    protected logError(error: any): void {
         if (!this.isProductionEnv) return console.warn("An error occured at Wispio Service level: ", error)
     }
 
-    protected getCurrentUser = (): User => {
+    protected getCurrentUser(): User {
         return this.auth.currentUser as User
     }
 
-    protected getCurrentUserID = (): string => {
+    protected getCurrentUserID(): string {
         const userId = this.auth.currentUser?.uid
         if (!userId) {
-            let error_message = "User is not logged in!"
-            this.logError(error_message)
-            throw new Error(error_message)
+            let err_msg = "User is not logged in!"
+            this.logError(err_msg)
+            throw new Error(err_msg)
         }
         return userId
     }
 
-    protected getDocumentReference = (
+    protected getDocumentReference(
         collection: UserAccessibleCollection, 
         document: string
-    ): DocumentReference => {
+    ): DocumentReference {
         try {
             const userId = this.getCurrentUserID()
 
@@ -111,9 +117,9 @@ class Core {
         }
     }
 
-    protected getCollectionReference = (
+    protected getCollectionReference(
         target_collection: UserAccessibleCollection
-    ): CollectionReference => {
+    ): CollectionReference {
         try {
             const userId = this.getCurrentUserID()
 
@@ -124,10 +130,10 @@ class Core {
         }
     }      
 
-    protected getDocument = async (
+    protected async getDocument(
         collection: UserAccessibleCollection,
         document: string
-    ): Promise<DocumentData> => {
+    ): Promise<DocumentData> {
         try {
             const docRef = this.getDocumentReference(collection, document)
 
@@ -146,9 +152,9 @@ class Core {
         }
     }
     
-    protected getMultipleDocuments = async (
+    protected async getMultipleDocuments(
         target_collection: UserAccessibleCollection,
-    ): Promise<MultipleDocumentsResponse[]> => {
+    ): Promise<MultipleDocumentsResponse[]> {
         try {
             const collectionRef = this.getCollectionReference(target_collection)
             const docSnap = await getDocs(collectionRef)
@@ -165,9 +171,9 @@ class Core {
         }
     }
 
-    protected updateLastUpdateTaskFieldToNow = async (
+    protected async updateLastUpdateTaskFieldToNow(
         taskId: string, 
-    ): Promise<void> => {
+    ): Promise<void> {
         const docRef = this.getDocumentReference(UserAccessibleCollection.Tasks, taskId)
 
         try {
@@ -179,14 +185,14 @@ class Core {
         }
     }
 
-    private async httpCallableBuilder (
+    private async httpCallableBuilder(
         functionName: CallableFunctions,
         payload?: any,
     ): Promise<HttpsCallableResult> {
         const function_instance = httpsCallable(this.functions, functionName)
 
         try {
-            return await function_instance(payload ? payload : {})
+            return await function_instance(payload ?? {})
         } catch (error: any) {
             throw new Error(error.message)
         }
@@ -211,9 +217,9 @@ class Core {
         }
     }
 
-    protected getUserClaim = async (
+    protected async getUserClaim(
         claim: UserAccessibleClaims
-    ): Promise<string | null> => {
+    ): Promise<string | null> {
         const user = this.getCurrentUser()
         if (user) {
             const token = await user.getIdTokenResult()
