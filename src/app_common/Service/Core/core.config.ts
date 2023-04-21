@@ -12,4 +12,10 @@ const service_config: FirebaseServiceConfiguration = {
     region_functions_emplacement: import.meta.env.VITE_FIREBASE_REGION_FUNCTIONS_EMPLACEMENT,
 };
 
-export default service_config;
+// Use local emulators (if needed)
+const use_local_emulators = import.meta.env.VITE_USE_LOCAL_EMULATORS === "true";
+
+// Is production environment
+const is_production_env = import.meta.env.PROD;
+
+export { service_config, use_local_emulators, is_production_env };
