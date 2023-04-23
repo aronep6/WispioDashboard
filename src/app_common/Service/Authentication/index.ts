@@ -103,6 +103,15 @@ class Authentication extends Core {
         if (claim === "none") return false;
         return true;
     }
+
+    async checkIfUserEmailIsVerified(): Promise<boolean> {
+        try {
+            const user = this.getCurrentUser();
+            return user.emailVerified;
+        } catch (error: any) {
+            return false;
+        }
+    }
 }
 
 export default Authentication; 

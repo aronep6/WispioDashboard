@@ -6,24 +6,27 @@ const checkAfterUserLoginOnServices = async (
     auth: AuthenticationInterface,
     navigate: NavigateFunction,
 ): Promise<void> => {
+    // -- Check if the user email is verified
+    const isEmailVerified = await auth.checkIfUserEmailIsVerified();
+
+    if (!isEmailVerified) {
+        const redirectUrl = AppRoutes.AuthAccountCheckup;
+        return navigate(redirectUrl);
+    }
+
     // -- Check if the user as a current plan selected
     const hasCurrentPlan = await auth.checkIfUserHasCurrentPlan();
 
-    if (!hasCurrentPlan) {
-        console.log('If user has selected plan :', hasCurrentPlan)
-    }
-
     // -- Checking the current billing status of the user
-
     const billingIsActive = await auth.checkBillingStatus();
 
-    if (!billingIsActive) {
+    if (!billingIsActive || !hasCurrentPlan) {
         const redirectUrl = AppRoutes.BillingSettingsSelectPlan;
-        navigate(redirectUrl);
+        return navigate(redirectUrl);
     }
 
     // Do other checks here ...
-    
+
     await auth.sleep(5000 * 5000 * 5000);
 
     // const checkForRegistrationRedirection = async (uid: string) => {
