@@ -9,7 +9,7 @@ const service_config: FirebaseServiceConfiguration = {
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-    region_functions_emplacement: import.meta.env.VITE_FIREBASE_REGION_FUNCTIONS_EMPLACEMENT,
+    region_functions_emplacement: import.meta.env.VITE_FIREBASE_REGION_FUNCTIONS_EMPLACEMENT || "europe-west1",
 };
 
 // Use local emulators (if needed)
