@@ -70,13 +70,15 @@ class Core {
     functions: Functions
     isProductionEnv: boolean
     analyticsProvider: Analytics
+    application_name: string;
     constructor() {
         this.db = db
         this.auth = auth
         this.sleep = sleep
         this.functions = functions
-        this.isProductionEnv = is_production_env;
+        this.isProductionEnv = is_production_env
         this.analyticsProvider = analyticsProvider
+        this.application_name = import.meta.env.VITE_APPLICATION_NAME
     }
 
     protected analytics(event: any, payload: any = {}): void {
@@ -156,6 +158,7 @@ class Core {
         target_collection: UserAccessibleCollection,
     ): Promise<MultipleDocumentsResponse[]> {
         try {
+            console.log("target_collection: ", target_collection)
             const collectionRef = this.getCollectionReference(target_collection)
             const docSnap = await getDocs(collectionRef)
 

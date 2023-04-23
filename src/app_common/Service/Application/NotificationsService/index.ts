@@ -52,7 +52,7 @@ class NotificationsService extends Core {
     ): Promise<void> {
         const { title, message, link } = notificationPayload;
 
-        const notification = new Notification(`Wispio - ${title}`, {
+        const notification = new Notification(`${ this.application_name } - ${title}`, {
             body: message,
             icon: this.notification_logo,
         });
