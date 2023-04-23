@@ -10,20 +10,20 @@ const Notifications = () => {
     const { unReadedNotificationsCount, liveNotifications } = useNotifications();
 
     const notificationAreAllowed = useMemo(() => {
-        return notificationService.areAllowedByUser();
+        return notificationService.areAllowedByUser
     }, [notificationService]);
 
     const pageProps = useMemo(() => {
         return {
-            pageTitle: unReadedNotificationsCount > 0 ? `Notifications : ${ unReadedNotificationsCount } non lue(s)` : "Notifications"
+            pageTitle: unReadedNotificationsCount > 0 ? `Notifications : ${unReadedNotificationsCount} non lue(s)` : "Notifications"
         }
     }, [unReadedNotificationsCount])
 
     return <PageWrapper {...pageProps}>
-        { liveNotifications.length === 0 ?
-            <NoNotifications areAllowedByUser={ notificationAreAllowed } /> 
+        {liveNotifications.length === 0 ?
+            <NoNotifications areAllowedByUser={notificationAreAllowed} />
             :
-            <AllNotifications liveNotifications={ liveNotifications } />
+            <AllNotifications liveNotifications={liveNotifications} />
         }
     </PageWrapper>;
 }
