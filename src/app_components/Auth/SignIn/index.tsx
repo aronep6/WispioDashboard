@@ -14,6 +14,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AppRoutes } from "../../../app_common/interfaces/AppRoutes";
 import checkAfterUserLoginOnServices from "../check-after-user-login-on-services";
+import useSnackbarService from "../../../app_hooks/contexts_hooks/useSnackbarService";
 
 
 const inDev = !import.meta.env.PROD;
@@ -22,6 +23,7 @@ const SignIn = () => {
     let navigate = useNavigate();
     const auth = useAuth();
     const user = useUserSession();
+    const snackbarService = useSnackbarService();
 
     const [isLoading, setIsLoading] = useState(true);
     const [globalError, setGlobalError] = useState<string | null>(null);
@@ -51,7 +53,7 @@ const SignIn = () => {
         if (user === null) return setIsLoading(false);
 
         const check = async () => {
-            await checkAfterUserLoginOnServices(auth, navigate);
+            await checkAfterUserLoginOnServices(auth, navigate, snackbarService);
             // Check if the url contains a redirectionUrl param
             const params = new URLSearchParams(window.location.search);
             const redirectionUrl = params.get('redirectUrl');

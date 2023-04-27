@@ -1,11 +1,23 @@
 import type { NavigateFunction } from "react-router-dom";
 import type AuthenticationInterface from "../../app_common/Service/Authentication";
+import { SnackbarServicesValues, SnackbarType, SnackbarElement } from "../../app_contexts/SnackbarService/interfaces";
 import { AppRoutes } from "../../app_common/interfaces/AppRoutes";
+
+const connected_user_snackbar_element: SnackbarElement = {
+    type: SnackbarType.Success,
+    title: "Vous êtes connecté !",
+    message: `Connecté sur ${import.meta.env.VITE_APPLICATION_NAME} !`,
+    duration: 5000,
+};
 
 const checkAfterUserLoginOnServices = async (
     auth: AuthenticationInterface,
     navigate: NavigateFunction,
+    snackbarService: SnackbarServicesValues
 ): Promise<void> => {
+
+    snackbarService.addSnackbarElement(connected_user_snackbar_element);
+    
     // -- Check if the user email is verified
     const isEmailVerified = await auth.checkIfUserEmailIsVerified();
 
