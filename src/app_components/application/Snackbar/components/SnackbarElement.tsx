@@ -1,7 +1,8 @@
 import { Fragment, useEffect, useState } from 'react'
-import { X, CheckCircle } from 'react-feather'
+import { X, CheckCircle, AlertCircle, AlertTriangle } from 'react-feather'
 import { Transition } from '@headlessui/react'
 import { SnackbarElementProps } from '../interfaces';
+import { SnackbarType } from '../../../../app_contexts/SnackbarService/interfaces';
 
 const SnackbarElement = ({
     element: { type, title, message, duration },
@@ -33,7 +34,7 @@ const SnackbarElement = ({
         {/* Global notification live region, render this permanently at the end of the document */}
         <div
             aria-live="assertive"
-            className="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start"
+            className="fixed inter inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start"
         >
             <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
                 {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
@@ -47,11 +48,17 @@ const SnackbarElement = ({
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
-                        <div className="p-4">
+                    <div className="max-w-sm w-full bg-white shadow-xl rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-10 overflow-hidden">
+                        <div className="px-5 py-4">
                             <div className="flex items-start">
                                 <div className="flex-shrink-0">
-                                    <CheckCircle className="h-6 w-6 text-green-400" aria-hidden="true" />
+                                    {
+                                        type === SnackbarType.Success ?
+                                            <CheckCircle className="h-6 w-6 text-green-400" aria-hidden="true" />
+                                        : type === SnackbarType.Danger ?
+                                            <AlertTriangle className="h-6 w-6 text-red-400" aria-hidden="true" />
+                                        : <AlertCircle className="h-6 w-6 text-orange-400" aria-hidden="true" />
+                                    }
                                 </div>
                                 <div className="ml-3 w-0 flex-1 pt-0.5">
                                     <p className="text-sm font-medium text-gray-900">{title}</p>
