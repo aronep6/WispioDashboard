@@ -14,14 +14,10 @@ import { AppRoutes } from "../../../../app_common/interfaces/AppRoutes";
 import checkAfterUserLoginOnServices from "../../check-after-user-login-on-services";
 import useSnackbarService from "../../../../app_hooks/contexts_hooks/useSnackbarService";
 import { AuthFlowErrorPayload } from "../../components/AuthWrapper/interfaces";
+import INITIAL_GLOBAL_ERROR_STATE from '../../common/initial-global-error-state';
 
 
 const inDev = !import.meta.env.PROD;
-
-const INITIAL_GLOBAL_ERROR_STATE: AuthFlowErrorPayload = {
-    isError: false,
-    message: '',
-};
 
 const SignIn = () => {
     let navigate = useNavigate();

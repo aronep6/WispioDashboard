@@ -11,6 +11,9 @@ import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
 import { CheckCircle } from "react-feather";
 import { ForgotPasswordFormDataType } from "./interfaces";
 import useAuth from "../../../../app_hooks/contexts_hooks/useAuth";
+import { AuthFlowErrorPayload } from "../../components/AuthWrapper/interfaces";
+import INITIAL_GLOBAL_ERROR_STATE from "../../common/initial-global-error-state";
+
 
 const inDev = !import.meta.env.PROD;
 
@@ -22,7 +25,7 @@ const getSnapshotFromUrl = () => {
 
 const ForgotPassword = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [globalError, setGlobalError] = useState<string | null>(null);
+    const [globalError, setGlobalError] = useState<AuthFlowErrorPayload>(INITIAL_GLOBAL_ERROR_STATE);
     const [success, setSuccess] = useState(false);
 
     const forgot_password_form_email_ref = useRef<HTMLInputElement>(null);
@@ -49,10 +52,15 @@ const ForgotPassword = () => {
 
             setSuccess(true);
         } catch (error: Error | unknown) {
-            inDev && console.log("Une erreur est survenue lors de laa tentative de réinitialisation du mot de passe : ", error);
+            inDev && console.log("Une erreur est survenue lors de la tentative de réinitialisation du mot de passe : ", error);
 
             const _err = getErrors(error);
-            setGlobalError(_err);
+            
+            setGlobalError({
+                isError: true,
+                title: "Réinitialisation du mot de passe",
+                message: _err,
+            });
         } finally {
             setIsLoading(false);
         }
