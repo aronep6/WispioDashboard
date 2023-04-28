@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useCallback, useState } from "react";
+import React, { createContext, useCallback, useState } from "react";
 import ShadowSnackbarWrapper from "../../app_components/application/Snackbar";
 import { SnackbarElement, SnackbarServicesValues } from "./interfaces";
 
