@@ -1,16 +1,20 @@
 import { Fragment, useEffect } from "react";
 import type { AuthLayoutProps } from "./interfaces";
 
-import _transparent_logo_ from '../../../assets/wispio_logo_white_invisible_bkg.png';
-import _block_logo_ from '../../../assets/wispio_logo.webp';
+import _transparent_logo_ from '../../../../assets/wispio_logo_white_invisible_bkg.png';
+import _block_logo_ from '../../../../assets/wispio_logo.webp';
 
 import { Link } from 'react-router-dom';
-import { PrimaryTitle } from '../../../app_atomic/Title';
-import { DangerPrimaryButton, ReturnButton } from '../../../app_atomic/Button';
-import { AlertTriangle, ChevronLeft } from 'react-feather';
-import defaultIconSet from "../../../app_common/interfaces/DefaultIconsSet";
-import useWebTitle from "../../../app_hooks/useWebTitle";
+import { PrimaryTitle } from '../../../../app_atomic/Title';
+import useSnackbarService from "../../../../app_hooks/contexts_hooks/useSnackbarService";
+import { ReturnButton } from '../../../../app_atomic/Button';
+import { ChevronLeft } from 'react-feather';
+import defaultIconSet from "../../../../app_common/interfaces/DefaultIconsSet";
+import useWebTitle from "../../../../app_hooks/useWebTitle";
+import { SnackbarElement, SnackbarType } from "../../../../app_contexts/SnackbarService/interfaces";
 import "./style.css";
+
+const DEFAULT_ERROR_TITLE = "Authentication failed (AuthFlow service)";
 
 const AuthWrapper = ({
     title,
@@ -24,16 +28,32 @@ const AuthWrapper = ({
     setError
 }: AuthLayoutProps) => {
 
+    const snackbarService = useSnackbarService();
+
     useWebTitle(`${import.meta.env.VITE_APPLICATION_NAME} - ${title}`);
 
     useEffect(() => {
-        if (!error) return;
+        if (!error.isError) return;
 
         const timeout = setTimeout(() => {
             setError(null);
         }, 6500);
 
         return () => clearTimeout(timeout);
+    }, [error]);
+
+    useEffect(() => {
+        if (!error.isError) return;
+
+        const snackbar_element: SnackbarElement = {
+            type: SnackbarType.Warning,
+            title: error.title ?? DEFAULT_ERROR_TITLE,
+            message: error.message,
+            duration: 6500,
+        };
+
+        snackbarService.addSnackbarElement(snackbar_element);
+
     }, [error]);
 
     return <Fragment>
@@ -105,20 +125,6 @@ const AuthWrapper = ({
                     <div>
                         {children}
                     </div>
-                    {
-                        error && <div className="flex inset-0 rounded-lg absolute border-red-600 flex-col text-red-700 inter text-lg font-medium items-center justify-center w-full backdrop-blur-2xl duration-300">
-                            <AlertTriangle className="mb-4 animate-pulse" size={40} strokeWidth={1.2} />
-                            <div className="text-center max-w-xs leading-tight">
-                                {error}
-                            </div>
-
-                            <DangerPrimaryButton add="mt-4" action={() => setError(null)}>
-                                Réessayer
-                            </DangerPrimaryButton>
-                            <div className="animation-error-timeout-bar inset-x-0 bg-red-600 h-2 bottom-0 absolute">
-                            </div>
-                        </div>
-                    }
                 </div>
 
             </section>

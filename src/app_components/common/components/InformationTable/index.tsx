@@ -1,8 +1,5 @@
+import { SingleInformationTableRowInterface } from './interfaces';
 import './styles.css';
-export interface SingleInformationTableRowInterface {
-    key: string;
-    value: any;
-}
 
 const InformationTable = ({ table }: { table: SingleInformationTableRowInterface[] }) => {
     const lastIdx = table.length - 1;

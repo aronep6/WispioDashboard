@@ -1,23 +1,27 @@
-import { SecondaryButton, SubmitPrimaryButton } from "../../../app_atomic/Button";
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef, useCallback } from "react";
 
-import AuthWrapper from "../layout";
-import { Link, useNavigate } from 'react-router-dom';
-
-import useAuth from "../../../app_hooks/contexts_hooks/useAuth";
-import useUserSession from "../../../app_hooks/contexts_hooks/useUserSession";
-import { InputBlock } from "../../../app_atomic/Input";
-
+import { SecondaryButton, SubmitPrimaryButton } from "../../../../app_atomic/Button";
+import AuthWrapper from "../../components/AuthWrapper";
+import useAuth from "../../../../app_hooks/contexts_hooks/useAuth";
+import useUserSession from "../../../../app_hooks/contexts_hooks/useUserSession";
+import { InputBlock } from "../../../../app_atomic/Input";
 // Form validation schema and deps
-import { getErrors, signInValidationSchema } from '../functions';
+import { getErrors, signInValidationSchema } from '../../functions';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AppRoutes } from "../../../app_common/interfaces/AppRoutes";
-import checkAfterUserLoginOnServices from "../check-after-user-login-on-services";
-import useSnackbarService from "../../../app_hooks/contexts_hooks/useSnackbarService";
+import { AppRoutes } from "../../../../app_common/interfaces/AppRoutes";
+import checkAfterUserLoginOnServices from "../../check-after-user-login-on-services";
+import useSnackbarService from "../../../../app_hooks/contexts_hooks/useSnackbarService";
+import { AuthFlowErrorPayload } from "../../components/AuthWrapper/interfaces";
 
 
 const inDev = !import.meta.env.PROD;
+
+const INITIAL_GLOBAL_ERROR_STATE: AuthFlowErrorPayload = {
+    isError: false,
+    message: '',
+};
 
 const SignIn = () => {
     let navigate = useNavigate();
@@ -26,7 +30,8 @@ const SignIn = () => {
     const snackbarService = useSnackbarService();
 
     const [isLoading, setIsLoading] = useState(true);
-    const [globalError, setGlobalError] = useState<string | null>(null);
+    const [globalError, setGlobalError] = useState<AuthFlowErrorPayload>(INITIAL_GLOBAL_ERROR_STATE);
+
     const [emailEncodedSnapshot, setEncodedEmailSnapshot] = useState<string | null>(null);
 
     const signin_form_email_ref = useRef<HTMLInputElement>(null);
@@ -43,7 +48,10 @@ const SignIn = () => {
 
         if (code) {
             if (code === 'claims-disrupt') {
-                setGlobalError("Vous devez vous connecter avant de pouvoir accéder à Dashboard");
+                setGlobalError({
+                    isError: true,
+                    message: "Vous devez vous connecter avant de pouvoir accéder à Dashboard",
+                });
             }
         }
     }, []);
@@ -78,12 +86,16 @@ const SignIn = () => {
         try {
             setIsLoading(true);
             await auth.loginWithEmail(data.signin_form_email, data.signin_form_password);
-            setGlobalError(null);
+            setGlobalError(INITIAL_GLOBAL_ERROR_STATE);
         } catch (err: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de la connexion de l'utilisateur : ", err);
             setEmailSnapshot(data.signin_form_email);
             const _err = getErrors(err);
-            setGlobalError(_err);
+            setGlobalError({
+                isError: true,
+                title: "Connexion impossible",
+                message: _err
+            });
             setIsLoading(false);
         }
     };

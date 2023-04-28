@@ -1,16 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import _logo_ from '../../assets/blinks_logo_wide.webp';
-import { InputBlock } from "../../../app_atomic/Input";
-import { Hint } from "../../../app_atomic/Title";
-import AuthWrapper from "../layout";
+import { InputBlock } from "../../../../app_atomic/Input";
+import { Hint } from "../../../../app_atomic/Title";
+import AuthWrapper from "../../components/AuthWrapper";
 // Form validation schema
-import { forgotPasswordValidationSchema, getErrors } from "../functions";
+import { forgotPasswordValidationSchema, getErrors } from "../../functions";
 import { useForm, Controller, FieldValues } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitPrimaryButton } from "../../../app_atomic/Button";
+import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
 import { CheckCircle } from "react-feather";
 import { ForgotPasswordFormDataType } from "./interfaces";
-import useAuth from "../../../app_hooks/contexts_hooks/useAuth";
+import useAuth from "../../../../app_hooks/contexts_hooks/useAuth";
 
 const inDev = !import.meta.env.PROD;
 

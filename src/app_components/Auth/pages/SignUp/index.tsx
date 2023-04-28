@@ -1,20 +1,21 @@
 import { useEffect, useState, useRef } from "react";
 import _logo_ from '../../assets/blinks_logo_wide.webp';
 
-import useAuth from "../../../app_hooks/contexts_hooks/useAuth";
+import useAuth from "../../../../app_hooks/contexts_hooks/useAuth";
 
-import { InputBlock } from "../../../app_atomic/Input";
+import { InputBlock } from "../../../../app_atomic/Input";
 import { Link, useNavigate } from "react-router-dom";
 
-import AuthWrapper from "../layout";
+import AuthWrapper from "../../components/AuthWrapper";
 
 // Form validation schema
-import { signUpValidationSchemaFirstStep, getErrors } from "../functions";
+import { signUpValidationSchemaFirstStep, getErrors } from "../../functions";
 import { useForm, Controller, FieldValues } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitPrimaryButton } from "../../../app_atomic/Button";
-import { Hint } from "../../../app_atomic/Title";
+import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
+import { Hint } from "../../../../app_atomic/Title";
 import { SignUpFormDataType } from "./interfaces";
+import { AuthFlowErrorPayload } from "../../components/AuthWrapper/interfaces";
 
 
 const inDev = !import.meta.env.PROD;
@@ -23,7 +24,10 @@ const SignUp = () => {
     let navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [globalError, setGlobalError] = useState<string | null>(null);
+    const [globalError, setGlobalError] = useState<AuthFlowErrorPayload>({
+        isError: false,
+        message: '',
+    });
 
     const signup_form_first_name_ref = useRef<HTMLInputElement>(null);
 
@@ -65,7 +69,11 @@ const SignUp = () => {
 
             inDev && console.log(_err);
 
-            setGlobalError(_err);
+            setGlobalError({
+                isError: true,
+                title: "Erreur lors de l'inscription",
+                message: _err,
+            });
         } finally {
             setIsLoading(false);
         }

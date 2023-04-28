@@ -6,11 +6,11 @@ import Loading from './app_components/Loading/Loading';
 import ProtectedRoute from './app_components/ProtectedRoute';
 
 // Auth components
-const AuthOutletWrapper = lazy(() => import('./app_components/Auth/OutletWrapper'));
-const ForgotPassword = lazy(() => import('./app_components/Auth/ForgotPassword'));
-const SignIn = lazy(() => import('./app_components/Auth/SignIn'));
-const SignUp = lazy(() => import('./app_components/Auth/SignUp'));
-const SignOut = lazy(() => import('./app_components/Auth/SignOut'));
+const AuthOutletWrapper = lazy(() => import('./app_components/Auth/components/OutletWrapper'));
+const ForgotPassword = lazy(() => import('./app_components/Auth/pages/ForgotPassword'));
+const SignIn = lazy(() => import('./app_components/Auth/pages/SignIn'));
+const SignUp = lazy(() => import('./app_components/Auth/pages/SignUp'));
+const SignOut = lazy(() => import('./app_components/Auth/pages/SignOut'));
 
 // Application components
 const ApplicationWrapper = lazy(() => import('./app_components/application/common/ApplicationWrapper'));

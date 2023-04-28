@@ -8,11 +8,11 @@ import { useUserSession } from "../../hooks";
 // Auth wrapper 
 import AuthWrapper from "./layout";
 // Form validation schema
-import { checkUpValidationSchema } from "./functions";
+import { checkUpValidationSchema } from "../../functions";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitPrimaryButton, SecondaryButton } from "../../atomic/Button";
-import CookieConsent from "../Cookies/CookieConsent";
+import CookieConsent from "../../../Cookies/CookieConsent";
 
 const SEND_CODE_FEATURE_IS_ACTIVE = true;
 
