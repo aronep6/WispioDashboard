@@ -3,20 +3,21 @@ import { Controller, useForm, type FieldValues } from "react-hook-form";
 import { SubmitPrimaryButton } from "../../../../../../app_atomic/Button";
 import { InformativeCard } from "../../../../../../app_atomic/Card";
 import { InputBlock } from "../../../../../../app_atomic/Input";
-import { EventNotificationInterface, EventNotificationType } from "../../../../../../app_contexts/AccountSettings/interfaces";
-import useAccountSettings from "../../../../../../app_hooks/contexts_hooks/useAccountSettings";
 import useAccountSettingsService from "../../../../../../app_hooks/contexts_hooks/useAccountSettingsService";
+import useSnackbarService from "../../../../../../app_hooks/contexts_hooks/useSnackbarService";
 import SettingsSectionGroup from "../../../common/components/SettingsSectionGroup";
 import { updatePasswordSchema } from "../functions/update-password-schema";
 import { type UpdatePasswordFormDataType } from "./interfaces";
+import { SnackbarElement, SnackbarType } from "../../../../../../app_contexts/SnackbarService/interfaces";
 
 const UpdatePassword = () => {
     const isLoaded = true;
     const ac_service = useAccountSettingsService();
-    const ac_context = useAccountSettings();
+
+    const snackbar_service = useSnackbarService();
 
     // Handle form submission dans datas
-    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
+    const { control, handleSubmit, reset, formState: { isSubmitting, isValid } } = useForm({
         mode: "onChange",
         resolver: yupResolver(updatePasswordSchema),
     });
@@ -32,23 +33,25 @@ const UpdatePassword = () => {
         try {
             const success_message = await ac_service._security_updatePassword(password_update, password_update_retype)
 
-            const _success_event_: EventNotificationInterface = {
+            reset();
+
+            const _success_event_: SnackbarElement = {
+                type: SnackbarType.Success,
                 title: event_scope,
                 message: success_message,
-                type: EventNotificationType.Success,
-            }
-
-            ac_context.pushEventNotification(_success_event_);
-
-            window.location.reload();
-        } catch (error: any) {
-            const _error_event_ : EventNotificationInterface = {
-                title: event_scope,
-                message: error.message as string,
-                type: EventNotificationType.Error,
+                duration: 9000,
             };
 
-            ac_context.pushEventNotification(_error_event_);
+            snackbar_service.addSnackbarElement(_success_event_);
+        } catch (error: any) {
+            const _error_event_ : SnackbarElement = {
+                type: SnackbarType.Warning,
+                title: event_scope,
+                message: error.message,
+                duration: 9000,
+            };
+
+            snackbar_service.addSnackbarElement(_error_event_);
         }
     };
 
