@@ -13,7 +13,7 @@ class AccountSettingsService extends Core {
         password_retype: string
     ): Promise<string> => {
         try {
-            if (password !== password_retype) throw new Error('Password entries are different, please try again !');
+            if (password !== password_retype) throw new Error('Les mots de passe ne correspondent pas ! Veuillez réessayer.');
             await updatePassword(this.getCurrentUser(), password);
 
             return 'Mot de passe mis à jour avec succès !';
