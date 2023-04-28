@@ -6,7 +6,8 @@ import readableStripePricing from "../../../../../../app_common/functions/readab
 import { stripeSubscriptionMap, type StripeSubscription } from "../../../../../../app_common/Service/Application/AccountSettingsService/interfaces";
 import useAccountSettingsService from "../../../../../../app_hooks/contexts_hooks/useAccountSettingsService";
 import useStrawberryFetch from "../../../../../../app_hooks/useStrawberryFetch";
-import InformationTable, { type SingleInformationTableRowInterface } from "../../../../../common/components/InformationTable";
+import InformationTable from "../../../../../common/components/InformationTable";
+import { SingleInformationTableRowInterface } from "../../../../../common/components/InformationTable/interfaces";
 import SettingsSectionGroup from "../../../common/components/SettingsSectionGroup";
 
 const BillingDetails = () => {

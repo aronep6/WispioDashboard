@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../../../app_hooks/contexts_hooks/useAuth';
+import useAuth from '../../../../app_hooks/contexts_hooks/useAuth';
 
-function SignOut() {
+const SignOut = () => {
     let navigate = useNavigate();
+    
     const auth = useAuth();
 
     useEffect(() => {

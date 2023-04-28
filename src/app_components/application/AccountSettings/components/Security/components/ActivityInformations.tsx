@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import dateFromNow from "../../../../../../app_common/functions/date-from-now";
 import useUserSession from "../../../../../../app_hooks/contexts_hooks/useUserSession";
-import InformationTable, { SingleInformationTableRowInterface } from "../../../../../common/components/InformationTable";
+import InformationTable from "../../../../../common/components/InformationTable";
+import { SingleInformationTableRowInterface } from "../../../../../common/components/InformationTable/interfaces";
 import SettingsSectionGroup from "../../../common/components/SettingsSectionGroup";
 
 const ActivityInformations = () => {
