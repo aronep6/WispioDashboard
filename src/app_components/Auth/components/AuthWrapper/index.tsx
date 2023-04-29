@@ -13,8 +13,9 @@ import defaultIconSet from "../../../../app_common/interfaces/DefaultIconsSet";
 import useWebTitle from "../../../../app_hooks/useWebTitle";
 import { SnackbarElement, SnackbarType } from "../../../../app_contexts/SnackbarService/interfaces";
 import "./style.css";
+import INITIAL_GLOBAL_ERROR_STATE from "../../common/initial-global-error-state";
 
-const DEFAULT_ERROR_TITLE = "Authentication failed (AuthFlow service)";
+const DEFAULT_ERROR_TITLE = "Échec de l'authentification";
 
 const AuthWrapper = ({
     title,
@@ -36,7 +37,7 @@ const AuthWrapper = ({
         if (!error.isError) return;
 
         const timeout = setTimeout(() => {
-            setError(null);
+            setError(INITIAL_GLOBAL_ERROR_STATE);
         }, 6500);
 
         return () => clearTimeout(timeout);
