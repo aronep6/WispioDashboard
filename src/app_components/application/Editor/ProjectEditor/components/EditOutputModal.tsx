@@ -15,6 +15,9 @@ import useEditorService from '../../../../../app_hooks/contexts_hooks/useEditorS
 import { ProjectId } from '../../../common/interfaces/Editor';
 import { useParams } from 'react-router-dom';
 import useEditor from '../../../../../app_hooks/contexts_hooks/useEditor';
+import { SnackbarElement, SnackbarType } from '../../../../../app_contexts/SnackbarService/interfaces';
+import useSnackbarService from '../../../../../app_hooks/contexts_hooks/useSnackbarService';
+
 
 const EditOutputModal = ({
     currentEditingOutput,
@@ -25,6 +28,8 @@ const EditOutputModal = ({
 }) => {
     const editorService = useEditorService();
     const { realtimeOutputs } = useEditor();
+
+    const snackbarService = useSnackbarService();
 
     const projectId: ProjectId = useParams<{ projectId: ProjectId }>().projectId as string;
     const { from, to, output } = currentEditingOutput.output;
@@ -59,9 +64,32 @@ const EditOutputModal = ({
 
         try {
             await editorService.updateOutput(projectId, newOutputContent, realtimeOutputs);
+
+            const snackbar_element: SnackbarElement = {
+                type: SnackbarType.Success,
+                title: "Realtime output mise à jour",
+                message: "La sortie a été mise à jour avec succès",
+                duration: 2500,
+            };
+
+            snackbarService.addSnackbarElement(snackbar_element);
+
             onClose();
+
+            return;
         } catch (error) {
             console.error(error);
+
+            const snackbar_element: SnackbarElement = {
+                type: SnackbarType.Danger,
+                title: "Erreur lors de la mise à jour de la sortie",
+                message: "Une erreur est survenue lors de la mise à jour de la sortie",
+                duration: 7000,
+            };
+
+            snackbarService.addSnackbarElement(snackbar_element);
+
+            return;
         }
     };
 
