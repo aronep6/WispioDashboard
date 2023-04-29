@@ -1,16 +1,18 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-const handleAccept = () => {
-    localStorage.setItem('cookieConsent', 'true'); window.location.reload(); 
-};
-
-const getCookieConsent = () => {
-    if (localStorage.getItem('cookieConsent') === 'true') { return true; } else { return false; }
-};
 
 const CookieConsent = () => {
     const [show, setShow] = useState<undefined | boolean>(undefined);
+
+    const getCookieConsent = useCallback(() => {
+        if (localStorage.getItem('cookieConsent') === 'true') return true;
+        return false;
+    }, []);
+
+    const handleAccept = useCallback(() => {
+        localStorage.setItem('cookieConsent', 'true'); 
+        window.location.reload();
+    }, []);
 
     useEffect(() => {
         if (show !== undefined) return;
