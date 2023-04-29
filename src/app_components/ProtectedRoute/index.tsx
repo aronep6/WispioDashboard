@@ -28,7 +28,7 @@ const ProtectedRoute = ({
         if (user === null) {
             const claimDisruption = window.location.pathname !== "/" && window.location.pathname !== AppRoutes.AuthSignIn;
             const encoredRedirectUrl = encodeURIComponent(window.location.pathname);
-            return navigate(`${AppRoutes.AuthSignIn}?redirectUrl=${encoredRedirectUrl}&code=${claimDisruption ? "claims-disrupt" : "defaultFallback"}`);
+            return navigate(`${AppRoutes.AuthSignIn}?redirectUrl=${encoredRedirectUrl}&code=${claimDisruption ? "claims-disrupt" : "auth-required"}`);
         }
     }, [user]);
 

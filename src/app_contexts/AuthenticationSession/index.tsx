@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 import Authentication from "../../app_common/Service/Authentication";
 import type {
     UserSessionInterface,
@@ -35,8 +35,8 @@ const AuthenticationSessionProvider = ({ children }: { children: React.ReactNode
     }, []);
 
     return <AuthenticationSession.Provider value={{
-        auth: new Authentication(),
-        user,
+        auth: useMemo(() => new Authentication(), []),
+        user: useMemo(() => user, [user]),
     } as AuthenticationProviderInterface}>
         {children}
     </AuthenticationSession.Provider>;
