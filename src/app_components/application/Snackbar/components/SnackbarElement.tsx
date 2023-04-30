@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState } from 'react'
-import { X, CheckCircle, AlertCircle, AlertTriangle } from 'react-feather'
+import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from 'react-feather'
 import { Transition } from '@headlessui/react'
 import { SnackbarElementProps } from '../interfaces';
-import { SnackbarType } from '../../../../app_contexts/SnackbarService/interfaces';
+import { SnackbarLifeTime, SnackbarType } from '../../../../app_contexts/SnackbarService/interfaces';
 
 const SnackbarElement = ({
     element: { type, title, message, duration },
@@ -16,7 +16,7 @@ const SnackbarElement = ({
     }, []);
 
     useEffect(() => {
-        if (isVisible) {
+        if (isVisible && duration !== SnackbarLifeTime.Permanent) {  
             const timeout = setTimeout(() => {
                 setIsVisible(false);
                 
@@ -55,6 +55,8 @@ const SnackbarElement = ({
                                     {
                                         type === SnackbarType.Success ?
                                             <CheckCircle className="h-6 w-6 text-green-400" aria-hidden="true" />
+                                        : type === SnackbarType.Info ?
+                                            <Info className="h-6 w-6 text-indigo-400" aria-hidden="true" />
                                         : type === SnackbarType.Danger ?
                                             <AlertTriangle className="h-6 w-6 text-red-400" aria-hidden="true" />
                                         : <AlertCircle className="h-6 w-6 text-orange-400" aria-hidden="true" />
