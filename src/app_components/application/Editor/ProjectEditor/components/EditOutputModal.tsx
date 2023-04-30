@@ -19,6 +19,8 @@ import { SnackbarElement, SnackbarType } from '../../../../../app_contexts/Snack
 import useSnackbarService from '../../../../../app_hooks/contexts_hooks/useSnackbarService';
 
 
+const isDev = import.meta.env.DEV;
+
 const EditOutputModal = ({
     currentEditingOutput,
     setCurrentEditingOutput,
@@ -78,7 +80,7 @@ const EditOutputModal = ({
 
             return;
         } catch (error) {
-            console.error(error);
+            isDev && console.error(error);
 
             const snackbar_element: SnackbarElement = {
                 type: SnackbarType.Danger,
