@@ -64,9 +64,11 @@ const SignIn = () => {
 
             if (redirectionUrl) {
                 const decodedUrl = decodeURIComponent(redirectionUrl);
-                return window.location.replace(decodedUrl);
+                navigate(decodedUrl);
+                return;
             } else {
-                return window.location.replace(AppRoutes.Dashboard);
+                navigate(AppRoutes.Dashboard);
+                return;
             }
         };
 
@@ -74,7 +76,7 @@ const SignIn = () => {
     }, [user]);
 
     // Handle form submission dans datas
-    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
+    const { control, handleSubmit, formState: { isSubmitting } } = useForm({
         resolver: yupResolver(signInValidationSchema)
     });
 

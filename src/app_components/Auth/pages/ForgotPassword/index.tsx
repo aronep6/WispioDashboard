@@ -13,6 +13,12 @@ import { ForgotPasswordFormDataType } from "./interfaces";
 import useAuth from "../../../../app_hooks/contexts_hooks/useAuth";
 import { AuthFlowErrorPayload } from "../../components/AuthWrapper/interfaces";
 import INITIAL_GLOBAL_ERROR_STATE from "../../common/initial-global-error-state";
+import { 
+    SnackbarElement, 
+    SnackbarLifeTime, 
+    SnackbarType
+} from "../../../../app_contexts/SnackbarService/interfaces";
+import useSnackbarService from "../../../../app_hooks/contexts_hooks/useSnackbarService";
 
 
 const inDev = !import.meta.env.PROD;
@@ -31,6 +37,7 @@ const ForgotPassword = () => {
     const forgot_password_form_email_ref = useRef<HTMLInputElement>(null);
 
     const auth = useAuth();
+    const snackbarService = useSnackbarService();
 
     // Handle form submission dans datas
     const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
@@ -40,6 +47,19 @@ const ForgotPassword = () => {
             forgot_password_form_email: getSnapshotFromUrl() || "",
         },
     });
+
+    useEffect(() => {
+        if (success) {
+            const snackbar_element: SnackbarElement = {
+                type: SnackbarType.Success,
+                title: "Réinitialisation du mot de passe",
+                message: "Un email de réinitialisation de mot de passe vous a été envoyé. Vérifiez votre boîte de réception.",
+                duration: SnackbarLifeTime.Permanent,
+            };
+
+            snackbarService.addSnackbarElement(snackbar_element);
+        };
+    }, [success]);
 
     const onSubmit = async (data: FieldValues) => {
         setIsLoading(true);
