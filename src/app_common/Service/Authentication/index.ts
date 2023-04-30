@@ -1,4 +1,10 @@
 import Core from "../Core";
+import { 
+    AddSnackbarElement, 
+    SnackbarElement,
+    SnackbarLifeTime,
+    SnackbarType
+} from "../../../app_contexts/SnackbarService/interfaces";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -111,6 +117,21 @@ class Authentication extends Core {
         } catch (error: any) {
             return false;
         }
+    }
+
+    triggerSignedInUserSnackbarElement(
+        addToSnackbarMethod: AddSnackbarElement,
+    ): void {
+        const { email, displayName } = this.getCurrentUser();
+
+        const connected_user_snackbar_element: SnackbarElement = {
+            type: SnackbarType.Success,
+            title: displayName ? `Bienvenue ${ displayName }` : "Bienvenue !",
+            message: `Connecté à ${ this.application_name }, en tant que : ${ email }`,
+            duration: SnackbarLifeTime.Medium,
+        };
+
+        return addToSnackbarMethod(connected_user_snackbar_element);
     }
 }
 
