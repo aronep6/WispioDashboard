@@ -16,7 +16,7 @@ const PageWrapper = ({
 
     useWebTitle(`${pageTitle} - ${ import.meta.env.VITE_APPLICATION_NAME }`);
 
-    return <section className="flex flex-col duration-150 min-h-screen max-h-screen h-screen opening-page-wrapper">
+    return <section className="flex flex-col duration-150 min-h-screen max-h-screen h-screen opening-page-wrapper overflow-hidden">
         <div className='bg-white flex gap-4 flex-row items-center shrink-0 shadow-lg shadow-slate-200/40 px-4 py-1 sm:px-5 sm:py-2 md:px-6 md:py-1.5'>
             <PrimaryTitle>
                 {pageTitle}
