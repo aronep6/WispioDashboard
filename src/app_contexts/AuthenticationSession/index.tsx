@@ -23,7 +23,6 @@ const AuthenticationSessionProvider = ({ children }: { children: React.ReactNode
                 const cookieConsent = localStorage.getItem("cookieConsent");
                 if (cookieConsent !== "true") {
                     localStorage.setItem("cookieConsent", "true");
-                    window.location.reload();
                 }
             } else {
                 setUser(null);
