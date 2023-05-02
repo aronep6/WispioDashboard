@@ -17,6 +17,11 @@
     "jsx": "react-jsx",
     "types": [
       "vidstack/globals",
+      "node",
+      "jest",
+      "@testing-library/jest-dom",
+      "@testing-library/jest-dom/extend-expect",
+      "@testing-library/react",
     ]
   },
   "include": ["src"],

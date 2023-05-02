@@ -3,12 +3,17 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "author": {
+    "name": "Ousmane Mbaye",
+    "email": "ousmane.mbaye@affluences.com",
+    "url": "https://github.com/aronep6"
+  },
   "scripts": {
     "dev": "vite --config vite.config.js --mode staging",
     "build:staging": "tsc && vite --config vite.config.js build --mode staging",
     "build:production": "tsc && vite --config vite.config.js build --mode production",
-    "preview": "vite preview",
-    "ts-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "jest"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
@@ -25,10 +30,15 @@
     "yup": "^1.0.2"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@types/jest": "^29.5.1",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@types/testing-library__jest-dom": "^5.14.5",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "autoprefixer": "^10.4.13",
+    "jest": "^29.5.0",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.7",
     "typescript": "^4.9.3",
