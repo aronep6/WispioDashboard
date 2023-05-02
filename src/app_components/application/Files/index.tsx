@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Folder } from "react-feather";
 import PageGenericPoster from "../../PagePoster/PageGenericDisplay";
 import PageWrapper from "../common/PageWrapper";
+import { FilesServiceProvider } from "../../../app_contexts/FilesService";
 
 const pageProps = {
     pageTitle: "Fichiers",
@@ -21,6 +22,10 @@ const Files = () => {
             }
         />
     </PageWrapper>;
-}
+};
 
-export default Files;
+export default function index() {
+    return <FilesServiceProvider>
+        <Files />
+    </FilesServiceProvider>
+};
