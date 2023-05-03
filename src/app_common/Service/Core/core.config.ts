@@ -18,4 +18,8 @@ const use_local_emulators = import.meta.env.VITE_USE_LOCAL_EMULATORS === "true";
 // Is production environment
 const is_production_env = import.meta.env.PROD;
 
-export { service_config, use_local_emulators, is_production_env };
+export { 
+    service_config, 
+    use_local_emulators, 
+    is_production_env, 
+};
