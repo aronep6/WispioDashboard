@@ -59,8 +59,10 @@ const analyticsProvider = getAnalytics(app)
 
 // Sleep function
 const sleep = (ms: number) => {
-    if (is_production_env) return;
-    return new Promise((resolve) => setTimeout(resolve, ms))
+    return new Promise((resolve) => {
+        if (is_production_env) return resolve;
+        setTimeout(resolve, ms);
+    })
 }
 
 class Core {

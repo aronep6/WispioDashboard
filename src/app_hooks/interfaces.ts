@@ -1,4 +1,5 @@
 import type { DocumentData, DocumentReference } from 'firebase/firestore';
+import type { CommonResponseDTO } from '../app_common/Service/Core/interfaces';
 
 export type IsLoadingType = boolean;
 export type DataType = undefined;
@@ -8,12 +9,6 @@ export interface CustomHookReturn<T> {
     isLoading: IsLoadingType,
     data: DataType | T,
     error: ErrorType,
-}
-
-export interface CommonResponseDTO<T> {
-    success: boolean,
-    data: T,
-    error: string | Error | null,
 }
 
 export interface ServiceFetchProps<T> {
