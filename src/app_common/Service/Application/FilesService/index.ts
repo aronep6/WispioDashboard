@@ -42,6 +42,23 @@ class FilesService extends Core {
             throw error;
         }
     }
+
+    searchFiles(query: string): Promise<ApplicationFile[]> {
+        try {
+            const files: ApplicationFile[] = [
+                _file_1_,
+                _file_2_,
+            ];
+
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(files.filter(file => file.name.includes(query)));
+                }, 2000);
+            });
+        } catch (error: any) {
+            throw error;
+        }
+    }
 }
 
 export default FilesService;

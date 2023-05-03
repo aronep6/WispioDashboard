@@ -5,6 +5,8 @@ import useServiceFetch from "../../../app_hooks/useServiceFetch";
 import { ApplicationFile } from "../../../app_common/Service/Application/FilesService/interfaces";
 import AllFiles from "./components/AllFiles";
 import NoFiles from "./components/NoFiles";
+import useSearchController from "../../../app_hooks/useSearchController";
+import ControlledSearchBar from "../../../app_atomic/Searchbar";
 
 const pageProps = {
     pageTitle: "Fichiers",
@@ -17,11 +19,25 @@ const Files = () => {
         { method: filesService.getAllFiles },
     );
 
+    const searchController = useSearchController<ApplicationFile>({
+        searchFn: filesService.searchFiles,
+        debounceTime: 500,
+        allowSearch: true,
+        isDisabled: false,
+    });
+
     return <PageWrapper 
         {...pageProps} 
         isLoading={isLoading} 
         error={error}
     >
+        <ControlledSearchBar
+            placeholder="Rechercher un fichier"
+            searchController={searchController}
+        />
+        {
+            JSON.stringify(searchController.results)
+        }
         {
             data ?
                 <AllFiles files={data} />
