@@ -1,26 +1,33 @@
-import { Link } from "react-router-dom";
-import { Folder } from "react-feather";
-import PageGenericPoster from "../../PagePoster/PageGenericDisplay";
 import PageWrapper from "../common/PageWrapper";
 import { FilesServiceProvider } from "../../../app_contexts/FilesService";
+import useFilesService from "../../../app_hooks/contexts_hooks/useFilesService";
+import useServiceFetch from "../../../app_hooks/useServiceFetch";
+import { ApplicationFile } from "../../../app_common/Service/Application/FilesService/interfaces";
+import AllFiles from "./components/AllFiles";
+import NoFiles from "./components/NoFiles";
 
 const pageProps = {
     pageTitle: "Fichiers",
 };
 
 const Files = () => {
-    return <PageWrapper {...pageProps}>
-        <PageGenericPoster
-            icon={{
-                type: Folder,
-            }}
-            title="Aucun fichier importé"
-            message={
-                <span>
-                    Vous n'avez importé aucun fichier pour le moment. Importez un fichier dans Wispio directement en créant une nouvelle tâche depuis votre liste <Link to="/tasks" className="text-indigo-600 font-medium">tâches actives</Link>.
-                </span>
-            }
-        />
+    const filesService = useFilesService();
+
+    const { isLoading, data, error } = useServiceFetch<ApplicationFile[]>(
+        { method: filesService.getAllFiles },
+    );
+
+    return <PageWrapper 
+        {...pageProps} 
+        isLoading={isLoading} 
+        error={error}
+    >
+        {
+            data ?
+                <AllFiles files={data} />
+                :
+                <NoFiles />
+        }
     </PageWrapper>;
 };
 
