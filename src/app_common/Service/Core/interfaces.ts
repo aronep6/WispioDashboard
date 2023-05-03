@@ -49,4 +49,10 @@ export enum UserAccessibleClaims {
     BillingIsActive = "billing_is_active",
 }
 
+export interface CommonResponseDTO<T> {
+    success: boolean,
+    data: T,
+    error: string | Error | null,
+}
+
 export const FirebaseRootCollection = "application" as const;
