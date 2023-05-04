@@ -58,12 +58,7 @@ if (use_local_emulators && !is_production_env) {
 const analyticsProvider = getAnalytics(app)
 
 // Sleep function
-const sleep = (ms: number) => {
-    return new Promise((resolve) => {
-        if (is_production_env) return resolve;
-        setTimeout(resolve, ms);
-    })
-}
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 class Core {
     db: Firestore
