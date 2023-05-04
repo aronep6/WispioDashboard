@@ -19,9 +19,7 @@ function useSearchController<SearchItem>({
         return setResults(results);
     }, [query, searchFn]);
 
-    const clearSearch = useCallback(() => {
-        setQuery('');
-    }, []);
+    const clearSearch = useCallback(() => setQuery(''), []);
     
     useEffect(() => {
         if (query.length === 0) return setResults([]);
@@ -33,10 +31,12 @@ function useSearchController<SearchItem>({
 
     const resultsCount = useMemo(() => results.length, [results]);
 
+    const queryIsEmpty = useMemo(() => query.length === 0, [query]);
+
     const hasResults = useMemo(() => resultsCount > 0, [resultsCount]);
 
     const controller = useMemo<SearchInputController<SearchItem>>(() => ({
-        query, setQuery,
+        query, queryIsEmpty, setQuery,
 
         isSearching, clearSearch,
 
@@ -44,7 +44,7 @@ function useSearchController<SearchItem>({
 
         isDisabled,
     }), [
-        query,
+        query, queryIsEmpty,
 
         results, resultsCount, hasResults,
 
@@ -52,9 +52,9 @@ function useSearchController<SearchItem>({
     ]);
 
     // For debugging purposes only :)
-    // useEffect(() => {
-    //     console.log('controller updated', controller);
-    // }, [controller]);
+    useEffect(() => {
+        console.log('controller updated', controller);
+    }, [controller]);
 
     return controller;
 };
