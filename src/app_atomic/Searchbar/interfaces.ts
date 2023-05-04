@@ -2,5 +2,5 @@ import type { SearchInputController } from "../../app_common/interfaces/SearchCo
 
 export interface ControlledSearchBarProps {
     placeholder?: string,
-    searchController: SearchInputController<any>,
+    controller: SearchInputController<any>,
 }

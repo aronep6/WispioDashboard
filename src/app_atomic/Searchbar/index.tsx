@@ -3,7 +3,7 @@ import { Search } from "react-feather";
 
 const ControlledSearchBar = ({
     placeholder,
-    searchController,
+    controller,
 }: ControlledSearchBarProps) => {
     return <section className="flex flex-col py-1 my-0.5 w-full max-w-sm relative group">
         <div className="absolute top-0 left-0 h-full w-12 flex items-center justify-center z-10">
@@ -22,13 +22,13 @@ const ControlledSearchBar = ({
                 w-full
                 font-medium placeholder:text-sm
                 placeholder-slate-400
-                ${searchController.isDisabled && "cursor-not-allowed"}
+                ${controller.isDisabled && "cursor-not-allowed"}
                 text-base pl-12 pr-5`}
             type='search'
-            value={searchController.query}
+            value={controller.query}
             spellCheck={false}
-            onChange={(e) => searchController.setQuery(e.target.value) }
-            disabled={searchController.isDisabled}
+            onChange={(e) => controller.setQuery(e.target.value) }
+            disabled={controller.isDisabled}
             placeholder={placeholder}
         />
     </section>
