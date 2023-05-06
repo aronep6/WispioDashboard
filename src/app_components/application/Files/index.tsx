@@ -1,12 +1,14 @@
+import { useEffect, useMemo } from "react";
 import PageWrapper from "../common/PageWrapper";
 import { FilesServiceProvider } from "../../../app_contexts/FilesService";
 import useFilesService from "../../../app_hooks/contexts_hooks/useFilesService";
 import useServiceFetch from "../../../app_hooks/useServiceFetch";
 import { ApplicationFile } from "../../../app_common/Service/Application/FilesService/interfaces";
-import AllFiles from "./components/AllFiles";
 import NoFiles from "./components/NoFiles";
 import useSearchController from "../../../app_hooks/useSearchController";
 import ControlledSearchBar from "../../../app_atomic/Searchbar";
+import NoSearchResult from "../common/EmptyStates/NoSearchResult";
+import GroupedFiles from "./components/GroupedFiles";
 
 const pageProps = {
     pageTitle: "Fichiers",
@@ -22,25 +24,41 @@ const Files = () => {
     const searchController = useSearchController<ApplicationFile>({
         searchFn: filesService.searchFiles,
         debounceTime: 500,
-        allowSearch: true,
         isDisabled: false,
     });
 
+    const { queryIsEmpty, results, resultsCount, hasResults, query } = searchController;
+
+    const computedExtendedTitle = useMemo(() => {
+        if (data) {
+            if (queryIsEmpty) return `Tout mes fichiers : ${ data.length } fichier(s)`;
+            if (hasResults) return `${ resultsCount } résultat(s) pour '${ query }'`;
+            return 'Aucun résultat pour cette recherche'
+        }
+        return 'Chargement ...';
+    }, [queryIsEmpty, data, resultsCount, hasResults, query])
+
     return <PageWrapper 
-        {...pageProps} 
+        {...pageProps}
         isLoading={isLoading} 
         error={error}
-    >
-        <ControlledSearchBar
-            placeholder="Rechercher un fichier"
-            searchController={searchController}
-        />
-        {
-            JSON.stringify(searchController.results)
+        extendedTitle={computedExtendedTitle}
+        extendedNode={
+            <ControlledSearchBar
+                placeholder="Rechercher un fichier"
+                controller={searchController}
+            />
         }
+    >
         {
             data ?
-                <AllFiles files={data} />
+                queryIsEmpty ?
+                    <GroupedFiles files={data} />
+                :
+                    hasResults ?
+                        <GroupedFiles files={results} />
+                    :
+                        <NoSearchResult />
                 :
                 <NoFiles />
         }
@@ -52,3 +70,21 @@ export default function index() {
         <Files />
     </FilesServiceProvider>
 };
+
+
+// If !datas : 
+//  - loading
+// else
+// - Show all files
+//   If search :
+    // If results :
+//        - Show search results
+    // Else (no results)
+//        - Show no result dialog
+
+
+// Si fichiers :
+// Nb nb fichiers
+// Si résultats: 
+// Result count : 
+// Else no result
