@@ -10,4 +10,5 @@ export interface SearchInputController<SearchItemType> extends SearchResults<Sea
     clearSearch: () => void,
     isSearching: boolean,
     isDisabled: boolean,
+    queryIsEmpty: boolean,
 }

@@ -25,6 +25,7 @@ export type ApplicationFileId = string;
 
 export interface ApplicationFileOwner {
     uid: string;
+    displayName: string,
 }
 
 export type ApplicationFileType = "image" | "video" | "audio" | "document" | "archive" | "other";
