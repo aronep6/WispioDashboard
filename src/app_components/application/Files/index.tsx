@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import PageWrapper from "../common/PageWrapper";
 import { FilesServiceProvider } from "../../../app_contexts/FilesService";
 import useFilesService from "../../../app_hooks/contexts_hooks/useFilesService";
@@ -16,6 +16,8 @@ const pageProps = {
 
 const Files = () => {
     const filesService = useFilesService();
+
+    const searchBarRef = useRef<HTMLInputElement>(null);
 
     const { isLoading, data, error } = useServiceFetch<ApplicationFile[]>(
         { method: filesService.getAllFiles },
@@ -38,6 +40,12 @@ const Files = () => {
         return 'Chargement ...';
     }, [queryIsEmpty, data, resultsCount, hasResults, query])
 
+    useEffect(() => {
+        if (searchBarRef.current) {
+            searchBarRef.current.focus();
+        }
+    }, [data]);
+
     return <PageWrapper 
         {...pageProps}
         isLoading={isLoading} 
@@ -45,6 +53,7 @@ const Files = () => {
         extendedTitle={computedExtendedTitle}
         extendedNode={
             <ControlledSearchBar
+                ref={searchBarRef}
                 placeholder="Rechercher un fichier"
                 controller={searchController}
             />
