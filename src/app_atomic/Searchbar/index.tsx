@@ -1,15 +1,19 @@
+import { forwardRef, type Ref } from "react";
 import { ControlledSearchBarProps } from "./interfaces";
 import { Search } from "react-feather";
 
-const ControlledSearchBar = ({
+const ControlledSearchBar = forwardRef(({
     placeholder,
     controller,
-}: ControlledSearchBarProps) => {
+}: ControlledSearchBarProps,
+forwardedRef: Ref<HTMLInputElement> | undefined
+) => {
     return <section className="flex flex-col py-1 my-0.5 w-full max-w-sm relative group">
         <div className="absolute top-0 left-0 h-full w-12 flex items-center justify-center z-10">
             <Search className="text-slate-400 h-5 w-5" />
         </div>
         <input
+            ref={forwardedRef}
             className={`
                 h-12 relative
                 bg-white shadow-sm
@@ -32,6 +36,6 @@ const ControlledSearchBar = ({
             placeholder={placeholder}
         />
     </section>
-};
+});
 
 export default ControlledSearchBar;
