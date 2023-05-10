@@ -124,12 +124,12 @@ class NotificationsService extends Core {
         }
     }
 
-    public async markNotificationAsRead(_notification: NotificationInterface): Promise<boolean> {
-        return this.toggleNotificationRead(_notification, true);
+    public markNotificationAsRead = async (_notification: NotificationInterface): Promise<boolean> => {
+        return await this.toggleNotificationRead(_notification, true);
     }
 
-    public async markNotificationAsUnread(_notification: NotificationInterface): Promise<boolean> {
-        return this.toggleNotificationRead(_notification, false);
+    public markNotificationAsUnread = async (_notification: NotificationInterface): Promise<boolean> => {
+        return await this.toggleNotificationRead(_notification, false);
     }
 }
 
