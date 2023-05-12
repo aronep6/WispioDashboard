@@ -88,15 +88,15 @@ const ApplicationWrapper = () => {
                         key={index}
                         className={
                           ({ isActive }) => isActive ?
-                            "bg-slate-900 text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                            "bg-slate-900 text-white group flex items-center px-2 py-2 text-base font-medium rounded-md fill-current"
                             :
-                            "text-slate-300 hover:bg-slate-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                            "text-slate-300 hover:bg-slate-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md fill-transparent"
                         }
                       >
                         <item.icon
-                          className="mr-4 flex-shrink-0 h-6 w-6"
+                          className="mr-4 flex-shrink-0 h-6 w-6 fill-inherit"
                           aria-hidden="true"
-                          strokeWidth={1.5}
+                          strokeWidth={1.4}
                         />
                         {item.name}
                         {item.badgeCount && <div className='bg-indigo-700 text-white font-bold flex items-center h-7 w-7 text-xs rounded-full absolute right-2 justify-center'>
@@ -137,15 +137,15 @@ const ApplicationWrapper = () => {
                     key={index}
                     className={
                       ({ isActive }) => isActive ?
-                        "bg-slate-900 relative text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                        "bg-slate-900 relative text-white group flex items-center px-2 py-2 text-base font-medium rounded-md fill-current"
                         :
-                        "text-slate-300 relative hover:bg-slate-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                        "text-slate-300 relative hover:bg-slate-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md fill-transparent"
                     }
                   >
                     <item.icon
-                      className="mr-4 flex-shrink-0 h-6 w-6"
+                      className="mr-4 flex-shrink-0 h-6 w-6 fill-inherit"
                       aria-hidden="true"
-                      strokeWidth={1.5}
+                      strokeWidth={1.4}
                     />
                     {item.name}
                     {item.badgeCount && <div className='bg-indigo-700 text-white font-bold flex items-center h-7 w-7 text-xs rounded-full absolute right-2 justify-center'>

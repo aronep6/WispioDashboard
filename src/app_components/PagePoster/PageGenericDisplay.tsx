@@ -7,8 +7,8 @@ interface DefaultIconProps extends IconProps {
 }
 
 const defaultIconProps: DefaultIconProps = {
-    size: 64,
-    strokeWidth: 0.9,
+    size: 60,
+    strokeWidth: 0.8,
     color: "currentColor",
     tailwindColor: "text-slate-600",
 };
@@ -32,7 +32,7 @@ function PageGenericPoster({
                 <div className={
                     classNames(
                         icon.props?.tailwindColor ? icon.props?.tailwindColor : defaultIconProps.tailwindColor,
-                        "animate-bounce"
+                        ""
                     )
                 }>
                     <icon.type { ...defaultIconProps } { ...icon.props } />
