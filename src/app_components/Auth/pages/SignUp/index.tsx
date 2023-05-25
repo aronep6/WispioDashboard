@@ -5,7 +5,8 @@ import { InputBlock } from "../../../../app_atomic/Input";
 import { Link, useNavigate } from "react-router-dom";
 import AuthWrapper from "../../components/AuthWrapper";
 // Form validation schema
-import { signUpValidationSchemaFirstStep, getErrors } from "../../functions";
+import getFirebaseError from "../../../../app_common/functions/get-firebase-error";
+import { signUpValidationSchemaFirstStep } from "../../functions";
 import { useForm, Controller, FieldValues } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
@@ -59,7 +60,7 @@ const SignUp = () => {
         } catch (error: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de l'inscription : ", error);
 
-            const _err = getErrors(error);
+            const _err = getFirebaseError(error);
 
             inDev && console.log(_err);
 
@@ -206,6 +207,7 @@ const SignUp = () => {
 
                 <div className="w-full pt-8 flex flex-row items-center justify-end">
                     <SubmitPrimaryButton
+                        useMargin={false}
                         disabled={isSubmitting || !isValid}
                         add="w-full"
                     >

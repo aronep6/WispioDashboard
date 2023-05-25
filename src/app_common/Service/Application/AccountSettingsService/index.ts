@@ -1,7 +1,9 @@
 import Core from "../../Core";
 import { updatePassword } from "firebase/auth";
-import getFirebaseError from "./functions";
+import getFirebaseError from "../../../functions/get-firebase-error";
 import { CallableFunctions } from "../../Core/interfaces";
+
+
 class AccountSettingsService extends Core {
     constructor() {
         super();

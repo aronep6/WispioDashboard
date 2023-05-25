@@ -4,7 +4,8 @@ import { InputBlock } from "../../../../app_atomic/Input";
 import { Hint } from "../../../../app_atomic/Title";
 import AuthWrapper from "../../components/AuthWrapper";
 // Form validation schema
-import { forgotPasswordValidationSchema, getErrors } from "../../functions";
+import { forgotPasswordValidationSchema } from "../../functions";
+import getFirebaseError from "../../../../app_common/functions/get-firebase-error";
 import { useForm, Controller, FieldValues } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
@@ -74,7 +75,7 @@ const ForgotPassword = () => {
         } catch (error: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de la tentative de réinitialisation du mot de passe : ", error);
 
-            const _err = getErrors(error);
+            const _err = getFirebaseError(error);
             
             setGlobalError({
                 isError: true,
@@ -129,18 +130,9 @@ const ForgotPassword = () => {
 
                 <div className="h-3 w-full block"></div>
 
-                {!success ? <Hint>
-                    Nous allons vous envoyer un email avec un lien pour réinitialiser votre mot de passe.
-                    Vérifiez votre boîte de réception. Si vous ne trouvez pas l'email, vérifiez votre dossier spam.
-                </Hint> : <div className="flex items-center justify-center bg-green-100 rounded p-3">
-                    <CheckCircle className="text-green-600 mr-3" size={28} />
-                    <p className="text-xs text-green-700 mx-0.5">
-                        Un email de réinitialisation de mot de passe vous a été envoyé. Vérifiez votre boîte de réception.
-                    </p>
-                </div>}
-
-                <div className="w-full pt-8 flex flex-row items-center justify-end">
+                <div className="w-full flex flex-row items-center justify-end">
                     <SubmitPrimaryButton
+                        useMargin={false}
                         disabled={isSubmitting || !isValid || success}
                         add="w-full"
                     >
