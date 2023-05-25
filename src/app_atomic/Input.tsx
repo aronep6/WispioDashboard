@@ -45,11 +45,11 @@ ref: React.Ref<HTMLInputElement> | undefined
         <input
             ref={ref}
             className={`
-                h-12 relative
+                h-11 relative
                 bg-white shadow-sm
                 ${add}
                 text-slate-900
-                border-slate-300 ${ error ? "border-red-500" : "border" }
+                border-slate-300 border ${ error && "border-red-500" }
                 border border-solid box-border
                 focus:border-indigo-500 focus:shadow-outline-indigo
                 focus:ring focus:ring-indigo-400 duration-100
@@ -58,7 +58,7 @@ ref: React.Ref<HTMLInputElement> | undefined
                 font-medium placeholder:text-sm
                 placeholder-slate-400
                 ${disabled && "cursor-not-allowed"}
-                text-base px-3.5`}
+                text-base px-3`}
             type={type}
             value={value}
             spellCheck={false}
