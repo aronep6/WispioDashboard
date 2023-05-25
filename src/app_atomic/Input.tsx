@@ -55,8 +55,9 @@ ref: React.Ref<HTMLInputElement> | undefined
                 focus:ring focus:ring-indigo-400 duration-100
                 focus:outline-none
                 rounded-lg
-                font-medium placeholder:text-sm
+                placeholder:text-sm
                 placeholder-slate-400
+                disabled:bg-slate-100 disabled:text-slate-400 disabled:select-none
                 ${disabled && "cursor-not-allowed"}
                 text-base px-3`}
             type={type}
