@@ -9,7 +9,9 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     updateProfile,
+    signInWithPopup,
 } from "firebase/auth";
+import { IdentityProvidersIdentifiers } from "./interfaces";
 
 class Authentication extends Core {
     private SIWEAP: typeof signInWithEmailAndPassword;
@@ -33,6 +35,43 @@ class Authentication extends Core {
             return user;
         } catch (err) {
             throw err;
+        }
+    };
+
+    // Login with identity provider
+    loginWithIdentityProvider = async (
+        providerId: IdentityProvidersIdentifiers
+    ) => {
+        try {
+            switch (providerId) {
+                case IdentityProvidersIdentifiers.GOOGLE:
+                    const { GoogleAuthProvider } = await import('firebase/auth');
+                    const googleProvider = new GoogleAuthProvider();
+
+                    await signInWithPopup(this.auth, googleProvider);
+                    break;
+                case IdentityProvidersIdentifiers.GITHUB:
+                    const { GithubAuthProvider } = await import('firebase/auth');
+                    const githubProvider = new GithubAuthProvider();
+
+                    await signInWithPopup(this.auth, githubProvider);
+                    break;
+
+                case IdentityProvidersIdentifiers.MICROSOFT:
+                    const { OAuthProvider } = await import('firebase/auth');
+                    const microsoftProvider = new OAuthProvider("microsoft.com");
+
+                    microsoftProvider.setCustomParameters({
+                        prompt: "select_account",
+                    });
+
+                    await signInWithPopup(this.auth, microsoftProvider);
+                    break;
+                default:
+                    throw new Error("The identity provider requested is not supported by the application");
+            }
+        } catch (error: any) {
+            throw new Error(error.message);
         }
     };
 
