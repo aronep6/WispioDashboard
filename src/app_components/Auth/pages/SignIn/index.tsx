@@ -1,13 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 
-import { SecondaryButton, SubmitPrimaryButton } from "../../../../app_atomic/Button";
+import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
 import AuthWrapper from "../../components/AuthWrapper";
 import useAuth from "../../../../app_hooks/contexts_hooks/useAuth";
 import useUserSession from "../../../../app_hooks/contexts_hooks/useUserSession";
 import { InputBlock } from "../../../../app_atomic/Input";
 // Form validation schema and deps
-import { getErrors, signInValidationSchema } from '../../functions';
+import getFirebaseError from '../../../../app_common/functions/get-firebase-error';
+import {
+    _step_one_signInValidationSchema,
+    _step_two_signInValidationSchema,
+} from './sign-in-validation-schemas';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AppRoutes } from "../../../../app_common/interfaces/AppRoutes";
@@ -15,9 +19,13 @@ import checkAfterUserLoginOnServices from "../../check-after-user-login-on-servi
 import useSnackbarService from "../../../../app_hooks/contexts_hooks/useSnackbarService";
 import { AuthFlowErrorPayload } from "../../components/AuthWrapper/interfaces";
 import INITIAL_GLOBAL_ERROR_STATE from '../../common/initial-global-error-state';
+// Identity providers
+import IdentityProviderList from '../../components/IdentityProvider';
 
 
 const inDev = !import.meta.env.PROD;
+
+const INITIAL_SIGNIN_STEP: number = 0;
 
 const SignIn = () => {
     let navigate = useNavigate();
@@ -27,11 +35,15 @@ const SignIn = () => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [globalError, setGlobalError] = useState<AuthFlowErrorPayload>(INITIAL_GLOBAL_ERROR_STATE);
+    const [signInStep, setSignInStep] = useState(INITIAL_SIGNIN_STEP);
 
     const [emailEncodedSnapshot, setEncodedEmailSnapshot] = useState<string | null>(null);
-
+    
     const signin_form_email_ref = useRef<HTMLInputElement>(null);
+    const signin_form_password_ref = useRef<HTMLInputElement>(null);
 
+    const isFirstSignInStep: boolean = useMemo(() => signInStep === 0, [signInStep]);
+    
     const setEmailSnapshot = useCallback((email: string) => {
         const encodedEmail = encodeURIComponent(email);
         setEncodedEmailSnapshot(encodedEmail);
@@ -76,11 +88,13 @@ const SignIn = () => {
     }, [user]);
 
     // Handle form submission dans datas
-    const { control, handleSubmit, formState: { isSubmitting } } = useForm({
-        resolver: yupResolver(signInValidationSchema)
+    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
+        resolver: yupResolver(isFirstSignInStep ? _step_one_signInValidationSchema : _step_two_signInValidationSchema),
     });
 
     const handleFormLogin = async (data: any) => {
+        if (isFirstSignInStep) return setSignInStep(1);
+
         try {
             setIsLoading(true);
             await auth.loginWithEmail(data.signin_form_email, data.signin_form_password);
@@ -88,7 +102,7 @@ const SignIn = () => {
         } catch (err: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de la connexion de l'utilisateur : ", err);
             setEmailSnapshot(data.signin_form_email);
-            const _err = getErrors(err);
+            const _err = getFirebaseError(err);
             setGlobalError({
                 isError: true,
                 title: "Connexion impossible",
@@ -99,15 +113,32 @@ const SignIn = () => {
     };
 
     useEffect(() => {
+        if (!isFirstSignInStep) return;
+
         if (signin_form_email_ref.current) {
             signin_form_email_ref.current.focus();
         }
-    }, [globalError]); // We scope on global error for automatically put the focus if the error is updated
+    }, [globalError, isFirstSignInStep]); // We scope on global error for automatically put the focus if the error is updated
+
+    useEffect(() => {
+        if (isFirstSignInStep) return;
+
+        if (signin_form_password_ref.current) {
+            signin_form_password_ref.current.focus();
+        }
+    }, [isFirstSignInStep]) // We scope this var to listen when the user pass the step one of the form validation
 
     return <AuthWrapper
-        title="Se connecter à Dashboard"
-        titleDescription={`Connectez-vous à votre compte pour commencer à utiliser ${import.meta.env.VITE_APPLICATION_NAME}.`}
-        description="L'authentification est nécessaire pour accéder à votre compte Wispio."
+        title={
+            isFirstSignInStep 
+                ? `Se connecter à Dashboard`
+                : 'Bon retour parmis nous !'
+        }
+        description={
+            isFirstSignInStep
+                ? "Entrez votre adresse e-mail pour vous connecter à votre compte"
+                : "Entrez votre mot de passe pour vous connecter à votre compte"
+        }
         isLoading={isLoading}
         returnLink="/"
         error={globalError}
@@ -132,11 +163,12 @@ const SignIn = () => {
                         onChange={onChange}
                         error={error}
                         errorMessage={error?.message}
+                        disabled={!isFirstSignInStep}
                     />
                 )}
             ></Controller>
 
-            <Controller
+            { !isFirstSignInStep && <Controller
                 control={control}
                 name="signin_form_password"
                 render={({
@@ -144,6 +176,7 @@ const SignIn = () => {
                     fieldState: { error },
                 }) => (
                     <InputBlock
+                        ref={signin_form_password_ref}
                         name="signin_form_password"
                         label="Mot de passe"
                         placeholder="Mot de passe"
@@ -154,24 +187,26 @@ const SignIn = () => {
                         errorMessage={error?.message}
                     />
                 )}
-            ></Controller>
+            ></Controller> }
 
-            <Link
+            { !isFirstSignInStep && <Link
                 to={emailEncodedSnapshot ? `/auth/forgot-password?snapshot=${emailEncodedSnapshot}` : '/auth/forgot-password'}
                 className="text-sm text-indigo-600 text-right w-full block mb-2"
             >
                 Mot de passe oublié ?
-            </Link>
+            </Link> }
 
             <div className="grid gap-2.5 mt-4">
 
-                <div className="flex justify-center">
-                    <SubmitPrimaryButton add="w-full max-w-xs" disabled={isSubmitting}>
-                        Se connecter
-                    </SubmitPrimaryButton>
-                </div>
+                <SubmitPrimaryButton 
+                    useMargin={false}
+                    add="w-full"
+                    disabled={isSubmitting || !isValid}
+                >
+                    { isFirstSignInStep ? "Continuer" : "Se connecter" }
+                </SubmitPrimaryButton>
 
-                <p className="text-sm font-normal text-gray-600 text-center leading-5 my-0.5">
+                <p className="text-sm font-normal text-gray-600 text-center leading-5 my-2">
                     Vous n'avez pas de compte ? <Link to="/auth/signup" className="text-indigo-500 hover:text-indigo-600">Créer un compte</Link>
                 </p>
 
@@ -185,36 +220,9 @@ const SignIn = () => {
             <div className="h-px bg-slate-200 w-full ml-4"></div>
         </div>
 
-        { /* === Connexion avec Google ou Twitter === */}
-
-        <div className="justify-center flex w-full">
-            <SecondaryButton add="max-w-xs w-full flex flex-row items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512" className="fill-indigo-600 h-5 mr-4 text-white">
-                    <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" />
-                </svg>
-                Se connecter avec Google
-            </SecondaryButton>
-        </div>
-
-        {false && <div className="justify-center flex w-full">
-            <SecondaryButton add="max-w-xs w-full flex flex-row items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" viewBox="0 0 248 204" className="fill-indigo-600 h-5 mr-4 text-white">
-                    <path d="m222 51.3.1 6.5c0 66.8-50.8 143.7-143.7 143.7A143 143 0 0 1 1 178.8a101.4 101.4 0 0 0 74.7-21 50.6 50.6 0 0 1-47.1-35 50.3 50.3 0 0 0 22.8-.8 50.5 50.5 0 0 1-40.5-49.5v-.7c7 4 14.8 6.1 22.9 6.3A50.6 50.6 0 0 1 18 10.7a143.3 143.3 0 0 0 104.1 52.8 50.5 50.5 0 0 1 86-46c11.4-2.3 22.2-6.5 32.1-12.3A50.7 50.7 0 0 1 218.1 33c10-1.2 19.8-3.9 29-8-6.7 10.2-15.3 19-25.2 26.2z" />
-                </svg>
-                Se connecter avec Twitter
-            </SecondaryButton>
-        </div>}
+        <IdentityProviderList />
 
     </AuthWrapper>
 };
 
 export default SignIn;
-
-/*
-
-                    <div className="flex flex-row items-center justify-center w-full py-2">
-                        <div className="h-px bg-slate-200 w-full mx-4"></div>
-                        <span className="text-center text-gray-500 text-sm inter font-medium">OU</span>
-                        <div className="h-px bg-slate-200 w-full mx-4"></div>
-                    </div>
-*/
