@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.js --mode staging",
+    "dev:local": "vite --config vite.config.js --mode dev",
     "build:staging": "tsc && vite --config vite.config.js build --mode staging",
     "build:production": "tsc && vite --config vite.config.js build --mode production",
     "preview": "vite preview",
