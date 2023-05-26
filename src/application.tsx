@@ -32,7 +32,7 @@ import BillingSettings from './app_components/application/AccountSettings/compon
 import ServicesSettings from './app_components/application/AccountSettings/components/Services';
 
 
-export default function App() {
+export default function Application() {
   return <Fragment>
     <BrowserRouter>
       <Routes>

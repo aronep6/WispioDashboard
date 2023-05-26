@@ -1,13 +1,16 @@
-import './index.css'
-import App from './App'
-import ReactDOM from 'react-dom/client'
+import './shared/styles/global.css'
+import Application from './application'
+import { createRoot } from 'react-dom/client'
 import { AuthenticationSessionProvider } from './app_contexts/AuthenticationSession'
 import { SnackbarServiceProvider } from './app_contexts/SnackbarService'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+const container = document.getElementById('root') as HTMLElement;
+const root = createRoot(container);
+
+root.render(
   <SnackbarServiceProvider>
     <AuthenticationSessionProvider>
-      <App />
+      <Application />
     </AuthenticationSessionProvider>
   </SnackbarServiceProvider>
-)
+);
