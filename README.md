@@ -20,7 +20,7 @@ To get started with WispioDashboard, follow these steps:
 
 1. Clone this repository to local machine.
 2. Install the dependencies using `npm install`.
-3. Start the development server using `npm run dev` or `yarn dev`.
+3. Start the development server using `npm run dev` or `yarn dev`, to run the application based on the staging schema. Otherwise if you want run the app on your locale schema type `npm run dev:local` or `yarn dev:local`.
 
 WispioDashboard is built with the following technologies:
 
