@@ -5,7 +5,7 @@ import { InputBlock } from "../../../../app_atomic/Input";
 import { Link, useNavigate } from "react-router-dom";
 import AuthWrapper from "../../components/AuthWrapper";
 // Form validation schema
-import getFirebaseError from "../../../../app_common/functions/get-firebase-error";
+import getApplicationErrorMessage from "../../../../app_common/Errors/get-application-error";
 import { signUpValidationSchemaFirstStep } from "../../functions";
 import { useForm, Controller, FieldValues } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -60,7 +60,7 @@ const SignUp = () => {
         } catch (error: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de l'inscription : ", error);
 
-            const _err = getFirebaseError(error);
+            const _err = getApplicationErrorMessage(error);
 
             inDev && console.log(_err);
 

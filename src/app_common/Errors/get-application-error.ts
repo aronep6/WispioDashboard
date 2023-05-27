@@ -1,5 +1,16 @@
-const getFirebaseError = (error: any): string => {
+import { 
+    APP_ERROR_CODE_PREFIX,
+    APPLICATION_ERRORS_CODES,
+} from "./application-errors-codes.enum";
+
+const getApplicationErrorMessage = (error: any): string => {
     const e = error?.message?.toLowerCase() || '';
+
+    if (e.includes(APP_ERROR_CODE_PREFIX)) {
+        if (e.includes(APPLICATION_ERRORS_CODES.UNAVAILABLE_IDENTITY_PROVIDER))
+            return `Le fournisseur d'identité demandé n'est pas disponible sur ${ import.meta.env.VITE_APPLICATION_NAME } !`
+    }
+
     if (e === '') return 'Une erreur inconnue est survenue, veuillez réessayer ultérieurement.';
     if (e.includes('auth/popup-closed-by-user')) return 'Vous avez fermé la fenêtre de connexion, veuillez réessayer.';
     if (e.includes('auth/internal-error')) return 'Une erreur interne est survenue, veuillez réessayer';
@@ -24,4 +35,8 @@ const getFirebaseError = (error: any): string => {
     return 'Une erreur inconnue est survenue, veuillez réessayer ultérieurement.';
 };
 
-export default getFirebaseError;
+const computeApplicationErrorCode = () => {
+
+};
+
+export default getApplicationErrorMessage;

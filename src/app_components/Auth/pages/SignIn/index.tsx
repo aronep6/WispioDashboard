@@ -7,7 +7,7 @@ import useAuth from "../../../../app_hooks/contexts_hooks/useAuth";
 import useUserSession from "../../../../app_hooks/contexts_hooks/useUserSession";
 import { InputBlock } from "../../../../app_atomic/Input";
 // Form validation schema and deps
-import getFirebaseError from '../../../../app_common/functions/get-firebase-error';
+import getApplicationErrorMessage from '../../../../app_common/Errors/get-application-error';
 import {
     _step_one_signInValidationSchema,
     _step_two_signInValidationSchema,
@@ -102,7 +102,7 @@ const SignIn = () => {
         } catch (err: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de la connexion de l'utilisateur : ", err);
             setEmailSnapshot(data.signin_form_email);
-            const _err = getFirebaseError(err);
+            const _err = getApplicationErrorMessage(err);
             setGlobalError({
                 isError: true,
                 title: "Connexion impossible",

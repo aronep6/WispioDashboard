@@ -1,6 +1,6 @@
 import Core from "../../Core";
 import { updatePassword } from "firebase/auth";
-import getFirebaseError from "../../../functions/get-firebase-error";
+import getApplicationErrorMessage from "../../../Errors/get-application-error";
 import { CallableFunctions } from "../../Core/interfaces";
 
 
@@ -20,7 +20,7 @@ class AccountSettingsService extends Core {
 
             return 'Mot de passe mis à jour avec succès !';
         } catch (error: any) {
-            const firebaseReadableError = getFirebaseError(error.message);
+            const firebaseReadableError = getApplicationErrorMessage(error.message);
             throw new Error(firebaseReadableError);
         }
     }

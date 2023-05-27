@@ -1,15 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import _logo_ from '../../assets/blinks_logo_wide.webp';
 import { InputBlock } from "../../../../app_atomic/Input";
-import { Hint } from "../../../../app_atomic/Title";
 import AuthWrapper from "../../components/AuthWrapper";
 // Form validation schema
 import { forgotPasswordValidationSchema } from "../../functions";
-import getFirebaseError from "../../../../app_common/functions/get-firebase-error";
+import getApplicationErrorMessage from "../../../../app_common/Errors/get-application-error";
 import { useForm, Controller, FieldValues } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
-import { CheckCircle } from "react-feather";
 import { ForgotPasswordFormDataType } from "./interfaces";
 import useAuth from "../../../../app_hooks/contexts_hooks/useAuth";
 import { AuthFlowErrorPayload } from "../../components/AuthWrapper/interfaces";
@@ -75,7 +73,7 @@ const ForgotPassword = () => {
         } catch (error: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de la tentative de réinitialisation du mot de passe : ", error);
 
-            const _err = getFirebaseError(error);
+            const _err = getApplicationErrorMessage(error);
             
             setGlobalError({
                 isError: true,
