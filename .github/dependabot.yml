@@ -1,0 +1,13 @@
+# Author: @aronep6
+
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      day: 'sunday'
+      time: '13:30'
+      interval: 'weekly'
+    commit-message:
+      prefix: 'chore(deps): dependabot update'
+    
