@@ -1,14 +1,18 @@
-import type { IdentityProviderHandlerProps, IdentityProviderOptionProps } from "./interfaces";
+import { 
+    IdentityProviderProps,
+    IdentityProviderHandlerProps, 
+} from "../../../../../app_common/Service/Authentication/IdentityProviders/interfaces";
 
 const SingleIdentityProviderOption = ({ 
     providerName,
     providerIcon,
     providerId,
+    isAvailableProvider,
     handler,
-}: IdentityProviderOptionProps & IdentityProviderHandlerProps) => {
-    return <div 
+}: IdentityProviderProps & IdentityProviderHandlerProps) => {
+    return isAvailableProvider ? <div 
         onClick={() => handler(providerId)}
-        className="border border-gray-150 rounded-lg p-2 flex items-center justify-center hover:bg-gray-100 cursor-pointer"
+        className="border border-gray-150 rounded-lg p-2 flex items-center flex-grow justify-center hover:bg-gray-100 cursor-pointer"
         title={`Se connecter avec ${ providerName }.`}
     >
         <div>
@@ -16,7 +20,7 @@ const SingleIdentityProviderOption = ({
                 providerIcon({ className: 'w-6 h-6' })
             }
         </div>
-    </div>;
+    </div> : null;
 };
 
 export default SingleIdentityProviderOption;

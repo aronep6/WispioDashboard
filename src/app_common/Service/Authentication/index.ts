@@ -11,7 +11,9 @@ import {
     updateProfile,
     signInWithPopup,
 } from "firebase/auth";
-import { IdentityProvidersIdentifiers } from "./interfaces";
+import { IdentityProvidersIdentifiers } from "./IdentityProviders/interfaces";
+import checkIdentityProviderAvailability from "./IdentityProviders/check-identity-provider-availability";
+import applicationIdentityProviders from "./IdentityProviders/application-identity-providers";
 
 class Authentication extends Core {
     private SIWEAP: typeof signInWithEmailAndPassword;
@@ -43,6 +45,12 @@ class Authentication extends Core {
         providerId: IdentityProvidersIdentifiers
     ) => {
         try {
+            // Check if the identity provider is currently available on the application
+            checkIdentityProviderAvailability(
+                providerId,
+                applicationIdentityProviders,
+            );
+            
             switch (providerId) {
                 case IdentityProvidersIdentifiers.GOOGLE:
                     const { GoogleAuthProvider } = await import('firebase/auth');
@@ -56,22 +64,15 @@ class Authentication extends Core {
 
                     await signInWithPopup(this.auth, githubProvider);
                     break;
+                case IdentityProvidersIdentifiers.TWITTER:
+                    const { TwitterAuthProvider } = await import('firebase/auth');
+                    const twitterProvider = new TwitterAuthProvider();
 
-                case IdentityProvidersIdentifiers.MICROSOFT:
-                    const { OAuthProvider } = await import('firebase/auth');
-                    const microsoftProvider = new OAuthProvider("microsoft.com");
-
-                    microsoftProvider.setCustomParameters({
-                        prompt: "select_account",
-                    });
-
-                    await signInWithPopup(this.auth, microsoftProvider);
+                    await signInWithPopup(this.auth, twitterProvider);
                     break;
-                default:
-                    throw new Error("The identity provider requested is not supported by the application");
             }
         } catch (error: any) {
-            throw new Error(error.message);
+            throw new Error(error);
         }
     };
 
