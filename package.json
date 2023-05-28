@@ -17,7 +17,7 @@
     "ts-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.13",
+    "@headlessui/react": "^1.7.14",
     "@hookform/resolvers": "^3.1.0",
     "@vidstack/react": "^0.4.2",
     "date-fns": "^2.29.3",
