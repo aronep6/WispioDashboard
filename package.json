@@ -3,6 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "author": {
+    "name": "Ousmane Mbaye",
+    "email": "ousmane.mbaye@affluences.com",
+    "url": "https://ousmanedev.fr"
+  },
   "scripts": {
     "dev": "vite --config vite.config.js --mode staging",
     "dev:local": "vite --config vite.config.js --mode dev",
