@@ -5,9 +5,13 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      day: 'sunday'
-      time: '13:30'
+      day: 'saturday'
+      time: '00:00'
       interval: 'weekly'
     commit-message:
-      prefix: 'chore(deps): dependabot update'
-    
+      prefix: 'chore(deps)'
+    labels:
+      - 'dependencies'
+    assignees:
+      - 'aronep6'
+      - 'dependabot'
