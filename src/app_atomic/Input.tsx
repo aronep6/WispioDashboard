@@ -1,8 +1,6 @@
 import { ChangeEventHandler, forwardRef, ReactNode } from "react";
-import { File, Icon } from "react-feather";
 import { FieldError } from "react-hook-form/dist/types";
 import DashedBorder from "../app_components/application/common/EmptyStates/DashedBorder";
-import EmptyNewTask from "../app_components/application/Tasks/components/EmptyNewTask";
 
 interface InputProps {
     name: string;
@@ -35,6 +33,7 @@ const InputBlock = forwardRef(({
     placeholder = "Entrez une valeur",
     error = false,
     errorMessage = "Une erreur est survenue",
+    ...props
 }: InputProps, 
 ref: React.Ref<HTMLInputElement> | undefined
 ) => {
@@ -67,6 +66,7 @@ ref: React.Ref<HTMLInputElement> | undefined
             disabled={disabled}
             required={required}
             placeholder={placeholder}
+            {...props}
         />
         {
             error && <span className="text-red-500 text-xs font-medium mt-0.5">{ errorMessage }</span>
@@ -86,6 +86,7 @@ const InputBlockArea = forwardRef(({
     error = false,
     errorMessage = "Une erreur est survenue",
     rows = 4,
+    ...props
 }: InputProps & InputAreaPropsExtension,
 ref: React.Ref<HTMLTextAreaElement> | undefined
 ) => {
@@ -117,6 +118,7 @@ ref: React.Ref<HTMLTextAreaElement> | undefined
             disabled={disabled}
             required={required}
             placeholder={placeholder}
+            {...props}
         />
         {
             error && <span className="text-red-500 text-xs font-medium mt-0.5">{ errorMessage }</span>
@@ -152,7 +154,8 @@ const SelectForm = ({
     error, 
     errorMessage,
     add = "",
-    disabled = false
+    disabled = false,
+    ...props
 }: SelectableProps<OptionType, OptionType>) => {
     return (
         <div className="flex flex-col items-start w-full">
@@ -176,6 +179,8 @@ const SelectForm = ({
                     placeholder-gray-500
                     ${disabled && "cursor-not-allowed"}
                     text-base px-3.5`}
+                disabled={disabled}
+                {...props}
             >
                 <option value="_NO_VALUE_">Sélectionnez une option</option>
                 {
