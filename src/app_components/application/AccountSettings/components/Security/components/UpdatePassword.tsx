@@ -77,6 +77,9 @@ const UpdatePassword = () => {
                             onChange={onChange}
                             error={error}
                             errorMessage={error?.message}
+                            {
+                                ...{ autoComplete: "new-password" }
+                            }
                         />
                     )}
                 ></Controller>
@@ -97,6 +100,9 @@ const UpdatePassword = () => {
                             onChange={onChange}
                             error={error}
                             errorMessage={error?.message}
+                            {
+                                ...{ autoComplete: "new-password" }
+                            }
                         />
                     )}
                 ></Controller>

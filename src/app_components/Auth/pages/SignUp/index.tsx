@@ -112,6 +112,9 @@ const SignUp = () => {
                                 onChange={onChange}
                                 error={error}
                                 errorMessage={error?.message}
+                                {
+                                    ...{ autoComplete: "given-name" }
+                                }
                             />
                         )}
                     ></Controller>
@@ -132,6 +135,9 @@ const SignUp = () => {
                                 onChange={onChange}
                                 error={error}
                                 errorMessage={error?.message}
+                                {
+                                    ...{ autoComplete: "family-name" }
+                                }
                             />
                         )}
                     ></Controller>
@@ -153,6 +159,9 @@ const SignUp = () => {
                             onChange={onChange}
                             error={error}
                             errorMessage={error?.message}
+                            {
+                                ...{ autoComplete: "email" }
+                            }
                         />
                     )}
                 ></Controller>
@@ -173,6 +182,9 @@ const SignUp = () => {
                             onChange={onChange}
                             error={error}
                             errorMessage={error?.message}
+                            {
+                                ...{ autoComplete: "new-password" }
+                            }
                         />
                     )}
                 ></Controller>
@@ -193,6 +205,9 @@ const SignUp = () => {
                             onChange={onChange}
                             error={error}
                             errorMessage={error?.message}
+                            {
+                                ...{ autoComplete: "new-password" }
+                            }
                         />
                     )}
                 ></Controller>

@@ -9,7 +9,7 @@ function PageError({ title, message }: { title?: string, message?: any }) {
             icon={{
                 type: AlertTriangle,
                 props: {
-                    tailwindColor: "text-orange-600",
+                    tailwindcolor: "text-orange-600",
                 },
             }}
             title={title ? title : DEFAULT_ERROR_TITLE}

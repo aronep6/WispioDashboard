@@ -3,14 +3,14 @@ import classNames from "../application/common/functions/joinClassNames";
 
 interface DefaultIconProps extends IconProps {
     strokeWidth: number;
-    tailwindColor: string;
+    tailwindcolor: string;
 }
 
 const defaultIconProps: DefaultIconProps = {
     size: 64,
     strokeWidth: 0.9,
     color: "currentColor",
-    tailwindColor: "text-slate-600",
+    tailwindcolor: "text-slate-600",
 };
 
 function PageGenericPoster({ 
@@ -31,7 +31,7 @@ function PageGenericPoster({
             <div className="flex flex-col items-center justify-center w-full pb-10 gap-4">
                 <div className={
                     classNames(
-                        icon.props?.tailwindColor ? icon.props?.tailwindColor : defaultIconProps.tailwindColor,
+                        icon.props?.tailwindcolor ? icon.props?.tailwindcolor : defaultIconProps.tailwindcolor,
                         "animate-bounce"
                     )
                 }>

@@ -83,12 +83,15 @@ const AuthWrapper = ({
 
                 <div className="flex flex-col gap-4 py-6 px-6 sm:px-8 relative overflow-hidden">
                     <div className="flex flex-col justify-center gap-2 relative select-none">
-                        <Link to={returnLink} className="absolute md:hidden top-0 left-0">
+                        <Link to={returnLink} 
+                            aria-label="Retourner à la page précédente"
+                            className="absolute md:hidden top-0 left-0"
+                        >
                             <ReturnButton icon={<ChevronLeft {...defaultIconSet} />} />
                         </Link>
 
                         <div className="flex flex-row justify-center w-full select-none">
-                            <img src={_block_logo_} alt="Wispio" className="h-8 max-w-max rounded-sm" />
+                            <img src={_block_logo_} alt="Wispio" className="max-w-max rounded-sm" height={"32px"} width={"32px"} />
                         </div>
                         <PrimaryTitle add="text-black text-center dark:text-white">
                             {title}

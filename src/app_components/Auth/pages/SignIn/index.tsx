@@ -38,12 +38,12 @@ const SignIn = () => {
     const [signInStep, setSignInStep] = useState(INITIAL_SIGNIN_STEP);
 
     const [emailEncodedSnapshot, setEncodedEmailSnapshot] = useState<string | null>(null);
-    
+
     const signin_form_email_ref = useRef<HTMLInputElement>(null);
     const signin_form_password_ref = useRef<HTMLInputElement>(null);
 
     const isFirstSignInStep: boolean = useMemo(() => signInStep === 0, [signInStep]);
-    
+
     const setEmailSnapshot = useCallback((email: string) => {
         const encodedEmail = encodeURIComponent(email);
         setEncodedEmailSnapshot(encodedEmail);
@@ -130,7 +130,7 @@ const SignIn = () => {
 
     return <AuthWrapper
         title={
-            isFirstSignInStep 
+            isFirstSignInStep
                 ? `Se connecter à Dashboard`
                 : 'Bon retour parmis nous !'
         }
@@ -164,11 +164,14 @@ const SignIn = () => {
                         error={error}
                         errorMessage={error?.message}
                         disabled={!isFirstSignInStep}
+                        {
+                            ...{ autoComplete: "email" }
+                        }
                     />
                 )}
             ></Controller>
 
-            { !isFirstSignInStep && <Controller
+            {!isFirstSignInStep && <Controller
                 control={control}
                 name="signin_form_password"
                 render={({
@@ -185,29 +188,33 @@ const SignIn = () => {
                         onChange={onChange}
                         error={error}
                         errorMessage={error?.message}
+                        disabled={isSubmitting}
+                        {
+                            ...{ autoComplete: "current-password" }
+                        }
                     />
                 )}
-            ></Controller> }
+            ></Controller>}
 
-            { !isFirstSignInStep && <Link
-                to={emailEncodedSnapshot ? `/auth/forgot-password?snapshot=${emailEncodedSnapshot}` : '/auth/forgot-password'}
-                className="text-sm text-indigo-600 text-right w-full block mb-2"
+            {!isFirstSignInStep && <Link
+                to={!emailEncodedSnapshot ? AppRoutes.AuthForgotPassword : `${AppRoutes.AuthForgotPassword}?snapshot=${emailEncodedSnapshot}`}
+                className="text-sm text-indigo-600 hover:text-indigo-700 text-right w-full block mb-2"
             >
                 Mot de passe oublié ?
-            </Link> }
+            </Link>}
 
             <div className="grid gap-2.5 mt-4">
 
-                <SubmitPrimaryButton 
+                <SubmitPrimaryButton
                     useMargin={false}
                     add="w-full"
                     disabled={isSubmitting || !isValid}
                 >
-                    { isFirstSignInStep ? "Continuer" : "Se connecter" }
+                    {isFirstSignInStep ? "Continuer" : "Se connecter"}
                 </SubmitPrimaryButton>
 
                 <p className="text-sm font-normal text-gray-600 text-center leading-5 my-2">
-                    Vous n'avez pas de compte ? <Link to="/auth/signup" className="text-indigo-500 hover:text-indigo-600">Créer un compte</Link>
+                    Vous n'avez pas de compte ? <Link to={AppRoutes.AuthSignUp} className="text-indigo-600 hover:text-indigo-700">Créer un compte</Link>
                 </p>
 
             </div>

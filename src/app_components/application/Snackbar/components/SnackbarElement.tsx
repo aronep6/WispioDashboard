@@ -7,7 +7,6 @@ import { SnackbarLifeTime, SnackbarType } from '../../../../app_contexts/Snackba
 const SnackbarElement = ({
     element: { type, title, message, duration },
     removeSnackbarElement,
-    key,
 }: SnackbarElementProps) => {
     const [isVisible, setIsVisible] = useState(false);
 
@@ -30,7 +29,7 @@ const SnackbarElement = ({
         }
     }, [isVisible, duration]);
     
-    return <Fragment key={key}>
+    return <Fragment>
         {/* Global notification live region, render this permanently at the end of the document */}
         <div
             aria-live="assertive"

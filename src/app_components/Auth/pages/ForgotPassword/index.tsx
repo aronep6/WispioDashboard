@@ -122,6 +122,9 @@ const ForgotPassword = () => {
                             onChange={onChange}
                             error={error}
                             errorMessage={error?.message}
+                            {
+                                ...{ autoComplete: "email" }
+                            }
                         />
                     )}
                 ></Controller>
