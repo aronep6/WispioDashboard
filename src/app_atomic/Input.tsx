@@ -1,18 +1,13 @@
 import { ChangeEventHandler, forwardRef, ReactNode } from "react";
-import { FieldError } from "react-hook-form/dist/types";
+import { CommonInputProps } from "./interfaces/common_interfaces";
 import DashedBorder from "../app_components/application/common/EmptyStates/DashedBorder";
 
-interface InputProps {
-    name: string;
-    label?: string;
+interface InputProps extends CommonInputProps<string> {
     value: string | number;
-    add?: string;
     type?: string;
     required?: boolean;
     onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-    disabled?: boolean;
     placeholder?: string;
-    error?: FieldError | boolean;
     errorMessage?: string;
 }
 
@@ -132,15 +127,12 @@ interface SelectableOption<V, L> {
     value: V;
     label: L;
 }
-
-interface SelectableProps<V, L> {
+interface SelectableProps<V, L> extends CommonInputProps<L> {
     name: string;
     label: L;
     value: V;
     onChange: ChangeEventHandler<HTMLSelectElement>;
     options: SelectableOption<OptionType, OptionType>[];
-    error?: FieldError | boolean;
-    errorMessage?: string;
     add?: string;
     disabled?: boolean;
 };
@@ -193,7 +185,6 @@ const SelectForm = ({
         </div>
     );
 };
-
 interface FileSelectorProps {
     icon: ReactNode,
     title: string,

@@ -1,6 +1,8 @@
+import { Language } from "../../../../app_common/interfaces/WispioTask";
+import { ModelSize } from "../../../../app_common/interfaces/WispioTask";
+
 export interface CreateNewTaskFormDataType {
-    signup_form_first_name: string;
-    signup_form_last_name: string;
-    signup_form_email: string;
-    signup_form_password: string;
+    model_size: ModelSize
+    target_translate_language: Language,
+    use_material_acceleration: boolean,
 }

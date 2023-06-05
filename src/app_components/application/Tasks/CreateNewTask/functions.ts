@@ -1,15 +1,17 @@
 import * as Yup from 'yup';
-// import { dateOptionsList } from '../../working_pool';
+import { modelSizeListReadable, readableLanguageName } from '../../../../app_common/interfaces/WispioTask';
 
 const createNewTaskValidationSchema = Yup.object({
-    options_menu_tempo_title: Yup.string()
-        .required('Veuillez entrer un titre pour votre tempo')
-        .min(3, 'Le titre du tempo doit contenir au moins 3 caractères')
-        .max(50, 'Le titre du tempo doit contenir au plus 50 caractères'),
+    model_size: Yup.string()
+        .required('Veuillez choisir une taille de modèle')
+        .oneOf(modelSizeListReadable.map((option) => option.value.toString()), 'Veuillez choisir une taille de modèle valide parmi les options proposées'),
 
-    options_menu_tempo_expiration_time: Yup.string()
-        .required('Veuillez choisir une date d\'expiration pour votre tempo')
-        // .oneOf(dateOptionsList.map((option) => option._in.toString()), 'Veuillez choisir une date d\'expiration valide parmi les options proposées')
+    target_translate_language: Yup.string()
+        .required('Veuillez choisir une langue de traduction cible')
+        .oneOf(readableLanguageName.map((option) => option.value.toString()), 'Veuillez choisir une langue de traduction cible valide parmi les options proposées'),
+
+    use_material_acceleration: Yup.boolean()
+        .required('Veuillez choisir une option pour l\'accélération matérielle'),
 }); 
 
 export { createNewTaskValidationSchema };

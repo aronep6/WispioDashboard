@@ -10,6 +10,7 @@ import { modelSizeListReadable, readableLanguageName } from "../../../../app_com
 import { createNewTaskValidationSchema } from "./functions";
 import { type CreateNewTaskFormDataType } from "./interfaces";
 import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
+import Switch from "../../../../app_atomic/Switch";
 
 const CreateNewTask = () => {
     const [openMoreSettings, setOpenMoreSettings] = useState<boolean>(true);
@@ -25,10 +26,17 @@ const CreateNewTask = () => {
     });
 
     const onSubmit = (data: FieldValues) => {
-        // const { 
-        //    task_name, 
-        //    task_description
-        //} = data as CreateNewTaskFormDataType;
+        const { 
+           model_size,
+           target_translate_language,
+           use_material_acceleration,
+        } = data as CreateNewTaskFormDataType;
+
+        console.log({
+            model_size,
+            target_translate_language,
+            use_material_acceleration,
+        });
     };
 
     return <Modal>
@@ -47,67 +55,95 @@ const CreateNewTask = () => {
 
                 <ModalHr />
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                    <FileSelector
-                        icon={<File />}
-                        title="Sélectionnez ou déposez votre fichier ici."
-                    />
+                    <div className="col-span-1">
+                        <FileSelector
+                            icon={<File />}
+                            title="Sélectionnez ou déposez votre fichier ici."
+                        />
+                    </div>
 
-                    <ModalSection
-                        title="Paramètres avancés"
-                        show={openMoreSettings}
-                        toggleShowFn={toggleMoreSettings}
-                        toggleTitleShow={ openMoreSettings ? "Masquer" : "Afficher" }
-                    >
+                    <div className="col-span-1">
 
-                        <Controller
-                            control={control}
-                            name="model_size"
-                            render={({
-                                field: { onChange, value },
-                                fieldState: { error },
-                            }) => (
-                                <SelectForm
-                                    name="model_size"
-                                    label="Modèle de l'IA pour la transcription"
-                                    value={value}
-                                    onChange={onChange}
-                                    options={modelSizeListReadable}
-                                    error={error}
-                                    errorMessage={error?.message}
-                                />
-                            )}
-                        ></Controller>
+                        <ModalSection
+                            title="Paramètres avancés"
+                            show={openMoreSettings}
+                            toggleShowFn={toggleMoreSettings}
+                            toggleTitleShow={ openMoreSettings ? "Masquer" : "Afficher" }
+                        >
 
-                        <Hint>
-                            Plus le modèle est grand, plus la transcription sera précise, mais plus le temps de transcription sera long.
-                        </Hint>
+                            <Controller
+                                control={control}
+                                name="model_size"
+                                render={({
+                                    field: { onChange, value },
+                                    fieldState: { error },
+                                }) => (
+                                    <SelectForm
+                                        name="model_size"
+                                        label="Modèle de l'IA pour la transcription"
+                                        value={value}
+                                        onChange={onChange}
+                                        options={modelSizeListReadable}
+                                        error={error}
+                                        errorMessage={error?.message}
+                                    />
+                                )}
+                            ></Controller>
 
-                        <Controller
-                            control={control}
-                            name="target_translate_language"
-                            render={({
-                                field: { onChange, value },
-                                fieldState: { error },
-                            }) => (
-                                <SelectForm
-                                    name="target_translate_language"
-                                    label="Transcription en"
-                                    value={value}
-                                    onChange={onChange}
-                                    options={readableLanguageName}
-                                    error={error}
-                                    errorMessage={error?.message}
-                                />
-                            )}
-                        ></Controller>
+                            <Hint>
+                                Plus le modèle est grand, plus la transcription sera précise, mais plus le temps de transcription sera long.
+                            </Hint>
 
-                        <Hint>
-                            Si vous souhaitez que la transcription soit traduite dans une langue, sélectionnez-la ici. Autrement le texte sera transcrit dans la langue detectée.
-                        </Hint>
+                            <Controller
+                                control={control}
+                                name="target_translate_language"
+                                render={({
+                                    field: { onChange, value },
+                                    fieldState: { error },
+                                }) => (
+                                    <SelectForm
+                                        name="target_translate_language"
+                                        label="Transcription en"
+                                        value={value}
+                                        onChange={onChange}
+                                        options={readableLanguageName}
+                                        error={error}
+                                        errorMessage={error?.message}
+                                    />
+                                )}
+                            ></Controller>
 
-                    </ModalSection>
+                            <Hint>
+                                Si vous souhaitez que la transcription soit traduite dans une langue, sélectionnez-la ici. Autrement le texte sera transcrit dans la langue detectée.
+                            </Hint>
+
+                            <Controller
+                                control={control}
+                                name="use_material_acceleration"
+                                render={({
+                                    field: { onChange, value },
+                                    fieldState: { error },
+                                }) => (
+                                    <Switch
+                                        name="use_material_acceleration"
+                                        checked={value}
+                                        onChange={onChange}
+                                        label="Utiliser l'accélération mat. (BETA)"
+                                        error={error}
+                                        errorMessage={error?.message}
+                                    ></Switch>
+                                )}
+                            ></Controller>
+
+                            <Hint>
+                                L'accélération matérielle permet d'accélérer la transcription sur nos serveurs. Cela peut provoquer des incohérences dans la transcription.
+                            </Hint>
+
+                        </ModalSection>
+
+                    </div>
                 </div>
 
                 <ModalHr />
