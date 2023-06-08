@@ -7,13 +7,14 @@ import { FileSelector, SelectForm } from "../../../../app_atomic/Input";
 import { Modal, ModalHr, ModalSection } from "../../../../app_atomic/Modal"
 import { Hint, PrimaryTitle } from "../../../../app_atomic/Title";
 import { modelSizeListReadable, readableLanguageName } from "../../../../app_common/interfaces/WispioTask";
-import { createNewTaskValidationSchema } from "./functions";
+import createNewTaskValidationSchema from "./create-new-task.validation-schema";
+import createNewTaskAdvancedSettingsDefaultConfig from "../interfaces/create-task-advanced-settings.default";
 import { type CreateNewTaskFormDataType } from "./interfaces";
 import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
 import Switch from "../../../../app_atomic/Switch";
 
 const CreateNewTask = () => {
-    const [openMoreSettings, setOpenMoreSettings] = useState<boolean>(true);
+    const [openMoreSettings, setOpenMoreSettings] = useState<boolean>(false);
 
     const toggleMoreSettings = useCallback(() => {
         return setOpenMoreSettings((prev) => !prev);
@@ -23,6 +24,7 @@ const CreateNewTask = () => {
     const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
         mode: "onChange",
         resolver: yupResolver(createNewTaskValidationSchema),
+        defaultValues: createNewTaskAdvancedSettingsDefaultConfig,
     });
 
     const onSubmit = (data: FieldValues) => {
@@ -132,13 +134,14 @@ const CreateNewTask = () => {
                                         onChange={onChange}
                                         label="Utiliser l'accélération mat. (BETA)"
                                         error={error}
+                                        checkedBackgroundClass="bg-indigo-600"
                                         errorMessage={error?.message}
                                     ></Switch>
                                 )}
                             ></Controller>
 
                             <Hint>
-                                L'accélération matérielle permet d'accélérer la transcription sur nos serveurs. Cela peut provoquer des incohérences dans la transcription.
+                                L'accélération matérielle permet d'accélérer la transcription sur nos instances. Cela peut provoquer des incohérences dans la transcription.
                             </Hint>
 
                         </ModalSection>

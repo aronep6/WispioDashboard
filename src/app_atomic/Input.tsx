@@ -121,7 +121,7 @@ ref: React.Ref<HTMLTextAreaElement> | undefined
     </section>
 });
 
-type OptionType = string | number; // TODO: Make this more generic
+type OptionType = any; // TODO: Make this more generic
 
 interface SelectableOption<V, L> {
     value: V;
