@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { File, Plus } from "react-feather";
 import { Controller, useForm, type FieldValues } from "react-hook-form";
 import { Card } from "../../../../app_atomic/Card";
-import { FileSelector, SelectForm } from "../../../../app_atomic/Input";
+import { SelectForm } from "../../../../app_atomic/Input";
 import { Modal, ModalHr, ModalSection } from "../../../../app_atomic/Modal"
 import { Hint, PrimaryTitle } from "../../../../app_atomic/Title";
 import { modelSizeListReadable, readableLanguageName } from "../../../../app_common/interfaces/WispioTask";
@@ -12,9 +12,10 @@ import createNewTaskAdvancedSettingsDefaultConfig from "../interfaces/create-tas
 import { type CreateNewTaskFormDataType } from "./interfaces";
 import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
 import Switch from "../../../../app_atomic/Switch";
+import { ControlledFileSelector } from "../../../../app_atomic/FileSelector";
 
 const CreateNewTask = () => {
-    const [openMoreSettings, setOpenMoreSettings] = useState<boolean>(false);
+    const [openMoreSettings, setOpenMoreSettings] = useState<boolean>(true);
 
     const toggleMoreSettings = useCallback(() => {
         return setOpenMoreSettings((prev) => !prev);
@@ -28,13 +29,15 @@ const CreateNewTask = () => {
     });
 
     const onSubmit = (data: FieldValues) => {
-        const { 
-           model_size,
-           target_translate_language,
-           use_material_acceleration,
+        const {
+            file,
+            model_size,
+            target_translate_language,
+            use_material_acceleration,
         } = data as CreateNewTaskFormDataType;
 
         console.log({
+            file,
             model_size,
             target_translate_language,
             use_material_acceleration,
@@ -60,10 +63,19 @@ const CreateNewTask = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                     <div className="col-span-1">
-                        <FileSelector
-                            icon={<File />}
-                            title="Sélectionnez ou déposez votre fichier ici."
-                        />
+                        <Controller
+                            control={control}
+                            name="file"
+                            render={({
+                                field: { value, onChange },
+                            }) => (
+                                <ControlledFileSelector
+                                    title="Sélectionnez ou déposez votre fichier ici."
+                                    onChange={onChange}
+                                    value={value}
+                                />
+                            )}
+                        ></Controller>
                     </div>
 
                     <div className="col-span-1">
