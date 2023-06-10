@@ -185,16 +185,5 @@ const SelectForm = ({
         </div>
     );
 };
-interface FileSelectorProps {
-    icon: ReactNode,
-    title: string,
-}
 
-const FileSelector = ({ icon, title }: FileSelectorProps) => {
-    return <DashedBorder
-        icon={icon}
-        title={title}
-    ></DashedBorder>
-};
-
-export { InputBlock, InputBlockArea, SelectForm, FileSelector };
+export { InputBlock, InputBlockArea, SelectForm };
