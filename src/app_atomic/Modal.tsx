@@ -32,7 +32,7 @@ const ModalContainer = ({
 }: ModalProps) => {
     return <div onClick={onClose}
         className="fixed inter h-screen modal-bg-animation w-screen backdrop-blur-sm inset-0 modal-bg-animation z-50 flex items-center justify-center">
-        <section className="overflow-hidden m-2 duration-150 modal-animation" onClick={e => e.stopPropagation()}>
+        <section className="overflow-hidden mx-2 py-4 duration-150 modal-animation" onClick={e => e.stopPropagation()}>
             {children}
         </section>
     </div>
