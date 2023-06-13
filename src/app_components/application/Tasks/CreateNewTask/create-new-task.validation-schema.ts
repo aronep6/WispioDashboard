@@ -1,31 +1,24 @@
 import * as Yup from 'yup';
 import { CreateNewTaskErrors } from './create-new-task.errors.enum';
 import { modelSizeListReadable, readableLanguageName } from '../../../../app_common/interfaces/WispioTask';
-
-const MAX_FILE_SIZE = 800 * 1024 * 1024; // ~800 MB
-
-const SUPPORTED_FORMATS = [
-    "audio/mpeg",
-    "audio/wav",
-    "audio/ogg",
-    "audio/mp4",
-    "audio/aac",
-    "audio/flac",
-    "audio/x-flac",
-];  
+import CreateNewTaskTestFns from './create-new-task-test-functions';
+import { SUPPORTED_FORMATS } from './common/supported-formats';
+import MAX_FILE_SIZE from './common/max-file-size';
 
 const createNewTaskValidationSchema = Yup.object({
-    file: Yup.mixed()
-        .required("")
-        .test("fileSize", CreateNewTaskErrors.FileSizeTooLarge, (value) => {
-            const _file_ = value as File[];
-            return value && _file_[0].size >= MAX_FILE_SIZE;
-        })
-        .test("fileType", CreateNewTaskErrors.FileTypeNotSupported, (value) => {
-            const _file_ = value as File[];
-            return value && SUPPORTED_FORMATS.includes(_file_[0].type);
-        }),
-    // TODO : Improve the typing of the file property
+    file: Yup
+        .mixed()
+        .required("Veuillez sélectionner un fichier")
+        .test(
+            "is-valid-size",
+            CreateNewTaskErrors.FileSizeTooLarge,
+            (value) => CreateNewTaskTestFns.isValidSize(value as File, MAX_FILE_SIZE)
+        )
+        .test(
+            "is-valid-type", 
+            CreateNewTaskErrors.FileTypeNotSupported,
+            (value) => CreateNewTaskTestFns.isValidType(value as File, SUPPORTED_FORMATS)
+        ),
     model_size: Yup.string()
         .required(CreateNewTaskErrors.SelectModelSize)
         .oneOf(modelSizeListReadable.map((option) => option.value.toString()), CreateNewTaskErrors.SelectValidModelSize),
