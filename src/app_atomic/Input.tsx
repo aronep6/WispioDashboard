@@ -1,6 +1,5 @@
 import { ChangeEventHandler, forwardRef, ReactNode } from "react";
 import { CommonInputProps } from "./interfaces/common_interfaces";
-import DashedBorder from "../app_components/application/common/EmptyStates/DashedBorder";
 
 interface InputProps extends CommonInputProps<string> {
     value: string | number;
