@@ -6,9 +6,11 @@ export enum SnackbarType {
 };
 
 export enum SnackbarLifeTime {
-    Short = 3000,
-    Medium = 6000,
-    Long = 9000,
+    VeryShort = 2000,
+    Short = 3500,
+    Medium = 6500,
+    Long = 9500,
+    VeryLong = 16500,
     Permanent = -1,
 };
 
