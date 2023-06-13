@@ -76,6 +76,10 @@ html {
     animation: openingPage 290ms ease 0s 1 normal forwards;
 }
 
+.opening-loading-message-modal {
+    animation: openingLoadingMessageModal 290ms ease 0s 1 normal forwards;
+}
+
 @keyframes openingPage {
     0% {
         opacity: 0;
@@ -84,6 +88,16 @@ html {
 
     100% {
         opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes openingLoadingMessageModal {
+    0% {
+        transform: translateY(45px);
+    }
+
+    100% {
         transform: translateX(0);
     }
 }
