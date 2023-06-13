@@ -1,6 +1,6 @@
 import type { NavigateFunction } from "react-router-dom";
 import type AuthenticationInterface from "../../app_common/Service/Authentication";
-import { SnackbarServicesValues, SnackbarType, SnackbarElement } from "../../app_contexts/SnackbarService/interfaces";
+import { SnackbarServicesValues } from "../../app_contexts/SnackbarService/interfaces";
 import { AppRoutes } from "../../app_common/interfaces/AppRoutes";
 
 
