@@ -1,16 +1,10 @@
 import { Fragment } from "react";
 import { createPortal } from "react-dom";
-import { SecondaryTitle } from "./Title";
+import { SecondaryTitle } from "../Title";
+import type { ModalProps, ModalHrProps, ModalSectionProps } from "./interfaces";
+import InformationTable from "../../app_components/common/components/InformationTable";
+
 const modalRoot = document.getElementById('modal-root') as HTMLElement;
-
-interface ModalProps {
-    children: JSX.Element | JSX.Element[];
-    onClose?: () => void;
-}
-
-interface ModalHrProps {
-    color?: string;
-}
 
 const Modal = ({
     children,
@@ -50,13 +44,8 @@ const ModalSection = ({
     show = true,
     toggleShowFn = () => { },
     toggleTitleShow = null,
-}: {
-    title: string,
-    children: React.ReactNode,
-    show?: boolean,
-    toggleShowFn?: () => void;
-    toggleTitleShow?: string | null
-}) => {
+    sectionCurrentValues = null,
+}: ModalSectionProps) => {
     return <div className='flex flex-col max-h-max gap-5 border p-5 rounded-lg bg-slate-50'>
         <div className="flex flex-row justify-between items-center gap-2">
             <SecondaryTitle>{title}</SecondaryTitle>
@@ -67,9 +56,11 @@ const ModalSection = ({
                 {toggleTitleShow}
             </div>}
         </div>
-        {show && <div className='flex flex-col gap-2'>
-            {children}
-        </div>}
+        {
+            show ? <div className='flex flex-col gap-2'>{children}</div>
+            : 
+            sectionCurrentValues && <InformationTable table={sectionCurrentValues} />
+        }
     </div>
 };
 
