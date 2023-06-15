@@ -68,23 +68,23 @@ export const readableLanguageName: { value: Language, label: ReadableFlaggedLang
     { value: Language.Ukrainian, label: "🇺🇦 Українська" },
 ];
 
-export const languageWordErrorRate: Record<Language, number> = {
-    [Language.Spanish]: 0.03,
-    [Language.Italian]: 0.04,
-    [Language.English]: 0.042,
-    [Language.Portuguese]: 0.043,
-    [Language.German]: 0.045,
-    [Language.Japanese]: 0.053,
-    [Language.Polish]: 0.054,
-    [Language.Russian]: 0.056,
-    [Language.Dutch]: 0.067,
-    [Language.Indonesian]: 0.071,
-    [Language.Catalan]: 0.073,
-    [Language.French]: 0.083,
-    [Language.Turkish]: 0.084,
-    [Language.Swedish]: 0.085,
-    [Language.Ukrainian]: 0.086,
-};
+export const languageWordErrorRate: { value: Language, wer: number }[] = [
+    { value: Language.Spanish, wer: 0.03 },
+    { value: Language.Italian, wer: 0.04 },
+    { value: Language.English, wer: 0.042 },
+    { value: Language.Portuguese, wer: 0.043 },
+    { value: Language.German, wer: 0.045 },
+    { value: Language.Japanese, wer: 0.053 },
+    { value: Language.Polish, wer: 0.054 },
+    { value: Language.Russian, wer: 0.056 },
+    { value: Language.Dutch, wer: 0.067 },
+    { value: Language.Indonesian, wer: 0.071 },
+    { value: Language.Catalan, wer: 0.073 },
+    { value: Language.French, wer: 0.083 },
+    { value: Language.Turkish, wer: 0.084 },
+    { value: Language.Swedish, wer: 0.085 },
+    { value: Language.Ukrainian, wer: 0.086 },
+];
 
 export interface WhisperTask {
     status: WhisperTaskStatus

@@ -6,7 +6,7 @@ import { Card } from "../../../../app_atomic/Card";
 import { SelectForm } from "../../../../app_atomic/Input";
 import { Modal, ModalHr, ModalSection } from "../../../../app_atomic/Modal"
 import { Hint, PrimaryTitle } from "../../../../app_atomic/Title";
-import { modelSizeListReadable, readableLanguageName } from "../../../../app_common/interfaces/WispioTask";
+import { languageWordErrorRate, modelSizeListReadable, readableLanguageName } from "../../../../app_common/interfaces/WispioTask";
 import createNewTaskValidationSchema from "./create-new-task.validation-schema";
 import createNewTaskAdvancedSettingsDefaultConfig from "../interfaces/create-task-advanced-settings.default";
 import { type CreateNewTaskFormDataType } from "./interfaces";
@@ -30,10 +30,13 @@ const CreateNewTask = () => {
     });
     
     const computedModalSectionCurrentValues: SingleInformationTableRowInterface[] = useMemo(() => {
+        if (openMoreSettings) return [];
+
         const data = getValues();
 
         const model = modelSizeListReadable.find((modelSize) => modelSize.value === data.model_size);
         const language = readableLanguageName.find((language) => language.value === data.target_translate_language);
+        const wordErrorRate = languageWordErrorRate.find((wordErrorRate) => wordErrorRate.value === data.target_translate_language);
 
         return [
             {
@@ -43,6 +46,11 @@ const CreateNewTask = () => {
             {
                 key: "Langue de transcription",
                 value: language?.label ?? "Non défini",
+            },
+            {
+                key: `Taux d'erreur par mots (WER)`,
+                value: wordErrorRate?.wer ? `${wordErrorRate.wer * 100}%` : "Non défini",
+                isSubRow: true,
             },
             {
                 key: "Accélération matérielle",
