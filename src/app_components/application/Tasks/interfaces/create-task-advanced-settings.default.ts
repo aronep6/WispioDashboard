@@ -4,7 +4,7 @@ import { Language, ModelSize } from "../../../../app_common/interfaces/WispioTas
 const USE_MATERIAL_ACCELERATION = false;
 
 const createNewTaskAdvancedSettingsDefaultConfig: Partial<CreateNewTaskFormDataType> = {
-    model_size: ModelSize.Small,
+    model_size: ModelSize.Base,
     target_translate_language: Language.English,
     use_material_acceleration: USE_MATERIAL_ACCELERATION,
 }

@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCallback, useState } from "react";
-import { File, Plus } from "react-feather";
+import { useCallback, useMemo, useState } from "react";
+import { Plus } from "react-feather";
 import { Controller, useForm, type FieldValues } from "react-hook-form";
 import { Card } from "../../../../app_atomic/Card";
 import { SelectForm } from "../../../../app_atomic/Input";
@@ -14,28 +14,52 @@ import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
 import Switch from "../../../../app_atomic/Switch";
 import { ControlledFileSelector } from "../../../../app_atomic/FileSelector";
 import { ALLOWED_EXTENSIONS } from "./common/supported-formats";
+import { SingleInformationTableRowInterface } from "../../../common/components/InformationTable/interfaces";
 
 const CreateNewTask = () => {
     const [openMoreSettings, setOpenMoreSettings] = useState<boolean>(false);
-
+    
     const toggleMoreSettings = useCallback(() => {
         return setOpenMoreSettings((prev) => !prev);
     }, []);
 
-    // Handle form submission dans datas
-    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
+    const { control, getValues, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
         mode: "onChange",
         resolver: yupResolver(createNewTaskValidationSchema),
         defaultValues: createNewTaskAdvancedSettingsDefaultConfig,
     });
+    
+    const computedModalSectionCurrentValues: SingleInformationTableRowInterface[] = useMemo(() => {
+        const data = getValues();
 
-    const onSubmit = (data: FieldValues) => {
+        const model = modelSizeListReadable.find((modelSize) => modelSize.value === data.model_size);
+        const language = readableLanguageName.find((language) => language.value === data.target_translate_language);
+
+        return [
+            {
+                key: "Taille du modèle",
+                value: model?.label ?? "Non défini",
+            },
+            {
+                key: "Langue de transcription",
+                value: language?.label ?? "Non défini",
+            },
+            {
+                key: "Accélération matérielle",
+                value: data.use_material_acceleration ? "Activée" : "Désactivée",
+            },
+        ];
+    }, [openMoreSettings]);
+
+    const onSubmit = async (data: FieldValues) => {
         const {
             file,
             model_size,
             target_translate_language,
             use_material_acceleration,
         } = data as CreateNewTaskFormDataType;
+
+        await new Promise((resolve) => setTimeout(resolve, 6000));
 
         console.log({
             file,
@@ -46,10 +70,10 @@ const CreateNewTask = () => {
     };
 
     return <Modal>
-        <Card modal={true}>
+        <Card modal={true} isLoading={isSubmitting}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className='max-w-2xl flex flex-col gap-1 px-1'>
+                className='max-w-xl flex flex-col gap-1 px-1'>
 
                 <div className="flex flex-row gap-3 px-2 items-center">
                     <Plus className="w-6 h-6 text-indigo-600" />
@@ -87,6 +111,7 @@ const CreateNewTask = () => {
                         show={openMoreSettings}
                         toggleShowFn={toggleMoreSettings}
                         toggleTitleShow={openMoreSettings ? "Masquer" : "Afficher"}
+                        sectionCurrentValues={computedModalSectionCurrentValues}
                     >
 
                         <Controller
