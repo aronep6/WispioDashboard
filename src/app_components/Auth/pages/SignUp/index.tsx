@@ -29,7 +29,7 @@ const SignUp = () => {
     const auth = useAuth();
 
     // Handle form submission dans datas
-    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
+    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm<SignUpFormDataType>({
         mode: "onChange",
         resolver: yupResolver(signUpValidationSchemaFirstStep)
     });

@@ -39,7 +39,7 @@ const ForgotPassword = () => {
     const snackbarService = useSnackbarService();
 
     // Handle form submission dans datas
-    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
+    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm<ForgotPasswordFormDataType>({
         mode: "onChange",
         resolver: yupResolver(forgotPasswordValidationSchema),
         defaultValues: {

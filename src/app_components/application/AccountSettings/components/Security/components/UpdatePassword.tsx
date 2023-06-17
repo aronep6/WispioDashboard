@@ -17,7 +17,7 @@ const UpdatePassword = () => {
     const snackbar_service = useSnackbarService();
 
     // Handle form submission dans datas
-    const { control, handleSubmit, reset, formState: { isSubmitting, isValid } } = useForm({
+    const { control, handleSubmit, reset, formState: { isSubmitting, isValid } } = useForm<UpdatePasswordFormDataType>({
         mode: "onChange",
         resolver: yupResolver(updatePasswordSchema),
     });

@@ -37,7 +37,7 @@ const EditOutputModal = ({
     const { from, to, output } = currentEditingOutput.output;
 
     // Handle form submission dans datas
-    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
+    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm<EditingOutputFormDataType>({
         resolver: yupResolver(editOutputSchema),
         defaultValues: {
             from_timestamp: from,

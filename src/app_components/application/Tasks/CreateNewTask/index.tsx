@@ -23,7 +23,7 @@ const CreateNewTask = () => {
         return setOpenMoreSettings((prev) => !prev);
     }, []);
 
-    const { control, getValues, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
+    const { control, getValues, handleSubmit, formState: { isSubmitting, isValid } } = useForm<CreateNewTaskFormDataType>({
         mode: "onChange",
         resolver: yupResolver(createNewTaskValidationSchema),
         defaultValues: createNewTaskAdvancedSettingsDefaultConfig,

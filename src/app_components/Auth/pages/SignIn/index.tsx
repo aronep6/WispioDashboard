@@ -12,7 +12,8 @@ import {
     _step_one_signInValidationSchema,
     _step_two_signInValidationSchema,
 } from './sign-in-validation-schemas';
-import { useForm, Controller } from 'react-hook-form';
+import { type SignInFormDataType } from './interfaces';
+import { useForm, Controller, type FieldValues } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AppRoutes } from "../../../../app_common/interfaces/AppRoutes";
 import checkAfterUserLoginOnServices from "../../check-after-user-login-on-services";
@@ -88,16 +89,19 @@ const SignIn = () => {
     }, [user]);
 
     // Handle form submission dans datas
-    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm({
+    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm<SignInFormDataType>({
         resolver: yupResolver(isFirstSignInStep ? _step_one_signInValidationSchema : _step_two_signInValidationSchema),
     });
 
-    const handleFormLogin = async (data: any) => {
+    const handleFormLogin = async (data: FieldValues) => {
         if (isFirstSignInStep) return setSignInStep(1);
 
         try {
             setIsLoading(true);
-            await auth.loginWithEmail(data.signin_form_email, data.signin_form_password);
+
+            const { signin_form_email, signin_form_password } = data as SignInFormDataType;
+            await auth.loginWithEmail(signin_form_email, signin_form_password);
+
             setGlobalError(INITIAL_GLOBAL_ERROR_STATE);
         } catch (err: Error | unknown) {
             inDev && console.log("Une erreur est survenue lors de la connexion de l'utilisateur : ", err);
@@ -113,20 +117,16 @@ const SignIn = () => {
     };
 
     useEffect(() => {
-        if (!isFirstSignInStep) return;
-
-        if (signin_form_email_ref.current) {
-            signin_form_email_ref.current.focus();
+        if (isFirstSignInStep) {
+            if (signin_form_email_ref.current) {
+                signin_form_email_ref.current.focus();
+            }
+        } else {
+            if (signin_form_password_ref.current) {
+                signin_form_password_ref.current.focus();
+            }
         }
-    }, [globalError, isFirstSignInStep]); // We scope on global error for automatically put the focus if the error is updated
-
-    useEffect(() => {
-        if (isFirstSignInStep) return;
-
-        if (signin_form_password_ref.current) {
-            signin_form_password_ref.current.focus();
-        }
-    }, [isFirstSignInStep]) // We scope this var to listen when the user pass the step one of the form validation
+    }, [globalError, isFirstSignInStep]);
 
     return <AuthWrapper
         title={
