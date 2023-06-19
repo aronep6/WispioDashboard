@@ -44,6 +44,10 @@ export enum StrawberryError {
     InternalError = "__STRAWBERRY_INTERNAL_ERROR__",
 };
 
+export enum ClientError {
+    OfflineDevModeIsEnabled = "__OFFLINE_DEV_MODE_IS_ENABLED__"
+}
+
 export enum UserAccessibleClaims {
     Plan = "plan",
     BillingIsActive = "billing_is_active",

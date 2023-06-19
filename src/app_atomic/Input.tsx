@@ -8,6 +8,7 @@ interface InputProps extends CommonInputProps<string> {
     onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     placeholder?: string;
     errorMessage?: string;
+    isHidden?: boolean;
 }
 
 interface InputAreaPropsExtension {
@@ -27,11 +28,12 @@ const InputBlock = forwardRef(({
     placeholder = "Entrez une valeur",
     error = false,
     errorMessage = "Une erreur est survenue",
+    isHidden = false,
     ...props
 }: InputProps, 
 ref: React.Ref<HTMLInputElement> | undefined
 ) => {
-    return <section className="flex flex-col py-1 my-0.5 w-full">
+    return <section className="flex-col py-1 my-0.5 w-full" style={{ display: isHidden ? "none" : "flex" }}>
 
         { label && <label className="text-slate-700 mb-1.5 ml-0.5 text-sm font-medium tracking-tight">{ label }</label> }
 
@@ -60,6 +62,7 @@ ref: React.Ref<HTMLInputElement> | undefined
             disabled={disabled}
             required={required}
             placeholder={placeholder}
+            hidden={isHidden}
             {...props}
         />
         {

@@ -23,11 +23,13 @@ import {
     UserAccessibleCollection,
     CallableFunctions,
     UserAccessibleClaims,
-    StrawberryError
+    StrawberryError,
+    ClientError
 } from "./interfaces"
 
 import { 
     service_config, 
+    use_offline_dev_mode,
     is_production_env,
     use_local_emulators,
 } from "./core.config"
@@ -66,6 +68,7 @@ class Core {
     sleep: (ms: number) => Promise<unknown> | undefined
     functions: Functions
     isProductionEnv: boolean
+    useOfflineDevMode: boolean
     analyticsProvider: Analytics
     application_name: string;
     constructor() {
@@ -75,6 +78,7 @@ class Core {
         this.functions = functions
         this.isProductionEnv = is_production_env
         this.analyticsProvider = analyticsProvider
+        this.useOfflineDevMode = use_offline_dev_mode,
         this.application_name = import.meta.env.VITE_APPLICATION_NAME
     }
 
@@ -136,6 +140,8 @@ class Core {
         try {
             const docRef = this.getDocumentReference(collection, document)
 
+            if (this.useOfflineDevMode) throw ClientError.OfflineDevModeIsEnabled;
+
             const docSnap = await getDoc(docRef)
 
             if (docSnap.exists()) {
@@ -155,8 +161,10 @@ class Core {
         target_collection: UserAccessibleCollection,
     ): Promise<MultipleDocumentsResponse[]> {
         try {
-            console.log("target_collection: ", target_collection)
             const collectionRef = this.getCollectionReference(target_collection)
+
+            if (this.useOfflineDevMode) throw ClientError.OfflineDevModeIsEnabled;
+
             const docSnap = await getDocs(collectionRef)
 
             return docSnap.docs.map((doc) => {
@@ -177,6 +185,8 @@ class Core {
         const docRef = this.getDocumentReference(UserAccessibleCollection.Tasks, taskId)
 
         try {
+            if (this.useOfflineDevMode) throw ClientError.OfflineDevModeIsEnabled;
+
             await updateDoc(docRef, {
                 lastUpdate: serverTimestamp(),
             })
@@ -192,6 +202,8 @@ class Core {
         const function_instance = httpsCallable(this.functions, functionName)
 
         try {
+            if (this.useOfflineDevMode) throw ClientError.OfflineDevModeIsEnabled;
+
             return await function_instance(payload ?? {})
         } catch (error: any) {
             throw new Error(error.message)
@@ -203,6 +215,8 @@ class Core {
         payload?: any,
     ): Promise<T | undefined> {
         try {
+            if (this.useOfflineDevMode) throw ClientError.OfflineDevModeIsEnabled;
+
             const response = await this.httpCallableBuilder(functionName, payload)
             const data = response.data as T
 
@@ -220,12 +234,18 @@ class Core {
     protected async getUserClaim(
         claim: UserAccessibleClaims
     ): Promise<string | null> {
-        const user = this.getCurrentUser()
-        if (user) {
-            const token = await user.getIdTokenResult()
-            return token.claims[claim]
-        } else {
-            return null
+        try {
+            if (this.useOfflineDevMode) throw ClientError.OfflineDevModeIsEnabled;
+            
+            const user = this.getCurrentUser()
+            if (user) {
+                const token = await user.getIdTokenResult()
+                return token.claims[claim]
+            } else {
+                return null
+            }
+        } catch (error: any) {
+            return null;
         }
     }
 }

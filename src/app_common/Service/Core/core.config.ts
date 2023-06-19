@@ -15,10 +15,14 @@ const service_config: FirebaseServiceConfiguration = {
 // Use local emulators (if needed)
 const use_local_emulators = import.meta.env.VITE_USE_LOCAL_EMULATORS === "true";
 
+// Use offline dev mode
+const use_offline_dev_mode = import.meta.env.VITE_USE_OFFLINE_DEV === "true";
+
 // Is production environment
 const is_production_env = import.meta.env.PROD;
 
-export { 
+export {
+    use_offline_dev_mode,
     service_config, 
     use_local_emulators, 
     is_production_env, 

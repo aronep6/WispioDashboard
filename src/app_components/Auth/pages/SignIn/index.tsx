@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { useEffect, useLayoutEffect, useState, useRef, useCallback, useMemo } from "react";
 
 import { SubmitPrimaryButton } from "../../../../app_atomic/Button";
 import AuthWrapper from "../../components/AuthWrapper";
@@ -116,14 +116,22 @@ const SignIn = () => {
         }
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (isFirstSignInStep) {
+            console.log("signin_form_email_ref.current : ", signin_form_email_ref.current);
+
             if (signin_form_email_ref.current) {
                 signin_form_email_ref.current.focus();
+
+                console.log('Focus on email input')
             }
         } else {
+            console.log("signin_form_password_ref.current : ", signin_form_password_ref.current);
+
             if (signin_form_password_ref.current) {
                 signin_form_password_ref.current.focus();
+
+                console.log('Focus on password input')
             }
         }
     }, [globalError, isFirstSignInStep]);
@@ -171,7 +179,7 @@ const SignIn = () => {
                 )}
             ></Controller>
 
-            {!isFirstSignInStep && <Controller
+            <Controller
                 control={control}
                 name="signin_form_password"
                 render={({
@@ -189,12 +197,13 @@ const SignIn = () => {
                         error={error}
                         errorMessage={error?.message}
                         disabled={isSubmitting}
+                        isHidden={isFirstSignInStep}
                         {
                             ...{ autoComplete: "current-password" }
                         }
                     />
                 )}
-            ></Controller>}
+            ></Controller>
 
             {!isFirstSignInStep && <Link
                 to={!emailEncodedSnapshot ? AppRoutes.AuthForgotPassword : `${AppRoutes.AuthForgotPassword}?snapshot=${emailEncodedSnapshot}`}
