@@ -149,3 +149,5 @@ export interface WhisperPreparedTaskInDb {
 export interface WhisperTaskErrorReport {
     error: string | Error;
 }
+
+export type UseMaterialAcceleration = boolean
