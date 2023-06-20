@@ -135,7 +135,7 @@ class Authentication extends Core {
 
     // For the check after user logged in on services
     checkBillingStatus = async (): Promise<boolean> => {
-        const { UserAccessibleClaims } = await import("../../../app_common/Service/Core/interfaces");
+        const { UserAccessibleClaims } = await import("../Core/interfaces");
         const claim = await this.getUserClaim(UserAccessibleClaims.BillingIsActive);
         
         if (claim === "true") return true;
@@ -143,7 +143,7 @@ class Authentication extends Core {
     }
 
     checkIfUserHasCurrentPlan = async (): Promise<boolean> => {
-        const { UserAccessibleClaims } = await import("../../../app_common/Service/Core/interfaces");
+        const { UserAccessibleClaims } = await import("../Core/interfaces");
         const claim = await this.getUserClaim(UserAccessibleClaims.Plan);
         
         if (claim === "none") return false;

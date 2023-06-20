@@ -79,12 +79,14 @@ class Core {
     }
 
     protected analytics(event: any, payload: any = {}): void {
-        if (!this.isProductionEnv) return console.warn("Analytics are disabled in development mode")
+        if (!this.isProductionEnv) return console.warn("Analytics are disabled in a non production environment")
         return logEvent(this.analyticsProvider, event, payload)
     }
 
     protected logError(error: any): void {
         if (!this.isProductionEnv) return console.warn("An error occured at Wispio Service level: ", error)
+        this.analytics("application-error-log", { error });
+        return;
     }
 
     protected getCurrentUser(): User {
@@ -155,7 +157,6 @@ class Core {
         target_collection: UserAccessibleCollection,
     ): Promise<MultipleDocumentsResponse[]> {
         try {
-            console.log("target_collection: ", target_collection)
             const collectionRef = this.getCollectionReference(target_collection)
             const docSnap = await getDocs(collectionRef)
 
