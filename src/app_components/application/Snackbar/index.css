@@ -1,0 +1,6 @@
+.snackbarWrapper {
+    position: fixed;
+    z-index: 9999;
+    top: 2rem;
+    right: 2rem;
+}
