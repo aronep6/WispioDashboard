@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { CreateNewTaskErrors } from './create-new-task.errors.enum';
-import { modelSizeListReadable, readableLanguageName } from '../../../../app_common/interfaces/WispioTask';
+import { modelSizeListReadable, readableLanguageName } from '../../../../app_common/interfaces/TaskProcessing';
 import CreateNewTaskTestFns from './create-new-task-test-functions';
 import { SUPPORTED_FORMATS } from './common/supported-formats';
 import MAX_FILE_SIZE from './common/max-file-size';

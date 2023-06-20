@@ -1,7 +1,7 @@
 import type { CreateNewTaskFormDataType } from "../CreateNewTask/interfaces";
-import { Language, ModelSize } from "../../../../app_common/interfaces/WispioTask";
+import { Language, ModelSize, UseMaterialAcceleration } from "../../../../app_common/interfaces/TaskProcessing";
 
-const USE_MATERIAL_ACCELERATION = false;
+const USE_MATERIAL_ACCELERATION: UseMaterialAcceleration = false;
 
 const createNewTaskAdvancedSettingsDefaultConfig: Partial<CreateNewTaskFormDataType> = {
     model_size: ModelSize.Base,
