@@ -5,8 +5,9 @@ import { Controller, useForm, type FieldValues } from "react-hook-form";
 import { Card } from "../../../../app_atomic/Card";
 import { SelectForm } from "../../../../app_atomic/Input";
 import { Modal, ModalHr, ModalSection } from "../../../../app_atomic/Modal"
+import { SnackbarElement, SnackbarLifeTime, SnackbarType } from "../../../../app_contexts/SnackbarService/interfaces";
 import { Hint, PrimaryTitle } from "../../../../app_atomic/Title";
-import { languageWordErrorRate, modelSizeListReadable, readableLanguageName } from "../../../../app_common/interfaces/WispioTask";
+import { languageWordErrorRate, modelSizeListReadable, readableLanguageName } from "../../../../app_common/interfaces/TaskProcessing";
 import createNewTaskValidationSchema from "./create-new-task.validation-schema";
 import createNewTaskAdvancedSettingsDefaultConfig from "../interfaces/create-task-advanced-settings.default";
 import { type CreateNewTaskFormDataType } from "./interfaces";
@@ -15,8 +16,15 @@ import Switch from "../../../../app_atomic/Switch";
 import { ControlledFileSelector } from "../../../../app_atomic/FileSelector";
 import { ALLOWED_EXTENSIONS } from "./common/supported-formats";
 import { SingleInformationTableRowInterface } from "../../../common/components/InformationTable/interfaces";
+import useTaskService from "../../../../app_hooks/contexts_hooks/useTaskService";
+import useSnackbarService from "../../../../app_hooks/contexts_hooks/useSnackbarService";
+import createNewTaskToNewTaskRequestAdapter from "./adapter/create-new-task-to-new-task-request.adapter";
+
 
 const CreateNewTask = () => {
+    const taskService = useTaskService();
+    const snackbarService = useSnackbarService();
+
     const [openMoreSettings, setOpenMoreSettings] = useState<boolean>(false);
     
     const toggleMoreSettings = useCallback(() => {
@@ -60,21 +68,31 @@ const CreateNewTask = () => {
     }, [openMoreSettings]);
 
     const onSubmit = async (data: FieldValues) => {
-        const {
-            file,
-            model_size,
-            target_translate_language,
-            use_material_acceleration,
-        } = data as CreateNewTaskFormDataType;
+        const event_scope = "Création d'une nouvelle transcription";
 
-        await new Promise((resolve) => setTimeout(resolve, 6000));
+        try {
+            const newTaskRequest = createNewTaskToNewTaskRequestAdapter(data as CreateNewTaskFormDataType);
 
-        console.log({
-            file,
-            model_size,
-            target_translate_language,
-            use_material_acceleration,
-        });
+            await taskService.registerNewTaskToProcess(newTaskRequest);
+
+            const successCreation: SnackbarElement = {
+                type: SnackbarType.Success,
+                title: event_scope,
+                message: 'Tâche crée avec succès',
+                duration: SnackbarLifeTime.Medium,
+            };
+
+            snackbarService.addSnackbarElement(successCreation);
+        } catch (error: any) {
+            const failedCreation : SnackbarElement = {
+                type: SnackbarType.Warning,
+                title: event_scope,
+                message: error.message,
+                duration: SnackbarLifeTime.VeryLong,
+            };
+
+            snackbarService.addSnackbarElement(failedCreation);
+        }
     };
 
     return <Modal>
