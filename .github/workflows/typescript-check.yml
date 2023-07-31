@@ -1,6 +1,6 @@
 # Author: @aronep6
 
-name: Check TypeScript and for vulnerabilities on push to master
+name: (Check) Check TS types on push to master
 "on":
   push:
     branches:

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type {
-    IsLoadingType, 
+    IsLoadingType,
     DataType,
     ErrorType,
     CustomHookReturn,
@@ -13,7 +13,7 @@ function useCenturionFetch<MethodResponseDTO>({
     payload = undefined,
     defaultLoadingStatus = true,
     doCheckBeforeFetch = () => true,
-}: CenturionFetchProps): CustomHookReturn<MethodResponseDTO> {    
+}: CenturionFetchProps): CustomHookReturn<MethodResponseDTO> {
     const [isLoading, setIsLoading] = useState<IsLoadingType>(defaultLoadingStatus);
     const [data, setData] = useState<DataType | MethodResponseDTO>(undefined);
     const [error, setError] = useState<ErrorType>(null);
@@ -34,14 +34,14 @@ function useCenturionFetch<MethodResponseDTO>({
             //     data, 
             //     error,
             // } = await method(payload && payload);
-            
+
             // if (!success || error) {
             //     throw error;
             // }
 
             // setData(data);
         } catch (error: any) {
-            const _err = 
+            const _err =
                 error?.message ?
                     error.message :
                     "Une erreur inconnue s'est produite, vérifiez votre connexion internet et réessayez.";

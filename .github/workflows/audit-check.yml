@@ -1,12 +1,12 @@
 # Author: @aronep6
 
-name: Check for criticals vulnerabilities on push to master
+name: (Check) Check for criticals vulnerabilities on push to master
 "on":
   push:
     branches:
       - master
 jobs:
-  typescript-check:
+  audit-check:
     runs-on: ubuntu-latest
 
     steps:
