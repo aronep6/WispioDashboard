@@ -14,14 +14,15 @@
     "build:staging": "tsc && vite --config vite.config.js build --mode staging",
     "build:production": "tsc && vite --config vite.config.js build --mode production",
     "preview": "vite preview",
-    "ts-check": "tsc --noEmit"
+    "ci:typecheck": "tsc --noEmit",
+    "ci:audit": "npm audit --audit-level=critical"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",
     "@hookform/resolvers": "^3.1.0",
     "@vidstack/react": "^0.4.2",
     "date-fns": "^2.29.3",
-    "firebase": "^9.22.2",
+    "firebase": "^10.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",

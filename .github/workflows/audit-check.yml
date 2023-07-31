@@ -1,6 +1,6 @@
 # Author: @aronep6
 
-name: Check TypeScript and for vulnerabilities on push to master
+name: Check for criticals vulnerabilities on push to master
 "on":
   push:
     branches:
@@ -18,5 +18,5 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Install dependencies and check for typescript errors
-        run: npm ci && npm run ci:typecheck
+      - name: Install dependencies and check for vulnerabilities
+        run: npm ci && npm run ci:audit
