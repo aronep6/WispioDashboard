@@ -18,8 +18,8 @@
     "ci:audit": "npm audit --audit-level=critical"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.14",
-    "@hookform/resolvers": "^3.1.0",
+    "@headlessui/react": "^1.7.16",
+    "@hookform/resolvers": "^3.2.0",
     "@vidstack/react": "^0.4.2",
     "date-fns": "^2.29.3",
     "firebase": "^10.1.0",
