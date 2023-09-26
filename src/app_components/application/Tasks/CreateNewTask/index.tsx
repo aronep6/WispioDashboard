@@ -26,17 +26,17 @@ const CreateNewTask = () => {
     const snackbarService = useSnackbarService();
 
     const [openMoreSettings, setOpenMoreSettings] = useState<boolean>(false);
-    
+
     const toggleMoreSettings = useCallback(() => {
         return setOpenMoreSettings((prev) => !prev);
     }, []);
 
     const { control, getValues, handleSubmit, formState: { isSubmitting, isValid } } = useForm<CreateNewTaskFormDataType>({
         mode: "onChange",
-        resolver: yupResolver(createNewTaskValidationSchema),
+        resolver: yupResolver(createNewTaskValidationSchema) as any,
         defaultValues: createNewTaskAdvancedSettingsDefaultConfig,
     });
-    
+
     const computedModalSectionCurrentValues: SingleInformationTableRowInterface[] = useMemo(() => {
         if (openMoreSettings) return [];
 
@@ -84,7 +84,7 @@ const CreateNewTask = () => {
 
             snackbarService.addSnackbarElement(successCreation);
         } catch (error: any) {
-            const failedCreation : SnackbarElement = {
+            const failedCreation: SnackbarElement = {
                 type: SnackbarType.Warning,
                 title: event_scope,
                 message: error.message,

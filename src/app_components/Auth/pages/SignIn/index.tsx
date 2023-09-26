@@ -89,7 +89,7 @@ const SignIn = () => {
     }, [user]);
 
     // Handle form submission dans datas
-    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm<SignInFormDataType>({
+    const { control, handleSubmit, formState: { isSubmitting, isValid } } = useForm<SignInFormDataType | Pick<SignInFormDataType, 'signin_form_email'>>({
         resolver: yupResolver(isFirstSignInStep ? _step_one_signInValidationSchema : _step_two_signInValidationSchema),
     });
 
@@ -165,7 +165,7 @@ const SignIn = () => {
                         errorMessage={error?.message}
                         disabled={!isFirstSignInStep}
                         {
-                            ...{ autoComplete: "email" }
+                        ...{ autoComplete: "email" }
                         }
                     />
                 )}
@@ -190,7 +190,7 @@ const SignIn = () => {
                         errorMessage={error?.message}
                         disabled={isSubmitting}
                         {
-                            ...{ autoComplete: "current-password" }
+                        ...{ autoComplete: "current-password" }
                         }
                     />
                 )}

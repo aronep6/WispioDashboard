@@ -1,6 +1,6 @@
 import DashedBorder from "../../app_components/application/common/EmptyStates/DashedBorder";
 import { ControlledFileSelectorProps } from "./interfaces";
-import { useRef, Fragment, useCallback, useMemo, useEffect } from "react";
+import { useRef, Fragment, useCallback, useMemo } from "react";
 import { File } from "react-feather";
 
 const ControlledFileSelector = ({
@@ -49,7 +49,7 @@ const ControlledFileSelector = ({
             <DashedBorder
                 title={fileName || label}
                 description={allowedExtensionsString.length > 0 ? `Formats supportés : ${allowedExtensionsString}` : null}
-                { ...{ icon, error, errorMessage }}
+                {...{ icon, error, errorMessage }}
             ></DashedBorder>
         </div>
     </Fragment>
