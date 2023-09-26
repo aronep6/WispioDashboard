@@ -2,7 +2,7 @@
 # https://github.com/firebase/firebase-tools
 
 name: (Production Deployement) Build and deploy static files to hosting service on push to staging branch
-'on':
+"on":
   push:
     branches:
       - production
@@ -13,12 +13,22 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "20"
       - run: npm ci
       - run: npm run build:production
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISPIOPRODUCTION }}'
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISPIOPRODUCTION }}"
           channelId: live
           projectId: wispioproduction
+
+      # Create GitHub Deployment
+      - name: Create GitHub Production Deployment
+        uses: shopify/github-deployment-action@v1
+        if: always()
+        with:
+          token: ${{ github.token }}
+          environment: "staging"
+          preview_url: "wispioproduction.web.app"
+          description: ${{ github.event.head_commit.message }}
