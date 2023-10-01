@@ -22,13 +22,3 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_WISPIOSTAGING }}"
           channelId: live
           projectId: wispiostaging
-
-      # Create GitHub Staging Deployment
-      - name: Create GitHub Deployment
-        uses: shopify/github-deployment-action@v1
-        if: always()
-        with:
-          token: ${{ github.token }}
-          environment: "staging"
-          preview_url: "wispiostaging.web.app"
-          description: ${{ github.event.head_commit.message }}
